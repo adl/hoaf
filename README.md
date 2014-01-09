@@ -1,53 +1,155 @@
-Proposal of an I/O format for omega-automata
-============================================
+Hanoi Omega Automata Format
+===========================
 
-Goal
-----
+This working document describes the Hanoi Omega Automata (HOA) format.  The name is a reference to the ATVA'13 conference, which was organized in Hanoi, and where the jist of this format was laid out.
 
-Replace `ltl2dstar`'s format with something that:
+Goals
+-----
 
-- is more compact when a lot of atomic propositions are used, or when the automaton is not complete
-- supports non-deterministic automata
-- supports different types of acceptance conditions, preferably in a way that is easy to extend
+Design a format, inspired from `ltl2dstar`'s format, but which:
+
+- is more compact when a lot of atomic propositions are used, or when the automaton is not complete.
+- supports non-deterministic omega automata.
+- supports different types of acceptance conditions, preferably in a way that is easy to extend.
+- consider new lines as any other white-space characters, i.e., as token separators.  All the examples below should work even after newlines have been removed or moved around (this typically happens if you copy/paste an automaton into a mailer that reformats paragraphs).  A use case for not using any newline is when compiling results from experiments into a file, with one automaton per line (and maybe other measurments if that is a CSV file), for easier filtering with line-oriented tools such as grep/cut/sed.
+
+
+Common tokens
+-------------
+
+- `STRING`: a C-like double-quoted string `"(\\.|[^\\"])*"`
+
+- `INT`: `[0-9]+`
+  A non-negative integer less then 2^31 written in base 10.
+
+- comments: `/* … */`
+  Comments may be introduced between any token by enclosing them with `/*` and `*/` (with proper nesting, i.e.  `/*a/*b*/c*/`  is one comment).  C++-style comments are not considered because they require newlines.  Tools can use comments to add additional information (e.g. debugging data) to the output, but should be discarded upon reading.
+
+- whitespace: `[ \t\n\r]`
+  Expect in double quoted strings and comments whitespace is used only for tokenization and can be discarded afterwards.
+
+- `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_]*`
+  A C-like identifier.
+
+- `HEADERNAME`: `[a-zA-Z_-][0-9a-zA-Z_-]*:`
+  Header names are likes identifiers, except that they may use dashes, and are immediately (i.e. not comment or space allowed) followed by a double colon.  If an `IDENTIFIER` is immediately followed by a double colon, it should be considered as a `HEADERNAME`.
+
+General layout
+--------------
+
+An automaton is output in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph.
+The two parts are separated by a triple dash.
+
+    automaton ::= header "---" body
 
 Header
 ------
 
-Should announce the number of states, the number of atomic proposition, number of acceptance sets, and the way to use these acceptance sets.
+    header ::= formatversion headeritems*
+    formatversion ::= "HOA:" IDENTIFIER
+    headeritem ::= "States:" INT
+                 | "Start:" INT*
+                 | "AP:" INT STRING*
+                 | "Acceptance:" INT acceptancecond
+                 | "tool:" STRING STRING
+                 | "name:" STRING
+                 | "properties:" IDENTIFIER*
+                 | HEADERNAME (INT|STRING|IDENTIFIER)*
 
-`ltl2dstar`'s first line currently is
+The header is a list of `headeritem`s (a `HEADERNAME` followed by some data).  Except for the "HOA:" item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified belows.   This format also makes provision of additional (unspecified) header names to be used.
 
-    DRA v2 explicit
+Any given `HEADERNAME` should occur at most once.  The case of the `HEADERNAME`'s initial is used to specify whether tool may safely ignore a header item they do not support: header items whose name start with an upper-case letter
 
-where (I assume) "explicit" means that transitions are all explicitly listed.  ltl2dstar's documentation calls this the "edge type" but does not document any other value than "explicit".
+### `HOA:`
 
-To distinguish from this, I suggest we start with the word OMEGA.  As in
+`HOA:` should always be the first token of the file.  It is followed by an identifier that represents the version of the format.  This document specifies the first version of this format so this header should appear as
 
-    OMEGA v3
+    HOA: v1
 
-The other lines of the header are for instance
+### `States:`
 
-	States: 2
-	Acceptance: 2 (F!0 & I1)
-	Start: 0
-	AP: 3 "a" "proc@state" "a[x] >` 2"
+This mandatory header item specifies the number of states in the automaton.  The states are assumed to be numbered consecutively from 0.   For instance:
 
-The order of these lines is the same as in `ltl2dstar`'s format.  Do we want to change it?  I'm always tempted to specify `States:` and `Start:` together.  Specifying the order probably makes writing the parser easier (although Spot's parser can already handle the header lines of `ltl2dstar` in any order).
+    States: 10
 
-`States:` specify the number n of states (a non-negative integer).
+specifies an automaton with 10 states numbered from 0 to 9.
 
-`Start:` gives the initial states, a list of space-separated integers in [0,n).  Could be empty (especially if n=0).
+An empty automaton, with no states, can be specified with `States: 0`.
 
-(I don't really like multiple initial states, but they are sometimes necessary; for instance for tools like Wring that output state-labeled automata.)
+### `Start:`
 
-`AP:` gives the number of atomic propositions, followed by the name of each of these atomic propositions.  These names are double-quoted and follow the C convention for escaping (i.e., nested double-quotes are escaped with a backslash).  Atomic propositions are automatically numbered from left to right, starting at 0.
+This optional header item lists the initial states (given by their number).  The list may be empty, which is the same as omitting this header item.
 
-`Acceptance:` specifies the number, m, of acceptance sets, followed by a Boolean formula built using the operators `|` and `&` over atoms of the form  `Fx`, `F!x`, `Ix`, `I!x`  where:
+### `AP:`
+
+`AP:` gives the number of atomic propositions, followed by the name of each of these atomic propositions (using double-quoted C-strings).  Atomic propositions are implicitely numbered from left to right, starting at 0.
+
+For instance
+
+    AP: 3 "a" "proc@state" "a[x] >= 2"
+
+specifies three atomic propositions:
+
+- atomic proposition 0 is `"a"`
+- atomic proposition 1 is `"proc@state"`
+- atomic proposition 2 is `"a[x] >= 2"`
+
+The number of double-quoted string must match exactly the number given.  This number may be 0, in which case it is not followed by any string, and this is equivalent to not using `AP:`.
+
+### `Acceptance:`
+
+    headeritem ::= … | "Acceptance:" INT acceptancecond
+
+    acceptancecond ::= "I" "!"? INT
+                     | "F" "!"? INT
+                     | (acceptancecond)
+                     | acceptancecond & acceptancecond
+                     | acceptancecond | acceptancecond
+
+is used to specify the number of acceptance sets used by the automaton (if m sets are declared, these sets are numbered from 0 to m-1), and how these acceptance sets are used to build the acceptance condition.
+The acceptance condition is specified as a positive Boolean combination of atoms of the form `Fx`, `F!x`, `Ix`, `I!x`  where:
 
 - `x` is a integer in [0,m) representing an accepting set,
 - `!x` represent the complement of that set,
 - `F` and `I` specify whether that set should be visited finitely or infinitely often.
+
 The `&` operator has priority over `|`, and parentheses may be used for grouping.
+
+For instance
+
+    Acceptance: 2 (F!0 & I1)
+
+declares two acceptance sets.  A run of the automaton is accepting if it visits the complement of the first set finitely often, and if it visits the second set infinitely often.  More examples will be given in the next section.
+
+### `tool:` and `name:`
+
+    headeritem ::= …
+                 | "tool:" STRING STRING
+                 | "name:" STRING
+
+These optional header items can be used to record information about the tool used to produce the automaton, or to give a name to this automaton.  The two arguments of `tool:` corresponds respectively to the tool name and version.
+
+For instance:
+
+    tool: "ltl-translate" "1.2-alpha"
+	name: "BA for GFa & GFb"
+
+
+### `properties:`
+
+    headeritem ::= … | "properties:" IDENTIFIER*
+
+The optional `properties:` header name can be followed by a list of identifiers that gives additional information about the automaton.  These information should be redundant in the sense that ignoring them should not impact the behavior of the automaton.  For instance stating that an automaton is deterministic with
+
+    properties: deterministic
+
+may enable tools that read the automaton to choose a better data structure to store this automaton, but ignoring this header item will not suddenly make the automaton non-deterministic.
+
+The following properties have specified meanings, but additional may be added, and tools may simply ignore those they do not know:
+
+- `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state, and the outgoing transitions of each state have disjoint labels.
+- `complete` hints that the automaton is complete, i.e., it has at least one state, and the transition function is total.
+- `unambiguous` hints that the automaton is unambiguous in the sense that any **accepted** word is recognized by a unique run of the automaton.
 
 Example of Acceptance specifications
 ------------------------------------
@@ -119,14 +221,14 @@ or
     Acceptance 5 I0 | F0&F1&(I2 | F2&F3&I4)
 
 
-Structure of the automaton
---------------------------
+Body of the automaton
+---------------------
 
 The header is separated from the rest of the structure with `---`.
 
 States should be numbered from 0 to n-1 and specified with the following grammar
 
-	states           ::=  (state-name edges)*
+	body             ::=  (state-name edges)*
 	// the optional dstring can be used to name the state for
 	// cosmetic or debugging purposes, as in ltl2dstar's format
 	state-name       ::=  "State:" INT DSTRING? label? acc-sig?
@@ -135,15 +237,15 @@ States should be numbered from 0 to n-1 and specified with the following grammar
 	edge             ::= label? INT acc-sig?
 	label            ::= "(" label-expr ")"
 	label-expr       ::= "t" | "f" | INT | "!" label-expr
-						 | "(" label-expr ")"
-						 | label-expr "&" label-expr
-						 | label-expr "|" label-expr
-	dstring          ::= <C-style double-quoted string>
-	int              ::= <nonegative integer>
+                       | "(" label-expr ")"
+                       | label-expr "&" label-expr
+                       | label-expr "|" label-expr
+    dstring          ::= <C-style double-quoted string>
+    int              ::= <nonegative integer>
 
 The `INT` occurring in the `state-name` rule is the number of this state (state should be declared in order from 0 to n-1 so strictly speaking this number is not necessary).  The `INT` occurring in the `edge` rule represent the destination state.
 
-The `INT*` used in `acc-sig` represent the acceptance set the state or edge belongs to.  The `INT`
+The `INT*` used in `acc-sig` represent the acceptance set the state or edge belongs to.
 
 Finally the `INT` used in `label-expr` denote atomic propositions, numbered in the order listed on the `AP:` line.
 
@@ -154,22 +256,12 @@ If an edge has a label, all edges of this state should have a label.
 If one state has no label, and no labeled edges, then there should be exactly 2^a edges listed, where *a* is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`.
 
 
-Comments & New lines
---------------------
-
-The following features might be disputable.  Please give your opinion.
-
-Comments may be introduced between any token by enclosing them with `/*` and `*/` (with proper nesting, i.e.  `/*a/*b*/c*/`  is one comment).  This can be used to add additional information (e.g. debugging data) to the output.
-
-New lines should be considered like any other white space characters: as token separators.  All the examples below should work even after newlines have been removed or moved around.  This typically happens if you copy/paste an automaton into a mailer that reformats paragraphs.
-
-
 Examples
 --------
 
 ### Transition-based Rabin acceptance and explicit labels
 
-    OMEGA v3
+    HOA: v1
     States: 2
     Acceptance: 2 (F0 | I1)
     Start: 0
@@ -185,7 +277,7 @@ Examples
 
 Because of implicit labels, the automaton necessarily has to be complete.
 
-    OMEGA v3
+    HOA: v1
     States: 3
     Acceptance: 2 (F0 | I1)
     Start: 0
@@ -203,7 +295,7 @@ Because of implicit labels, the automaton necessarily has to be complete.
 
 ### TGBA with implicit labels
 
-    OMEGA v3 /* GFa & GFb */
+    HOA: v1 /* GFa & GFb */
     States: 1 Start: 0
     Acceptance: 2 (I0 & I1)
     Start: 0
@@ -217,7 +309,7 @@ Because of implicit labels, the automaton necessarily has to be complete.
 
 ### TGBA with explicit labels
 
-    OMEGA v3 /* GFa & GFb */
+    HOA: v1 /* GFa & GFb */
     States: 1 Start: 0
     Acceptance: 2 (I0 & I1)
     Start: 0
@@ -233,7 +325,7 @@ Because of implicit labels, the automaton necessarily has to be complete.
 
 Encoding `GFa` using state labels requires multiple initial states.
 
-    OMEGA v3 /* GFa */
+    HOA: v1 /* GFa */
     States: 2
     Acceptance: 1 I0
     Start: 0 1
@@ -247,7 +339,7 @@ Encoding `GFa` using state labels requires multiple initial states.
 
 I have absolutely no intention to represent state-labeled automata with multiple initial states in Spot, so if I had to read such an automaton, I would immediately convert it into the following TGBA, with a new initial state representing the union of two original states, and pushing everything (label and acceptance) on the outgoing transitions:
 
-    OMEGA v3
+    HOA: v1
     States: 3
     Acceptance: 1 I0
     Start: 0
