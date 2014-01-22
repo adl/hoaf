@@ -255,6 +255,7 @@ If an edge has a label, all edges of this state should have a label.
 
 If one state has no label, and no labeled edges, then there should be exactly 2^a edges listed, where *a* is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition *t* is the *i*-th transition of a state (starting with 0), then the label can be deduced by interpreting *i* as a bitset. The label is a set of atomic propositions such that the atomic proposition *j* is in the set if the *j*-th least significant bit of *i* is set to 1.
 
+
 Examples
 --------
 
@@ -262,7 +263,7 @@ Examples
 
     HOA: v1
     States: 2
-    Acceptance: 2 (F0 | I1)
+    Acceptance: 2 (F0 & I1)
     Start: 0
     AP: 2 "a" "b"
     ---
@@ -278,7 +279,7 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
     HOA: v1
     States: 3
-    Acceptance: 2 (F0 | I1)
+    Acceptance: 2 (F0 & I1)
     Start: 0
     AP: 2 "a" "b"
     ---
