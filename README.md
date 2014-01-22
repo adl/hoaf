@@ -56,7 +56,7 @@ Header
                  | "properties:" IDENTIFIER*
                  | HEADERNAME (INT|STRING|IDENTIFIER)*
 
-The header is a list of `headeritem`s (a `HEADERNAME` followed by some data).  Except for the "HOA:" item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified belows.   This format also makes provision of additional (unspecified) header names to be used.
+The header is a list of `headeritem`s (a `HEADERNAME` followed by some data).  Except for the "HOA:" item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified below.   This format also makes provision of additional (unspecified) header names to be used.
 
 Any given `HEADERNAME` should occur at most once.  The case of the `HEADERNAME`'s initial is used to specify whether tool may safely ignore a header item they do not support: header items whose name start with an upper-case letter
 
@@ -190,7 +190,7 @@ Note that an acceptance set may be used more than once.  For instance when trans
 
 There are several equivalent presentations of Rabin acceptance.
 
-J. Klein, in `ltl2dstar`, uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} where there should be some pair (Lᵢ,Uᵢ) such that states in Lᵢ are visited infinitely often, but states in Uᵢ are visited finitely often.   This is a the complement of the Streett acceptance above:
+J. Klein, in `ltl2dstar`, uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} where there should be some pair (Lᵢ,Uᵢ) such that states in Lᵢ are visited infinitely often, but states in Uᵢ are visited finitely often.   This is the complement of the Streett acceptance above:
 
     Acceptance: 6 (I0&F1)|(I2&F3)|(I4&F5)
 
@@ -245,7 +245,7 @@ States should be numbered from 0 to n-1 and specified with the following grammar
 
 The `INT` occurring in the `state-name` rule is the number of this state (state should be declared in order from 0 to n-1 so strictly speaking this number is not necessary).  The `INT` occurring in the `edge` rule represent the destination state.
 
-The `INT*` used in `acc-sig` represent the acceptance set the state or edge belongs to.
+The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.
 
 Finally the `INT` used in `label-expr` denote atomic propositions, numbered in the order listed on the `AP:` line.
 
@@ -253,7 +253,7 @@ If a state has a label, no outgoing edges of this state should have a label: thi
 
 If an edge has a label, all edges of this state should have a label.
 
-If one state has no label, and no labeled edges, then there should be exactly 2^a edges listed, where *a* is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`.
+If one state has no label, and no labeled edges, then there should be exactly 2^a edges listed, where *a* is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition *t* is the *i*-th transition of a state (starting with 0), then the label can be deduced by interpreting *i* as a bitset. The label is a set of atomic propositions such that the atomic proposition *j* is in the set if the *j*-th least significant bit of *i* is set to 1.
 
 
 Examples
@@ -263,7 +263,7 @@ Examples
 
     HOA: v1
     States: 2
-    Acceptance: 2 (F0 | I1)
+    Acceptance: 2 (F0 & I1)
     Start: 0
     AP: 2 "a" "b"
     ---
@@ -275,19 +275,19 @@ Examples
 
 ### State-based Rabin acceptance and implicit labels
 
-Because of implicit labels, the automaton necessarily has to be complete.
+Because of implicit labels, the automaton necessarily has to be deterministic and complete.
 
     HOA: v1
     States: 3
-    Acceptance: 2 (F0 | I1)
+    Acceptance: 2 (F0 & I1)
     Start: 0
     AP: 2 "a" "b"
     ---
     State: 0 "a U b" { 0 }
-      2  /* !a  & !b &/
-      0  /*  a  & !b &/
-      1  /* !a  &  b &/
-      1  /*  a  &  b &/
+      2  /* !a  & !b */
+      0  /*  a  & !b */
+      1  /* !a  &  b */
+      1  /*  a  &  b */
     State: 1 { 1 }
       1 1 1 1       /* four transitions on one line */
     State: 2 "sink state" { 0 }
@@ -302,10 +302,10 @@ Because of implicit labels, the automaton necessarily has to be complete.
     AP: 2 "a" "b"
     ---
     State: 0
-      0       /* !a  & !b &/
-      0 {0}   /*  a  & !b &/
-      0 {1}   /* !a  &  b &/
-      0 {0 1} /*  a  &  b &/
+      0       /* !a  & !b */
+      0 {0}   /*  a  & !b */
+      0 {1}   /* !a  &  b */
+      0 {0 1} /*  a  &  b */
 
 ### TGBA with explicit labels
 
@@ -331,9 +331,9 @@ Encoding `GFa` using state labels requires multiple initial states.
     Start: 0 1
     AP: 1 "a"
     ---
-    State: 0 (0)
+    State: 0 (0) {0}
       0 1
-    State: 1 (!0) {0}
+    State: 1 (!0)
       0 1
 
 
@@ -346,14 +346,14 @@ I have absolutely no intention to represent state-labeled automata with multiple
     AP: 1 "a"
     ---
     State: 0
-     (!0) 1
-     (0)  2
-    State: 1  /* former state 0 */
      (0) 1
-     (0) 2
+     (!0)  2
+    State: 1  /* former state 0 */
+     (0) 1 {0}
+     (!0) 2 {0}
     State: 2  /* former state 1 */
-     (!0) 1 {1}
-     (!0) 2 {1}
+     (0) 1
+     (!0) 2
 
 Questions
 ---------
