@@ -228,20 +228,18 @@ The header is separated from the rest of the structure with `---`.
 
 States should be numbered from 0 to n-1 and specified with the following grammar
 
-	body             ::=  (state-name edges)*
-	// the optional dstring can be used to name the state for
-	// cosmetic or debugging purposes, as in ltl2dstar's format
-	state-name       ::=  "State:" INT DSTRING? label? acc-sig?
-	acc-sig          ::=  "{" INT* "}"
-	edges            ::= edge*
-	edge             ::= label? INT acc-sig?
-	label            ::= "(" label-expr ")"
-	label-expr       ::= "t" | "f" | INT | "!" label-expr
+    body             ::= (state-name edges)*
+    // the optional dstring can be used to name the state for
+    // cosmetic or debugging purposes, as in ltl2dstar's format
+    state-name       ::= "State:" INT DSTRING? label? acc-sig?
+    acc-sig          ::= "{" INT* "}"
+    edges            ::= edge*
+    edge             ::= label? state-formula acc-sig?
+    label            ::= "[" label-expr "]"
+    label-expr       ::= "t" | "f" | INT | "!" label-expr
                        | "(" label-expr ")"
                        | label-expr "&" label-expr
                        | label-expr "|" label-expr
-    dstring          ::= <C-style double-quoted string>
-    int              ::= <nonegative integer>
 
 The `INT` occurring in the `state-name` rule is the number of this state (state should be declared in order from 0 to n-1 so strictly speaking this number is not necessary).  The `INT` occurring in the `edge` rule represent the destination state.
 
@@ -249,11 +247,11 @@ The `INT*` used in `acc-sig` represent the acceptance sets the state or edge bel
 
 Finally the `INT` used in `label-expr` denote atomic propositions, numbered in the order listed on the `AP:` line.
 
-If a state has a label, no outgoing edges of this state should have a label: this should be used to represent state-labeled automata.
+If a state has a `label`, no outgoing edges of this state should have a `label`: this should be used to represent state-labeled automata.
 
-If an edge has a label, all edges of this state should have a label.
+If an edge has a `label`, all edges of this state should have a `label`.
 
-If one state has no label, and no labeled edges, then there should be exactly 2^a edges listed, where *a* is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition *t* is the *i*-th transition of a state (starting with 0), then the label can be deduced by interpreting *i* as a bitset. The label is a set of atomic propositions such that the atomic proposition *j* is in the set if the *j*-th least significant bit of *i* is set to 1.
+If one state has no `label`, and no labeled edges, then there should be exactly 2^a edges listed, where *a* is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition *t* is the *i*-th transition of a state (starting with 0), then the label can be deduced by interpreting *i* as a bitset. The label is a set of atomic propositions such that the atomic proposition *j* is in the set if the *j*-th least significant bit of *i* is set to 1.
 
 
 Examples
@@ -295,7 +293,8 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
 ### TGBA with implicit labels
 
-    HOA: v1 /* GFa & GFb */
+    HOA: v1
+    name: "GFa & GFb"
     States: 1 Start: 0
     Acceptance: 2 (I0 & I1)
     Start: 0
@@ -309,7 +308,8 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
 ### TGBA with explicit labels
 
-    HOA: v1 /* GFa & GFb */
+    HOA: v1
+    name: "GFa & GFb"
     States: 1 Start: 0
     Acceptance: 2 (I0 & I1)
     Start: 0
@@ -325,7 +325,8 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
 Encoding `GFa` using state labels requires multiple initial states.
 
-    HOA: v1 /* GFa */
+    HOA: v1
+    name: "GFa"
     States: 2
     Acceptance: 1 I0
     Start: 0 1
@@ -337,7 +338,7 @@ Encoding `GFa` using state labels requires multiple initial states.
       0 1
 
 
-I have absolutely no intention to represent state-labeled automata with multiple initial states in Spot, so if I had to read such an automaton, I would immediately convert it into the following TGBA, with a new initial state representing the union of two original states, and pushing everything (label and acceptance) on the outgoing transitions:
+I (Alexandre) have no intention to represent state-labeled automata with multiple initial states in Spot, so if I had to read such an automaton, I would immediately convert it into the following TGBA, with a new initial state representing the union of two original states, and pushing labels on incoming transitions and acceptance on outgoing transitions (acceptance on incoming transitions would work as well):
 
     HOA: v1
     States: 3
