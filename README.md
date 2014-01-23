@@ -356,36 +356,3 @@ I (Alexandre) have no intention to represent state-labeled automata with multipl
      (0) 1
      (!0) 2
 
-Questions
----------
-
-### Weighted automata
-
-Should we make some room for representation of weighted omega-automata?
-
-We could have some optional header
-
-    Weights: …
-
-that somehow describes the semi-ring used for weights.
-
-And allow initial weight to be specified with something like:
-
-    Start: 0 [0.2] 1 [0.3]
-
-and transitions could have weights
-
-    (!0 & 1) 1 [0.2] {1}
-    (0 & !1) 0 [0.5] {1 2}
-
-### Alternating automata
-
-Since some of our tools handle alternating automata, wouldn't it make sense to support those as well?
-
-Note sure how to announce that the automaton will be alternating in the header, but we can easily allow multiple destination states by using a Boolean combination (or only a conjunct?) of destination states.
-
-    State: 1 {1}
-     (!0 & 1) 1&2
-     (0 & !1) 0&1
-
-This would also extend to alternating automata with transition-based acceptance.
