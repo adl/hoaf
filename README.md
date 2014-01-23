@@ -11,6 +11,7 @@ Design a format, inspired from `ltl2dstar`'s format, but which:
 - is more compact when a lot of atomic propositions are used, or when the automaton is not complete.
 - supports non-deterministic omega automata.
 - supports different types of acceptance conditions, preferably in a way that is easy to extend.
+- supports alternation.
 - consider new lines as any other white-space characters, i.e., as token separators.  All the examples below should work even after newlines have been removed or moved around (this typically happens if you copy/paste an automaton into a mailer that reformats paragraphs).  A use case for not using any newline is when compiling results from experiments into a file, with one automaton per line (and maybe other measurments if that is a CSV file), for easier filtering with line-oriented tools such as grep/cut/sed.
 
 
@@ -48,7 +49,7 @@ Header
     header ::= formatversion headeritems*
     formatversion ::= "HOA:" IDENTIFIER
     headeritem ::= "States:" INT
-                 | "Start:" INT*
+                 | "Start:" state-formula?
                  | "AP:" INT STRING*
                  | "Acceptance:" INT acceptancecond
                  | "tool:" STRING STRING?
@@ -78,7 +79,16 @@ An empty automaton, with no states, can be specified with `States: 0`.
 
 ### `Start:`
 
-This optional header item lists the initial states (given by their number).  The list may be empty, which is the same as omitting this header item.
+This optional header item specifies the initial states using a positive Boolean formula of state numbers.
+
+    headeritem ::= … | "Start:" state-formula?
+    state-formula ::= INT
+                    | "(" state-formula ")"
+                    | state-formula "|" state-formula
+                    | state-formula "&" state-formula
+
+Usually, a single state number or a disjunction of states numbers is used.  Conjuctions can be used to specify the initial state of alternating automata. If the `state-formula` is omitted, or if the `Start:` header item is omitted, then the automaton has no initial state and an empty language.
+
 
 ### `AP:`
 
@@ -233,8 +243,8 @@ States should be numbered from 0 to n-1 and specified with the following grammar
     state-name       ::= "State:" label? INT STRING? acc-sig?
     acc-sig          ::= "{" INT* "}"
     edges            ::= edge*
-    edge             ::= label? INT acc-sig?
-    label            ::= "(" label-expr ")"
+    edge             ::= label? state-formula acc-sig?
+    label            ::= "[" label-expr "]"
     label-expr       ::= "t" | "f" | INT | "!" label-expr
                        | "(" label-expr ")"
                        | label-expr "&" label-expr
@@ -242,11 +252,11 @@ States should be numbered from 0 to n-1 and specified with the following grammar
 
 The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from 0 to n-1, may be listed in any order, but should all be listed (i.e., of the header has `States: 10` then the body sould have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionnaly be given a name (the `STRING` token) for cosmetic purposes.
 
-The `INT` occurring in the `edge` rule represent the destination state.
-
 The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.
 
-Finally the `INT` used in `label-expr` denote atomic propositions, numbered in the order listed on the `AP:` line.
+The `INT`s used in `label-expr` represent atomic propositions, numbered in the order listed on the `AP:` line.
+
+The `state-formula-tr` encodes the destination of an edge as a positive Boolean formula of state numbers.  Conventional edges use a single state number as destination.  Nondeterminism, i.e., multiple possible distinations for the same label can be represented using multiple edges or a single edges with a conjunction of destionation states.   Universal branching of alternating automata can be represented with a conjunction of destinations.
 
 If a state has a `label`, no outgoing edges of this state should have a `label`: this should be used to represent state-labeled automata.
 
@@ -267,10 +277,10 @@ Examples
     AP: 2 "a" "b"
     ---
     State: 0 "a U b"   /* An example of named state */
-      (0 & !1) 0 {0}
-      (1) 1 {0}
+      [0 & !1] 0 {0}
+      [1] 1 {0}
     State: 1
-      (t) 1 {1}
+      [t] 1 {1}
 
 ### State-based Rabin acceptance and implicit labels
 
@@ -317,10 +327,59 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     AP: 2 "a" "b"
     ---
     State: 0
-    (!0 & !1) 0
-    (0 & !1)  0 {0}
-    (!0 & 1)  0 {1}
-    (0 & 1)   0 {0 1}
+    [!0 & !1] 0
+    [0 & !1]  0 {0}
+    [!0 & 1]  0 {1}
+    [0 & 1]   0 {0 1}
+
+### Some equivalent non-determinic automata
+
+The following three automata are equivalent.
+
+    HOA: v1
+    name: "FGa"
+    States: 2
+    Acceptance: 1 I0
+    Start: 0
+    AP: 1 "a"
+    ---
+    State: 0
+    [t] 0
+    [0] 1
+    State: 1
+    [0] 1 {0}
+
+and
+
+    HOA: v1
+    name: "FGa"
+    States: 2
+    Acceptance: 1 I0
+    Start: 0
+    AP: 1 "a"
+    ---
+    State: 0
+    [0]  0       /* because [t] is equivalent */
+    [!0] 0       /* to [0] or [!0]. */
+    [0]  1
+    State: 1
+    [0] 1 {0}
+
+and
+
+    HOA: v1
+    name: "FGa"
+    States: 2
+    Acceptance: 1 I0
+    Start: 0
+    AP: 1 "a"
+    ---
+    State: 0
+    [0]  0|1     /* grouping destinations for [0] */
+    [!0] 0
+    State: 1
+    [0] 1 {0}
+
 
 ### Non-deterministic State-based Büchi automaton (à la Wring)
 
@@ -330,14 +389,21 @@ Encoding `GFa` using state labels requires multiple initial states.
     name: "GFa"
     States: 2
     Acceptance: 1 I0
-    Start: 0 1
+    Start: 0|1
     AP: 1 "a"
     ---
-    State: (0) 0 {0}
+    State: [0] 0 {0}
       0 1
-    State: (!0) 1
+    State: [!0] 1
       0 1
 
+In this case, the acceptance and labels are carried by the states, so the only information given by the `edges` lists are the destinations states `0 1`.  Instead
+of two destination, it would be equivalent to give a single destination that is a conjunction:
+
+    State: 0 [0] {0}
+      0|1
+    State: 1 [!0]
+      (0|1)
 
 Note that even if a tool has no support for state labels or multiple initial states, the above automaton could easily be transformed into a transition-based one upon reading.  It suffices to add a new initial state connected to all the original initial states, and then to move all labels onto incoming transitions.  Acceptance sets can be moved to incoming or (more naturally) to outgoing transitions.  For instance the following transition-based Büchi automaton is equivalent to the previous example:
 
@@ -348,12 +414,35 @@ Note that even if a tool has no support for state labels or multiple initial sta
     AP: 1 "a"
     ---
     State: 0
-     (0) 1
-     (!0)  2
+     [0]  1
+     [!0] 2
     State: 1  /* former state 0 */
-     (0) 1 {0}
-     (!0) 2 {0}
+     [0]  1 {0}
+     [!0] 2 {0}
     State: 2  /* former state 1 */
-     (0) 1
-     (!0) 2
+     [0]  1
+     [!0] 2
+
+
+### Alternating automata
+
+Here is an example of alternating transition-based co-Büchi automaton encoding `Fa & G(b&Xc)`, it shows an example
+of conjunct initial state, and an example of conjunct destination.
+
+    HOA: v1
+    name: "Fa & G(b&Xc)"
+    States: 4
+    Start: 0&2
+    Acceptance: 1 F0
+    AP: 1 "a" "b" "c"
+    ---
+    State: 0 "Fa"
+    [t] 0 {0}
+    [0] 1
+    State: 1 "true"
+    [t] 1
+    State: 2 "G(b&Xc)"
+    [1] 2&3
+    State: 3 "c"
+    [2] 1
 
