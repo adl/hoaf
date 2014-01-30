@@ -149,7 +149,7 @@ The following properties have specified meanings, but additional may be added, a
 
 - `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state, and the outgoing transitions of each state have disjoint labels.
 - `complete` hints that the automaton is complete, i.e., it has at least one state, and the transition function is total.
-- `unambiguous` hints that the automaton is unambiguous in the sense that any **accepted** word is recognized by a unique run of the automaton.
+- `unambiguous` hints that the automaton is unambiguous, i.e, each word has at most one accepting run of the automaton.
 
 Example of Acceptance specifications
 ------------------------------------
