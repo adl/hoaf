@@ -26,7 +26,7 @@ Common tokens
   Comments may be introduced between any token by enclosing them with `/*` and `*/` (with proper nesting, i.e.  `/*a/*b*/c*/`  is one comment).  C++-style comments are not considered because they require newlines.  Tools can use comments to add additional information (e.g. debugging data) to the output, but should be discarded upon reading.
 
 - whitespace: `[ \t\n\r]`
-  Expect in double quoted strings and comments whitespace is used only for tokenization and can be discarded afterwards.
+  Except in double quoted strings and comments whitespace is used only for tokenization and can be discarded afterwards.
 
 - `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_]*`
   A C-like identifier.
