@@ -241,7 +241,9 @@ States should be numbered from 0 to n-1 and specified with the following grammar
                        | label-expr "&" label-expr
                        | label-expr "|" label-expr
 
-The `INT` occurring in the `state-name` rule is the number of this state (state should be declared in order from 0 to n-1 so strictly speaking this number is not necessary).  The `INT` occurring in the `edge` rule represent the destination state.
+The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from 0 to n-1, may be listed in any order, but should all be listed (i.e., of the header has `States: 10` then the body sould have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionnaly be given a name (the `DSTRING` token) for cosmetic purposes.
+
+The `INT` occurring in the `edge` rule represent the destination state.
 
 The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.
 
