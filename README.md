@@ -246,13 +246,13 @@ The `INT` occurring in the `edge` rule represent the destination state.
 
 The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.
 
-Finally the `INT` used in `label-expr` denote atomic propositions, numbered in the order listed on the `AP:` line.
+Finally, each `INT` used in `label-expr` denotes an atomic proposition. Recall that propositions are numbered in the order listed on the `AP:` line.
 
-If a state has a `label`, no outgoing edges of this state should have a `label`: this should be used to represent state-labeled automata.
+If a state has a `label`, no outgoing edge of this state should have a `label`: this should be used to represent state-labeled automata.
 
 If an edge has a `label`, all edges of this state should have a `label`.
 
-If one state has no `label`, and no labeled edges, then there should be exactly 2^a edges listed, where *a* is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition *t* is the *i*-th transition of a state (starting with 0), then the label can be deduced by interpreting *i* as a bitset. The label is a set of atomic propositions such that the atomic proposition *j* is in the set if the *j*-th least significant bit of *i* is set to 1.
+If one state has no `label`, and no labeled edges, then there should be exactly 2^a edges listed, where *a* is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition *t* is the *i*-th transition of a state (starting with 0), then the label of *t* can be deduced by interpreting *i* as a bitset. The label is a set of atomic propositions such that the atomic proposition *j* is in the set if the *j*-th least significant bit of *i* is set to 1.
 
 
 Examples
