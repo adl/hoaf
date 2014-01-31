@@ -230,11 +230,11 @@ States should be numbered from 0 to n-1 and specified with the following grammar
     body             ::= (state-name edges)*
     // the optional dstring can be used to name the state for
     // cosmetic or debugging purposes, as in ltl2dstar's format
-    state-name       ::= "State:" INT STRING? label? acc-sig?
+    state-name       ::= "State:" label? INT STRING? acc-sig?
     acc-sig          ::= "{" INT* "}"
     edges            ::= edge*
-    edge             ::= label? state-formula acc-sig?
-    label            ::= "[" label-expr "]"
+    edge             ::= label? INT acc-sig?
+    label            ::= "(" label-expr ")"
     label-expr       ::= "t" | "f" | INT | "!" label-expr
                        | "(" label-expr ")"
                        | label-expr "&" label-expr
@@ -333,9 +333,9 @@ Encoding `GFa` using state labels requires multiple initial states.
     Start: 0 1
     AP: 1 "a"
     ---
-    State: 0 (0) {0}
+    State: (0) 0 {0}
       0 1
-    State: 1 (!0)
+    State: (!0) 1
       0 1
 
 
