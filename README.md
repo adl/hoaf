@@ -231,7 +231,7 @@ States should be numbered from 0 to n-1 and specified with the following grammar
     body             ::= (state-name edges)*
     // the optional dstring can be used to name the state for
     // cosmetic or debugging purposes, as in ltl2dstar's format
-    state-name       ::= "State:" INT DSTRING? label? acc-sig?
+    state-name       ::= "State:" INT STRING? label? acc-sig?
     acc-sig          ::= "{" INT* "}"
     edges            ::= edge*
     edge             ::= label? state-formula acc-sig?
@@ -241,7 +241,7 @@ States should be numbered from 0 to n-1 and specified with the following grammar
                        | label-expr "&" label-expr
                        | label-expr "|" label-expr
 
-The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from 0 to n-1, may be listed in any order, but should all be listed (i.e., of the header has `States: 10` then the body sould have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionnaly be given a name (the `DSTRING` token) for cosmetic purposes.
+The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from 0 to n-1, may be listed in any order, but should all be listed (i.e., of the header has `States: 10` then the body sould have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionnaly be given a name (the `STRING` token) for cosmetic purposes.
 
 The `INT` occurring in the `edge` rule represent the destination state.
 
