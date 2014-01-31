@@ -23,7 +23,7 @@ Common tokens
   A non-negative integer less than 2^31 written in base 10 (with no useless `0` at the beginning).
 
 - comments: `/* … */`
-  Comments may be introduced between any token by enclosing them with `/*` and `*/` (with proper nesting, i.e.  `/*a/*b*/c*/`  is one comment).  C++-style comments are not considered because they require newlines.  Tools can use comments to add additional information (e.g. debugging data) to the output, but should be discarded upon reading.
+  Comments may be introduced between any token by enclosing them with `/*` and `*/` (with proper nesting, i.e.  `/*a/*b*/c*/`  is one comment).  C++-style comments are not considered because they require newlines.  Tools can use comments to output additional information (e.g. debugging data) that should be discarded upon reading.
 
 - whitespace: `[ \t\n\r]`
   Except in double quoted strings and comments whitespace is used only for tokenization and can be discarded afterwards.
