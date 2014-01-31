@@ -188,25 +188,24 @@ Note that an acceptance set may be used more than once.  For instance when trans
 
 ### Rabin acceptance
 
-There are several equivalent presentations of Rabin acceptance.
+There are several equivalent presentations of Rabin acceptance, and working with tools that use different definitions is often a source of confusion.  Our notations of the acceptance condition accomodate all styles, while giving a clear and unambiguous semantics.
 
-J. Klein, in `ltl2dstar`, uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} where there should be some pair (Lᵢ,Uᵢ) such that states in Lᵢ are visited infinitely often, but states in Uᵢ are visited finitely often.   This is the complement of the Streett acceptance above:
+J. Klein, in [`ltl2dstar`](http://www.ltl2dstar.de/docs/ltl2dstar.html#dra_dsa), uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} where there should be some pair (Lᵢ,Uᵢ) such that states in Lᵢ are visited infinitely often, but states in Uᵢ are visited finitely often.   This is the complement of the Streett acceptance above:
 
     Acceptance: 6 (I0&F1)|(I2&F3)|(I4&F5)
 
-K. Löding, in his diploma thesis, uses pairs {(E₁,F₁),…,(Eₖ,Fₖ)} where Eᵢ should be visited finitely often, and Fᵢ should be visited infinitely often.  This is just a reordering of the previous pairs:
+K. Löding, in [his diploma thesis](http://automata.rwth-aachen.de/~loeding/diploma_loeding.pdf), uses pairs {(E₁,F₁),…,(Eₖ,Fₖ)} where Eᵢ should be visited finitely often, and Fᵢ should be visited infinitely often.  This is just a reordering of the previous pairs:
 
     Acceptance: 6 (F0&I1)|(F2&I3)|(F4&I5)
 
-S. Krishnan, in his ISAAC'94 paper, uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} such that the set of recurring states of a an accepting run should intersect Lᵢ and be included in Uᵢ, for some pair (Lᵢ,Uᵢ).  A similar definition is used by Manna and Pnueli in their "Hierarchy of Temporal Properties" paper.  This corresponds to:
+S. Krishnan, in [his ISAAC'94 paper](http://dx.doi.org/10.1007/3-540-58325-4_202), uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} such that the set of recurring states of a an accepting run should intersect Lᵢ and be included in Uᵢ, for some pair (Lᵢ,Uᵢ).  A similar definition is used by Manna and Pnueli in their "Hierarchy of Temporal Properties" paper.  This corresponds to:
 
     Acceptance: 6 (I0&F!1)|(I2&F!3)|(I4&F!5)
 
-Note: mixing stuff from these different papers has always been a pain to me, because of these different conventions.  For me the first convention is the more natural, because it really dualizes my interpretation of the Streett acceptance (as a strong fairness property).  Fortunately, our notation should accommodate everybody.
 
 ### Generalized Rabin acceptance
 
-Something like {({L₁₁,L₁₂,L₁₃}, U₁), ({L₂₁,L₂₂}, U₂)}, where a run is accepting if there exist some i such that the run visits infinitely often all the sets Lᵢⱼ and finitely often the set Uᵢ, can be specified with:
+Rabin acceptance has been generalized in works by [Křetínský & Esparza](http://arxiv.org/abs/1204.5057) or [Babiak et al.](http://dx.doi.org/10.1007/978-3-319-02444-8_4).  They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like {({L₁₁,L₁₂,L₁₃}, U₁), ({L₂₁,L₂₂}, U₂)}, and where a run is accepting if there exist some i such that the run visits infinitely often all the sets Lᵢⱼ and finitely often the set Uᵢ.  Such an acceptance condition can be specified with:
 
     Acceptance: 7 (I0&I1&I2&F3)|(I4&I5&F6)
 
