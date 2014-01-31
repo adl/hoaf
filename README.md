@@ -51,7 +51,7 @@ Header
                  | "Start:" INT*
                  | "AP:" INT STRING*
                  | "Acceptance:" INT acceptancecond
-                 | "tool:" STRING STRING
+                 | "tool:" STRING STRING?
                  | "name:" STRING
                  | "properties:" IDENTIFIER*
                  | HEADERNAME (INT|STRING|IDENTIFIER)*
@@ -124,15 +124,15 @@ declares two acceptance sets.  A run of the automaton is accepting if it visits 
 ### `tool:` and `name:`
 
     headeritem ::= …
-                 | "tool:" STRING STRING
+                 | "tool:" STRING STRING?
                  | "name:" STRING
 
-These optional header items can be used to record information about the tool used to produce the automaton, or to give a name to this automaton.  The two arguments of `tool:` corresponds respectively to the tool name and version.
+These optional header items can be used to record information about the tool used to produce the automaton, or to give a name to this automaton.  The two arguments of `tool:` corresponds respectively to the tool's name and its (optional) version number.
 
 For instance:
 
     tool: "ltl-translate" "1.2-alpha"
-	name: "BA for GFa & GFb"
+    name: "BA for GFa & GFb"
 
 
 ### `properties:`
