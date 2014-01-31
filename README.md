@@ -26,7 +26,7 @@ Common tokens
   Comments may be introduced between any token by enclosing them with `/*` and `*/` (with proper nesting, i.e.  `/*a/*b*/c*/`  is one comment).  C++-style comments are not considered because they require newlines.  Tools can use comments to output additional information (e.g. debugging data) that should be discarded upon reading.
 
 - whitespace: `[ \t\n\r]`
-  Except in double quoted strings and comments whitespace is used only for tokenization and can be discarded afterwards.
+  Except in double-quoted strings and comments, whitespace is used only for tokenization and can be discarded afterwards.
 
 - `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_]*`
   A C-like identifier.
@@ -94,7 +94,7 @@ specifies three atomic propositions:
 - atomic proposition 1 is `"proc@state"`
 - atomic proposition 2 is `"a[x] >= 2"`
 
-The number of double-quoted string must match exactly the number given.  This number may be 0, in which case it is not followed by any string, and this is equivalent to not using `AP:`.
+The number of double-quoted strings must match exactly the number given.  This number may be 0, in which case it is not followed by any string, and this is equivalent to not using `AP:`.
 
 ### `Acceptance:`
 
