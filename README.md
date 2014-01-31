@@ -262,8 +262,8 @@ Examples
 
     HOA: v1
     States: 2
-    Acceptance: 2 (F0 & I1)
     Start: 0
+    Acceptance: 2 (F0 & I1)
     AP: 2 "a" "b"
     ---
     State: 0 "a U b"   /* An example of named state */
@@ -278,8 +278,8 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
     HOA: v1
     States: 3
-    Acceptance: 2 (F0 & I1)
     Start: 0
+    Acceptance: 2 (F0 & I1)
     AP: 2 "a" "b"
     ---
     State: 0 "a U b" { 0 }
@@ -296,9 +296,9 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
     HOA: v1
     name: "GFa & GFb"
-    States: 1 Start: 0
-    Acceptance: 2 (I0 & I1)
+    States: 1
     Start: 0
+    Acceptance: 2 (I0 & I1)
     AP: 2 "a" "b"
     ---
     State: 0
@@ -311,9 +311,9 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
     HOA: v1
     name: "GFa & GFb"
-    States: 1 Start: 0
-    Acceptance: 2 (I0 & I1)
+    States: 1
     Start: 0
+    Acceptance: 2 (I0 & I1)
     AP: 2 "a" "b"
     ---
     State: 0
@@ -329,8 +329,8 @@ Encoding `GFa` using state labels requires multiple initial states.
     HOA: v1
     name: "GFa"
     States: 2
-    Acceptance: 1 I0
     Start: 0 1
+    Acceptance: 1 I0
     AP: 1 "a"
     ---
     State: (0) 0 {0}
@@ -343,8 +343,8 @@ Note that even if a tool has no support for state labels or multiple initial sta
 
     HOA: v1
     States: 3
-    Acceptance: 1 I0
     Start: 0
+    Acceptance: 1 I0
     AP: 1 "a"
     ---
     State: 0
