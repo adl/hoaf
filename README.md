@@ -339,7 +339,7 @@ Encoding `GFa` using state labels requires multiple initial states.
       0 1
 
 
-I (Alexandre) have no intention to represent state-labeled automata with multiple initial states in Spot, so if I had to read such an automaton, I would immediately convert it into the following TGBA, with a new initial state representing the union of two original states, and pushing labels on incoming transitions and acceptance on outgoing transitions (acceptance on incoming transitions would work as well):
+Note that even if a tool has no support for state labels or multiple initial states, the above automaton could easily be transformed into a transition-based one upon reading.  It suffices to add a new initial state connected to all the original initial states, and then to move all labels onto incoming transitions.  Acceptance sets can be moved to incoming or (more naturally) to outgoing transitions.  For instance the following transition-based Büchi automaton is equivalent to the previous example:
 
     HOA: v1
     States: 3
