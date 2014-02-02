@@ -234,7 +234,7 @@ States should be numbered from 0 to n-1 and specified with the following grammar
     acc-sig          ::= "{" INT* "}"
     edges            ::= edge*
     edge             ::= label? INT acc-sig?
-    label            ::= "(" label-expr ")"
+    label            ::= "[" label-expr "]"
     label-expr       ::= "t" | "f" | INT | "!" label-expr
                        | "(" label-expr ")"
                        | label-expr "&" label-expr
@@ -267,10 +267,10 @@ Examples
     AP: 2 "a" "b"
     ---
     State: 0 "a U b"   /* An example of named state */
-      (0 & !1) 0 {0}
-      (1) 1 {0}
+      [0 & !1] 0 {0}
+      [1] 1 {0}
     State: 1
-      (t) 1 {1}
+      [t] 1 {1}
 
 ### State-based Rabin acceptance and implicit labels
 
@@ -317,10 +317,10 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     AP: 2 "a" "b"
     ---
     State: 0
-    (!0 & !1) 0
-    (0 & !1)  0 {0}
-    (!0 & 1)  0 {1}
-    (0 & 1)   0 {0 1}
+    [!0 & !1] 0
+    [0 & !1]  0 {0}
+    [!0 & 1]  0 {1}
+    [0 & 1]   0 {0 1}
 
 ### Non-deterministic State-based Büchi automaton (à la Wring)
 
@@ -333,9 +333,9 @@ Encoding `GFa` using state labels requires multiple initial states.
     Acceptance: 1 I0
     AP: 1 "a"
     ---
-    State: (0) 0 {0}
+    State: [0] 0 {0}
       0 1
-    State: (!0) 1
+    State: [!0] 1
       0 1
 
 
@@ -348,12 +348,11 @@ Note that even if a tool has no support for state labels or multiple initial sta
     AP: 1 "a"
     ---
     State: 0
-     (0) 1
-     (!0)  2
+     [0] 1
+     [!0]  2
     State: 1  /* former state 0 */
-     (0) 1 {0}
-     (!0) 2 {0}
+     [0] 1 {0}
+     [!0] 2 {0}
     State: 2  /* former state 1 */
-     (0) 1
-     (!0) 2
-
+     [0] 1
+     [!0] 2
