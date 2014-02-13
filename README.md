@@ -449,7 +449,7 @@ Semantics for pure state-based acceptance
 
 The format supports both state-based and transition-based acceptance sets.  In our transition-based semantics, as illustrated by our previous examples, marking a state as belonging to some acceptance set with (for instance) `State: 0 {1 3}` is syntactic sugar for marking all the outgoing transitions of state 0 as belonging to acceptance sets 1 and 3.
 
-In tools that manipulates only state-based acceptance, acceptance will only be used for states, and therefore the transition-based semantics are unconventient.   For these tools, is that easier to disallow transition-based acceptance, and consider the following semantics:
+In tools that manipulates only state-based acceptance, acceptance will only be used for states, and therefore the transition-based semantics are unconvenient.   For these tools, is that easier to disallow transition-based acceptance, and consider the following semantics:
 
 The omega-automata are represented by a tuple 〈AP,Q,R,I,F,Acc〉 where:
 
