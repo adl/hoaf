@@ -50,6 +50,9 @@ Common Tokens
 - `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_]*`
   A C-like identifier.
 
+- `ANAME`: `@[0-9a-zA-Z_]+`
+  An alias name, i.e., "@" followed by some alphanumeric characters.  These are used to identify atomic propositions or subformulas.
+
 - `HEADERNAME`: `[a-zA-Z_-][0-9a-zA-Z_-]*:`
   Header names are likes identifiers, except that they may use dashes, and are immediately (i.e. not comment or space allowed) followed by a double colon.  If an `IDENTIFIER` is immediately followed by a double colon, it should be considered as a `HEADERNAME`.
 
@@ -73,6 +76,7 @@ Header
     headeritem ::= "States:" INT
                  | "Start:" INT*
                  | "AP:" INT STRING*
+                 | "Alias:" ANAME label-expr
                  | "Acceptance:" INT acceptancecond
                  | "tool:" STRING STRING?
                  | "name:" STRING
@@ -81,7 +85,7 @@ Header
 
 The header is a list of `headeritem`s (a `HEADERNAME` followed by some data).  Except for the "HOA:" item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified below.   This format also makes provision of additional (unspecified) header names to be used.
 
-Any given `HEADERNAME` should occur at most once.  The case of the `HEADERNAME`'s initial is used to specify whether tool may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such `HEADERNAME` they do not understand.  A `HEADERNAME` whose initial is lowercase may be safely ignored without affecting the semantics.
+Any given `HEADERNAME` should occur at most once, except for `Start:` and `Alias:`.  The case of the `HEADERNAME`'s initial is used to specify whether tool may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such `HEADERNAME` they do not understand.  A `HEADERNAME` whose initial is lowercase may be safely ignored without affecting the semantics.
 
 ### `HOA:`
 
@@ -118,6 +122,28 @@ specifies three atomic propositions:
 - atomic proposition 2 is `"a[x] >= 2"`
 
 The number of double-quoted strings must match exactly the number given.  This number may be 0, in which case it is not followed by any string, and this is equivalent to not using `AP:`.
+
+### `Alias:`
+
+Aliases are used to name atomic propositions or common subformulas that will be used later as labels in the automaton.  This format can be used without any aliases, refering to atomic propositions by their numbers.  Naming atomic propositions using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.
+
+    headeritem ::= … | "Alias:" ANAME label-expr
+    label-expr ::= "t" | "f" | INT | ANAME | "!" label-expr
+                 | "(" label-expr ")"
+                 | label-expr "&" label-expr
+                 | label-expr "|" label-expr
+
+The `label-expr` will also be used to label transitions in automata.  INT refers to an atomic proposition number (as specified on the `AP:` line), ANAME refers to a previously defined alias, and "t" and "f" are the Boolean values.  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.
+
+Here are some examples of aliases:
+
+    AP: 3 "a" "proc@state" "a[x] >= 2"
+    Alias: @a 0
+    Alias: @ps 1
+    Alias: @a2 2
+    Alias: @c @ps|@a2
+
+The first three aliases are just mnemonic names for the atomic propositions, while the last one replace some arbitrary subformula.  Defining `@c` before the definition of `@ps` and `@a2` would be incorrect.
 
 ### `Acceptance:`
 
@@ -260,18 +286,12 @@ States should be numbered from 0 to n-1 and specified with the following grammar
     edges            ::= edge*
     edge             ::= label? INT acc-sig?
     label            ::= "[" label-expr "]"
-    label-expr       ::= "t" | "f" | INT | "!" label-expr
-                       | "(" label-expr ")"
-                       | label-expr "&" label-expr
-                       | label-expr "|" label-expr
 
 The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from 0 to n-1, may be listed in any order, but should all be listed (i.e., if the header has `States: 10` then the body should have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
 
 The `INT` occurring in the `edge` rule represent the destination state.
 
 The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.  Since we use transition-based acceptance, when `acc-sig` is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to this set.  For instance `State: 0 {1 3}` would states that all transitions leaving state 0 are in acceptance sets 1 and 3.
-
-Finally, each `INT` used in `label-expr` denotes an atomic proposition. Recall that propositions are numbered in the order listed on the `AP:` line.
 
 If a state has a `label`, no outgoing edge of this state should have a `label`: this should be used to represent state-labeled automata.  In our semantics, we have to view this as syntactic sugar for all outgoing transitions being labeled by this very same `label`.
 
@@ -349,6 +369,26 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     [0 & !1]  0 {0}
     [!0 & 1]  0 {1}
     [0 & 1]   0 {0 1}
+    --END--
+
+### TGBA with explicit labels using aliases
+
+The following demonstrates the use of aliases to make the output slightly more readable (using `@a` instead of `0`), and to abbreviate commonly used subformulas (`@bc` instead of `1 & 2`).
+
+    HOA: v1
+    name: "GFa & GF(b & c)"
+    States: 1
+    Start: 0
+    Acceptance: 2 (I0 & I1)
+    AP: 3 "a" "b" "c"
+    Alias: @a 0
+    Alias: @bc 1 & 2
+    --BODY--
+    State: 0
+    [!@a & !@bc] 0
+    [@a & !@bc]  0 {0}
+    [!@a & @bc]  0 {1}
+    [@a & @bc]   0 {0 1}
     --END--
 
 ### Non-deterministic State-based Büchi automaton (à la Wring)
