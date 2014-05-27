@@ -14,7 +14,7 @@ Design a format, inspired from [`ltl2dstar`'s format](http://www.ltl2dstar.de/do
 - supports different types of acceptance conditions, preferably in a way that is easy to extend.
 - supports transition-based acceptance.
 - consider new lines as any other white-space characters, i.e., as token separators.  All the examples below should work even after newlines have been removed or moved around (this typically happens if you copy/paste an automaton into a mailer that reformats paragraphs).  A use case for not using any newline is when compiling results from experiments into a file, with one automaton per line (and maybe other measurments if that is a CSV file), for easier filtering with line-oriented tools such as grep/cut/sed.
-
+- supports streams of omega-automata.
 
 
 Supported Types of Omega-Automata
