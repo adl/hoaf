@@ -56,10 +56,14 @@ Common Tokens
 General Layout
 --------------
 
-An automaton is output in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph.
-The two parts are separated by a triple dash.
+This format is designed so that we can write tools that can process automata in batch.  A tool could for instance input a stream of automata concatenated together, and process these to output another stream of automata.
 
-    automaton ::= header "---" body
+Every automaton is described in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph.
+The two parts are separated by "--BODY--".  The token "--END--" marks the end of the automaton.
+
+    automaton ::= header "--BODY--" body "--END--"
+
+Additionally, the "--ABORT--" token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output.  In a streaming scenario, a new automaton can start immediately after such "--ABORT--" token.
 
 Header
 ------
@@ -286,12 +290,13 @@ Examples
     Start: 0
     Acceptance: 2 (F0 & I1)
     AP: 2 "a" "b"
-    ---
+    --BODY--
     State: 0 "a U b"   /* An example of named state */
       [0 & !1] 0 {0}
       [1] 1 {0}
     State: 1
       [t] 1 {1}
+    --END--
 
 ### State-based Rabin acceptance and implicit labels
 
@@ -302,7 +307,7 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     Start: 0
     Acceptance: 2 (F0 & I1)
     AP: 2 "a" "b"
-    ---
+    --BODY--
     State: 0 "a U b" { 0 }
       2  /* !a  & !b */
       0  /*  a  & !b */
@@ -312,6 +317,7 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
       1 1 1 1       /* four transitions on one line */
     State: 2 "sink state" { 0 }
       2 2 2 2
+    --END--
 
 ### TGBA with implicit labels
 
@@ -321,12 +327,13 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     Start: 0
     Acceptance: 2 (I0 & I1)
     AP: 2 "a" "b"
-    ---
+    --BODY--
     State: 0
       0       /* !a  & !b */
       0 {0}   /*  a  & !b */
       0 {1}   /* !a  &  b */
       0 {0 1} /*  a  &  b */
+    --END--
 
 ### TGBA with explicit labels
 
@@ -336,12 +343,13 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     Start: 0
     Acceptance: 2 (I0 & I1)
     AP: 2 "a" "b"
-    ---
+    --BODY--
     State: 0
     [!0 & !1] 0
     [0 & !1]  0 {0}
     [!0 & 1]  0 {1}
     [0 & 1]   0 {0 1}
+    --END--
 
 ### Non-deterministic State-based Büchi automaton (à la Wring)
 
@@ -353,12 +361,12 @@ Encoding `GFa` using state labels requires multiple initial states.
     Start: 0 1
     Acceptance: 1 I0
     AP: 1 "a"
-    ---
+    --BODY--
     State: [0] 0 {0}
       0 1
     State: [!0] 1
       0 1
-
+    --END--
 
 Note that even if a tool has no support for state labels or multiple initial states, the above automaton could easily be transformed into a transition-based one upon reading.  It suffices to add a new initial state connected to all the original initial states, and then to move all labels onto incoming transitions.  Acceptance sets can be moved to incoming or (more naturally) to outgoing transitions.  For instance the following transition-based Büchi automaton is equivalent to the previous example:
 
@@ -367,7 +375,7 @@ Note that even if a tool has no support for state labels or multiple initial sta
     Start: 0
     Acceptance: 1 I0
     AP: 1 "a"
-    ---
+    --BODY--
     State: 0
      [0] 1
      [!0]  2
@@ -377,6 +385,7 @@ Note that even if a tool has no support for state labels or multiple initial sta
     State: 2  /* former state 1 */
      [0] 1
      [!0] 2
+    --END--
 
 ### Mixing state-based and transition-based acceptance
 
@@ -388,7 +397,7 @@ Here is a Büchi automaton for `GFa | G(b <-> Xa)`.
     Start: 0
     Acceptance: 1 I0
     AP: 2 "a" "b"
-    ---
+    --BODY--
     State: 0
      [t] 1
      [1] 2
@@ -402,6 +411,7 @@ Here is a Büchi automaton for `GFa | G(b <-> Xa)`.
     State: 3 "!a & G(b <-> Xa)" {0}
      [!0&1] 2
      [!0&!1] 3
+    --END--
 
 In this automaton, marking states 2 and 3 as belonging to set 0
 is equivalent to marking all their outgoing transitions as such:
@@ -412,7 +422,7 @@ is equivalent to marking all their outgoing transitions as such:
     Start: 0
     Acceptance: 1 I0
     AP: 2 "a" "b"
-    ---
+    --BODY--
     State: 0
      [t] 1
      [1] 2
@@ -426,7 +436,7 @@ is equivalent to marking all their outgoing transitions as such:
     State: 3 "!a & G(b <-> Xa)"
      [!0&1] 2 {0}
      [!0&!1] 3 {0}
-
+    --END--
 
 Mixing state-based and transition-based acceptance can also be done in the same state.  For instance a state like:
 
