@@ -9,25 +9,25 @@ Goals
 Design a format, inspired from [`ltl2dstar`'s format](http://www.ltl2dstar.de/docs/ltl2dstar.html#output-format), but which:
 
 - is more compact when a lot of atomic propositions are used, or when the automaton is not complete.
-- supports non-deterministic omega-automata.
+- supports non-deterministic and alternating omega-automata.
 - supports state-labeled omega-automata.
 - supports different types of acceptance conditions, preferably in a way that is easy to extend.
 - supports transition-based acceptance.
 - supports alternating automata.
-- consider new lines as any other white-space characters, i.e., as token separators.  All the examples below should work even after newlines have been removed or moved around (this typically happens if you copy/paste an automaton into a mailer that reformats paragraphs).  A use case for not using any newline is when compiling results from experiments into a file, with one automaton per line (and maybe other measurments if that is a CSV file), for easier filtering with line-oriented tools such as grep/cut/sed.
+- consider new lines as any other white-space characters, i.e., as token separators.  All the examples below should work even after newlines have been removed or moved around (this typically happens if you copy/paste an automaton into a mailer that reformats paragraphs).  A use case for not using any newline is when compiling results from experiments into a file, with one automaton per line (and maybe other measurements if that is a CSV file), for easier filtering with line-oriented tools such as grep/cut/sed.
 
 
 
 Supported Types of Omega-Automata
 ---------------------------------
 
-The HOA format supports many types of finite automata over infinite words: automata with labels on transitions or labels on states, and with wide range of acceptance conditions based on states or transitions appearing (in)finitely often in an automaton run.  Instead of providing semantics for each supported type of omega-automata, we provide only semantics for automata with labels on transitions and transition-based accepting conditions. Labels on states and state-based acceptance are formaly seen as syntactic sugar (their semantics fully corresponding to the expected one).  Automata in HOA format can have multiple initial states.
+The HOA format supports many types of finite automata over infinite words: automata with labels on transitions or labels on states, and with wide range of acceptance conditions based on states or transitions appearing (in)finitely often in an automaton run.  Instead of providing semantics for each supported type of omega-automata, we provide only semantics for alternating automata with labels on transitions and transition-based accepting conditions. Labels on states and state-based acceptance are formally seen as syntactic sugar (their semantics fully corresponding to the expected one).  Automata in HOA format can have multiple initial states.
 
 
 Preliminary Notes
 -----------------
 
-Input alphabets of all considered automata types consist of letters that are subsets of atomic propositions (AP).  To make the automata description more concise, we label states or transitions of automata with Boolean formulas over AP representing choices between multiple letters.  A Boolean formula represents the set of letters satisfying the formula: a letter satisfies a formula if the valuation assigning True to all atomic proporistions in the letter and False to all other atomic propositions is a model of the formula.  We use B(AP) do denote the set of Boolean formulas over AP.
+Input alphabets of all considered automata types consist of letters that are subsets of atomic propositions (AP).  To make the automata description more concise, we label states or transitions of automata with Boolean formulas over AP representing choices between multiple letters.  A Boolean formula represents the set of letters satisfying the formula: a letter satisfies a formula if the valuation assigning True to all atomic propositions in the letter and False to all other atomic propositions is a model of the formula.  We use B(AP) do denote the set of Boolean formulas over AP.
 
 The format considers acceptance conditions built on a finite set {S₀,S₁,…,Sₖ} of acceptance sets.  Each acceptance set Sᵢ is a subset of automata states and transitions.  Loosely speaking, an acceptance condition says which acceptance sets should be visited infinitely often and which only finitely often by a run to be accepting.  More precisely, an acceptance condition is a Boolean formula over atoms of the form F(Sᵢ), F(¬Sᵢ), I(Sᵢ), or I(¬Sᵢ).  The atom F(Sᵢ) indicates that all states and transitions in Sᵢ should occur finitely often in the run, while I(Sᵢ) denotes that some state or transition of Sᵢ should be visited infinitely often.  A state in an acceptance set is formally seen as an abbreviation for inclusion of all transitions leaving the state.  The negation symbol ¬ represents the complement of the set with respect all transitions.  Many examples of classical acceptance conditions (Büchi, Rabin, Streett, Parity) will be given later.
 
@@ -116,7 +116,7 @@ initial state and denotes an empty language.
 
 ### `AP:`
 
-`AP:` gives the number of atomic propositions, followed by the name of each of these atomic propositions (using double-quoted C-strings).  Atomic propositions are implicitely numbered from left to right, starting at 0.
+`AP:` gives the number of atomic propositions, followed by the name of each of these atomic propositions (using double-quoted C-strings).  Atomic propositions are implicitly numbered from left to right, starting at 0.
 
 For instance
 
@@ -149,7 +149,7 @@ The acceptance condition is specified as a positive Boolean combination of atoms
 
 The `&` operator has priority over `|`, and parentheses may be used for grouping.
 
-As explained previously, our semantics for acceptance are transition-based, so if an automaton uses both accepting states and accepting transitions, the acceptance of the states should be transfered to their outgoing transitions so that complementation of acceptance sets can be performed with respect to all transitions.
+As explained previously, our semantics for acceptance are transition-based, so if an automaton uses both accepting states and accepting transitions, the acceptance of the states should be transferred to their outgoing transitions so that complementation of acceptance sets can be performed with respect to all transitions.
 
 For instance
 
@@ -224,7 +224,7 @@ Note that an acceptance set may be used more than once.  For instance when trans
 
 ### Rabin acceptance
 
-There are several equivalent presentations of Rabin acceptance, and working with tools that use different definitions is often a source of confusion.  Our notations of the acceptance condition accomodate all styles, while giving a clear and unambiguous semantics.
+There are several equivalent presentations of Rabin acceptance, and working with tools that use different definitions is often a source of confusion.  Our notations of the acceptance condition accommodate all styles, while giving a clear and unambiguous semantics.
 
 J. Klein, in [`ltl2dstar`](http://www.ltl2dstar.de/docs/ltl2dstar.html#dra_dsa), uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} where there should be some pair (Lᵢ,Uᵢ) such that states in Lᵢ are visited infinitely often, but states in Uᵢ are visited finitely often.   This is the complement of the Streett acceptance above:
 
@@ -484,8 +484,7 @@ Here is an example of alternating transition-based co-Büchi automaton encoding 
 Formal Semantics of Omega-Automata
 ----------------------------------
 
-The following definition specifies alternating automata with transition-based acceptance.  Because
-of universal branching, the initial states and destination states of transitions are non-empty sets of states (i.e., elements of 2^Q\∅) interpreted as conjunctions.  Automata without universal branching, use just elements of Q as initial or destination states.
+The following definition specifies alternating automata with transition-based acceptance.  Because of universal branching, the initial states and destination states of transitions are non-empty sets of states (i.e., elements of 2^Q\∅) interpreted as conjunctions.  Automata without universal branching use just elements of Q as initial or destination states.
 
 Each omega-automaton described in this format can be seen as an automaton (AP,Q,R,I,F,Acc) with labels on transitions and transition-based acceptance, where:
 
@@ -496,17 +495,24 @@ Each omega-automaton described in this format can be seen as an automaton (AP,Q,
 - F={S₀,S₁,…,Sₖ} is a finite set of acceptance sets.  Each acceptance set **Sᵢ⊆R** is a subset of **transitions**.
 - Acc is an Boolean formula over {F(S),F(¬S),I(S),I(¬S)|S∈F}.
 
+The automaton is interpreted over infinite words, where letters are subsets of AP. A run over a word w=a₀a₁… is a labeled directed acyclic graph (V,E,λ) such that: 
 
-FIXME: Update definition of run for alternation.
+- V is partitioned into V₀∪V₁∪V₂… where the sets Vᵢ are disjoint,
+- for each edge e∈E there exists i≥0 such that e∈Vᵢ⨯Vᵢ+₁,
+- λ:V→Q is a labeling function such that {λ(x)|x∈V₀}∈I and for each x∈Vᵢ there exists a transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E})∈R such that ℓᵢ evaluates to True in the valuation assigning True to atomic propositions in aᵢ and False to all other atomic propositions.
 
-The automaton is interpreted over infinite words, where letters are subsets of AP. A run over a word w=a₀a₁… is an infinite sequence (s₀,ℓ₀,s₁)(s₁,ℓ₁,s₂)… of transitions such that s₀∈I and each ℓᵢ is True in valuation assigning True to atomic propositions in aᵢ and False to all other atomic propositions. A run is accepting if it satisfies the acceptance condition Acc, where the run satisfies
-- F(S) if all transitions in S appear only finitely often in the run.
-- F(¬S) if all transitions outside S appear only finitely often in the run.
-- I(S) if some transition in S appears infinitely often in the run.
-- I(¬S) if some transition outside S appears infinitely often in the run.
+Runs of automata without universal branching are simply infinite linear sequences of nodes.
+
+A run is accepting if each branch of the run (i.e., each infinite oriented path starting in V₀) satisfies the acceptance condition Acc, where a branch satisfies
+
+- F(S) if all transitions in S are applied only to finitely many nodes on the branch.
+- F(¬S) if all transitions outside S are applied only to finitely many nodes on the branch.
+- I(S) if some transition in S is applied to infinitely many nodes on the branch.
+- I(¬S) if some transition outside S is applied to infinitely many nodes on the branch.
+
 The automaton recognizes the language of all words for which there exists an accepting run of the automaton.
 
-As mentioned above, the format also supports labels on states. This is formally seen as an abbreviation for the situation where all transitions leaving the state have this label. The format even admits automata combining states with labels, unlabeled states with labels on all outgoing transitions, and unlabeled states with implicitely labeled transitions.
+As mentioned above, the format also supports labels on states.  This is formally seen as an abbreviation for the situation where all transitions leaving the state have this label.  The format even admits automata combining states with labels, unlabeled states with labels on all outgoing transitions, and unlabeled states with implicitly labeled transitions.
 
 The format supports both state-based and transition-based acceptance sets.  In our transition-based semantics, as illustrated by our previous examples, marking a state as belonging to some acceptance set with (for instance) `State: 0 {1 3}` is syntactic sugar for marking all the outgoing transitions of state 0 as belonging to acceptance sets 1 and 3.  This is especially important if one combines states and transitions in an acceptance set and use negation of this acceptance sets in the acceptance condition.
 
@@ -514,7 +520,7 @@ The format supports both state-based and transition-based acceptance sets.  In o
 Semantics for Pure State-Based Acceptance
 -----------------------------------------
 
-In tools that manipulate only state-based acceptance, acceptance will only be used for states, and therefore the transition-based semantics are unconvenient.   For these tools, one can consider the following semantics.
+In tools that manipulate only state-based acceptance, acceptance will only be used for states, and therefore the transition-based semantics are inconvenient.   For these tools, one can consider the following semantics.
 
 The omega-automata are represented by a tuple (AP,Q,R,I,F,Acc), where:
 
@@ -525,10 +531,8 @@ The omega-automata are represented by a tuple (AP,Q,R,I,F,Acc), where:
 - F={S₀,S₁,…,Sₖ} is a finite set of acceptance sets.  Each acceptance set **Sᵢ⊆Q** is a subset of **states**.
 - Acc is an acceptance condition.
 
-FIXME: Update definition of runs.
+The only difference with the transition-based definition is that Sᵢ⊆Q instead of Sᵢ⊆R.  The acceptance condition is still a formula defined over F(Sᵢ), F(¬Sᵢ), I(Sᵢ), or I(¬Sᵢ), but this time each Sᵢ is a set of **states** that must occur infinitely or finitely often on each branch of an accepting run, and  the complement operation ¬ should be done with respect to Q instead of R.
 
-The only difference with the transition-based definition is that Sᵢ⊆Q instead of Sᵢ⊆R.  The acceptance condition is still a formula defined over F(Sᵢ), F(¬Sᵢ), I(Sᵢ), or I(¬Sᵢ), but this time each Sᵢ is a set of **states** that must occur infinitely or finitely often in accepting runs, and  the complement operation ¬ should be done with respect to Q instead of R.
-
-An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptence set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language.  If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.
+An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptance set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language.  If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.
 
 The two semantics disagree slightly on the handling of dead states. The state-based semantics allow dead states to appear in acceptance sets, while there is no way to do that with transition-based acceptance.  This difference is inconsequential: a dead state is never going to contribute anything useful the recognized language.
