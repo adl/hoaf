@@ -47,14 +47,14 @@ Common Tokens
 - whitespace: `[ \t\n\r]`
   Except in double-quoted strings and comments, whitespace is used only for tokenization and can be discarded afterwards.
 
-- `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_]*`
-  A C-like identifier.
+- `IDENTIFIER`: `[a-zA-Z_-][0-9a-zA-Z_-]*`
+  An identifier made of letters, digits, `-` and `_`.  Digits may not by used as first character.
 
-- `ANAME`: `@[0-9a-zA-Z_]+`
-  An alias name, i.e., "@" followed by some alphanumeric characters.  These are used to identify atomic propositions or subformulas.
+- `ANAME`: `@[0-9a-zA-Z_-]+`
+  An alias name, i.e., "@" followed by some alphanumeric characters, `-` or `_`.  These are used to identify atomic propositions or subformulas.
 
 - `HEADERNAME`: `[a-zA-Z_-][0-9a-zA-Z_-]*:`
-  Header names are likes identifiers, except that they may use dashes, and are immediately (i.e. not comment or space allowed) followed by a double colon.  If an `IDENTIFIER` is immediately followed by a double colon, it should be considered as a `HEADERNAME`.
+  Header names are likes identifiers, except that they are immediately followed by a colon (i.e. no comment or space allowed).  If an `IDENTIFIER` is immediately followed by a colon, it should be considered as a `HEADERNAME`.
 
 General Layout
 --------------
@@ -198,9 +198,19 @@ may enable tools that read the automaton to choose a better data structure to st
 
 The following properties have specified meanings, but additional may be added, and tools may simply ignore those they do not know:
 
-- `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state, and the outgoing transitions of each state have disjoint labels.
-- `complete` hints that the automaton is complete, i.e., it has at least one state, and the transition function is total.
-- `unambiguous` hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton.
+- `state-labels` hints that the automaton uses only state labels
+- `trans-labels` hints that the automaton uses only transition labels
+- `implicit-labels` hints that the automaton uses only implicit transitions labels
+- `explicit-labels` hints that the automaton uses only explicit transitions labels
+- `state-acc` hints that the automaton uses only state-based acceptance specifications
+- `trans-acc` hints that the automaton uses only transition-based acceptance specifications
+- `univ-branch` hints that the automaton uses universal branching for at least one transition or for the initial state
+- `no-univ-branch` hints that the automaton does not uses universal branching
+- `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state, and the outgoing transitions of each state have disjoint labels (note that this also applies in the presence of universal branching)
+- `complete` hints that the automaton is complete, i.e., it has at least one state, and the transition function is total
+- `unambiguous` hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton (this also applies in the presence of universal branching)
+
+Note that even if some property implies another one (for instance `explicit-labels` implies `trans-labels`) it is recommended to specify both.
 
 Example of Acceptance Specifications
 ------------------------------------
@@ -437,6 +447,7 @@ Here is a Büchi automaton for `GFa | G(b <-> Xa)`.
     Start: 0
     Acceptance: 1 I0
     AP: 2 "a" "b"
+    properties: explicit-labels trans-labels
     --BODY--
     State: 0
      [t] 1
@@ -462,6 +473,7 @@ is equivalent to marking all their outgoing transitions as such:
     Start: 0
     Acceptance: 1 I0
     AP: 2 "a" "b"
+    properties: explicit-labels trans-labels trans-acc
     --BODY--
     State: 0
      [t] 1
