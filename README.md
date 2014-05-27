@@ -274,7 +274,7 @@ or
 Body of the Automaton
 ---------------------
 
-The header is separated from the rest of the structure with `---`.
+The header is separated from the rest of the structure with `--BODY--`.
 
 States should be numbered from 0 to n-1 and specified with the following grammar
 
