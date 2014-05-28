@@ -494,7 +494,7 @@ Each omega-automaton described in this format can be seen as an automaton (AP,Q,
 - F={S₀,S₁,…,Sₖ} is a finite set of acceptance sets.  Each acceptance set **Sᵢ⊆R** is a subset of **transitions**.
 - Acc is an Boolean formula over {F(S),F(¬S),I(S),I(¬S)|S∈F}.
 
-The automaton is interpreted over infinite words, where letters are subsets of AP. A **run** over a word w=a₀a₁… is a labeled directed acyclic graph (V,E,λ) such that: 
+The automaton is interpreted over infinite words, where letters are subsets of AP. A **run** over a word w=a₀a₁… is an infinite labeled directed acyclic graph (V,E,λ) such that: 
 
 - V is partitioned into V₀∪V₁∪V₂… where the sets Vᵢ are disjoint,
 - for each edge e∈E there exists i≥0 such that e∈Vᵢ⨯Vᵢ+₁,
