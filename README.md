@@ -498,7 +498,7 @@ The automaton is interpreted over infinite words, where letters are subsets of A
 
 - V is partitioned into V₀∪V₁∪V₂… where the sets Vᵢ are disjoint,
 - for each edge e∈E there exists i≥0 such that e∈Vᵢ⨯Vᵢ+₁,
-- λ:V→Q is a labeling function such that {λ(x)|x∈V₀}∈I and for each x∈Vᵢ there exists a transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E})∈R such that ℓᵢ evaluates to True in the valuation assigning True to atomic propositions in aᵢ and False to all other atomic propositions. We say that th transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E}) is **applied to** x.
+- λ:V→Q is a labeling function such that {λ(x)|x∈V₀}∈I and for each x∈Vᵢ there exists a transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E})∈R such that ℓᵢ evaluates to True in the valuation assigning True to atomic propositions in aᵢ and False to all other atomic propositions. We say that the transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E}) is **applied to** x.
 
 Runs of automata without universal branching are simply infinite linear sequences of nodes.
 
