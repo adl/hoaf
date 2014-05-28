@@ -74,7 +74,7 @@ Header
     header ::= format-version header-items*
     format-version ::= "HOA:" IDENTIFIER
     header-item ::= "States:" INT
-                 | starting-state*
+                 | "Start:" state-conj
                  | "AP:" INT STRING*
                  | "Alias:" ANAME label-expr
                  | "Acceptance:" INT acceptance-cond
@@ -82,8 +82,6 @@ Header
                  | "name:" STRING
                  | "properties:" IDENTIFIER*
                  | HEADERNAME (INT|STRING|IDENTIFIER)*
-    starting-state ::= "Start:" state-conj
-    state-conj ::= INT | INT "&" state-conj
 
 The header is a list of `header-item`s (a `HEADERNAME` followed by some data).  Except for the "HOA:" item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified below.   This format also makes provision of additional (unspecified) header names to be used.
 
@@ -113,8 +111,7 @@ can be specified by using several `Start:` headers with a different state number
 Alternating automata can start in a conjunction of states specified
 using the "&" operator.
 
-    header-item ::= … | starting-state*
-    starting-state ::= "Start:" state-conj
+    header-item ::= … | "Start:" state-conj
     state-conj ::= INT | INT "&" state-conj
 
 If the `Start:` header item is omitted, then the automaton has no
