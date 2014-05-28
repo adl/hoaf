@@ -13,7 +13,6 @@ Design a format, inspired from [`ltl2dstar`'s format](http://www.ltl2dstar.de/do
 - supports state-labeled omega-automata.
 - supports different types of acceptance conditions, preferably in a way that is easy to extend.
 - supports transition-based acceptance.
-- supports alternating automata.
 - consider new lines as any other white-space characters, i.e., as token separators.  All the examples below should work even after newlines have been removed or moved around (this typically happens if you copy/paste an automaton into a mailer that reformats paragraphs).  A use case for not using any newline is when compiling results from experiments into a file, with one automaton per line (and maybe other measurements if that is a CSV file), for easier filtering with line-oriented tools such as grep/cut/sed.
 
 
@@ -495,15 +494,15 @@ Each omega-automaton described in this format can be seen as an automaton (AP,Q,
 - F={S₀,S₁,…,Sₖ} is a finite set of acceptance sets.  Each acceptance set **Sᵢ⊆R** is a subset of **transitions**.
 - Acc is an Boolean formula over {F(S),F(¬S),I(S),I(¬S)|S∈F}.
 
-The automaton is interpreted over infinite words, where letters are subsets of AP. A run over a word w=a₀a₁… is a labeled directed acyclic graph (V,E,λ) such that: 
+The automaton is interpreted over infinite words, where letters are subsets of AP. A **run** over a word w=a₀a₁… is a labeled directed acyclic graph (V,E,λ) such that: 
 
 - V is partitioned into V₀∪V₁∪V₂… where the sets Vᵢ are disjoint,
 - for each edge e∈E there exists i≥0 such that e∈Vᵢ⨯Vᵢ+₁,
-- λ:V→Q is a labeling function such that {λ(x)|x∈V₀}∈I and for each x∈Vᵢ there exists a transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E})∈R such that ℓᵢ evaluates to True in the valuation assigning True to atomic propositions in aᵢ and False to all other atomic propositions.
+- λ:V→Q is a labeling function such that {λ(x)|x∈V₀}∈I and for each x∈Vᵢ there exists a transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E})∈R such that ℓᵢ evaluates to True in the valuation assigning True to atomic propositions in aᵢ and False to all other atomic propositions. We say that th transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E}) is **applied to** x.
 
 Runs of automata without universal branching are simply infinite linear sequences of nodes.
 
-A run is accepting if each branch of the run (i.e., each infinite oriented path starting in V₀) satisfies the acceptance condition Acc, where a branch satisfies
+A run is **accepting** if each branch of the run (i.e., each infinite oriented path starting in V₀) satisfies the acceptance condition Acc, where a branch satisfies
 
 - F(S) if all transitions in S are applied only to finitely many nodes on the branch.
 - F(¬S) if all transitions outside S are applied only to finitely many nodes on the branch.
