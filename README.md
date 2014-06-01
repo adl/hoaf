@@ -88,6 +88,8 @@ The header is a list of `header-item`s (a `HEADERNAME` followed by some data).  
 
 Any given `HEADERNAME` should occur at most once, except for `Start:` and `Alias:`.  The case of the `HEADERNAME`'s initial is used to specify whether tools may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such `HEADERNAME` they do not understand.  A `HEADERNAME` whose initial is lowercase may be safely ignored without affecting the semantics.
 
+Headers items `HOA:`, `States:`, and `Acceptance:` must always be present.
+
 ### `HOA:`
 
 `HOA:` should always be the first token of the file.  It is followed by an identifier that represents the version of the format.  This document specifies the first version of this format so this header should appear as
@@ -167,7 +169,7 @@ The first three aliases are just mnemonic names for the atomic propositions, whi
                      | acceptance-cond & acceptance-cond
                      | acceptance-cond | acceptance-cond
 
-is used to specify the number of acceptance sets used by the automaton (if m sets are declared, these sets are numbered from 0 to m-1), and how these acceptance sets are used to build the acceptance condition.
+The mandatory `Acceptance:` header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are used to build the acceptance condition.  If m sets are declared, these sets are numbered from 0 to m-1.
 The acceptance condition is specified as a positive Boolean combination of atoms of the form `Fx`, `F!x`, `Ix`, `I!x`  where:
 
 - `x` is a integer in [0,m) representing an accepting set,
