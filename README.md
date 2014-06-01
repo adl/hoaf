@@ -240,6 +240,8 @@ The following properties have specified meanings, but additional may be added, a
 - `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state, and the outgoing transitions of each state have disjoint labels (note that this also applies in the presence of universal branching)
 - `complete` hints that the automaton is complete, i.e., it has at least one state, and the transition function is total
 - `unambiguous` hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton (this also applies in the presence of universal branching)
+- `weak` hints that in each strongly connected component, all transitions (or all states) belong to the same accepting sets
+- `inherently-weak` hints that the automaton does not mix accepting cycles and non-accepting cycles in the same SCC
 
 Note that even if some property implies another one (for instance `explicit-labels` implies `trans-labels`) it is recommended to specify both.
 
