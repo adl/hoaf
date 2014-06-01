@@ -147,7 +147,8 @@ Aliases are used to name atomic propositions or common subformulas that will be 
                  | label-expr "&" label-expr
                  | label-expr "|" label-expr
 
-The `label-expr` will also be used to label transitions in automata.  INT refers to an atomic proposition number (as specified on the `AP:` line), ANAME refers to a previously defined alias, and "t" and "f" are the Boolean values.  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.
+The `label-expr` will also be used to label transitions in automata.  INT refers to an atomic proposition number (as specified on the `AP:` line), ANAME refers to a previously defined alias, and "t" and "f" are the Boolean values.  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.  The `!` operator has priority over `&` which in turn has priority over `|`.  Parentheses may be used for grouping.
+
 
 Here are some examples of aliases:
 
