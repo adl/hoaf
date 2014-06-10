@@ -86,7 +86,7 @@ Header
 
 The header is a list of `header-item`s (a `HEADERNAME` followed by some data).  Except for the "HOA:" item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified below.   This format also makes provision of additional (unspecified) header names to be used.
 
-Any given `HEADERNAME` should occur at most once, except for `Start:` and `Alias:`.  The case of the `HEADERNAME`'s initial is used to specify whether tools may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such `HEADERNAME` they do not understand.  A `HEADERNAME` whose initial is lowercase may be safely ignored without affecting the semantics.
+Any given `HEADERNAME` should occur at most once, except for `Start:`, `Alias:`, and `properties:`.  The case of the `HEADERNAME`'s initial is used to specify whether tools may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such `HEADERNAME` they do not understand.  A `HEADERNAME` whose initial is lowercase may be safely ignored without affecting the semantics.
 
 Headers items `HOA:`, and `Acceptance:` must always be present.
 
@@ -228,7 +228,7 @@ For instance:
 
     header-item ::= … | "properties:" IDENTIFIER*
 
-The optional `properties:` header name can be followed by a list of identifiers that gives additional information about the automaton.  These information should be redundant in the sense that ignoring them should not impact the behavior of the automaton.  For instance stating that an automaton is deterministic with
+The optional `properties:` header name can be followed by a list of identifiers that gives additional information about the automaton.  Multiple `properties:` lines can be used, it has the same effect as listing all properties on one line.  These information should be redundant in the sense that ignoring them should not impact the behavior of the automaton.  For instance stating that an automaton is deterministic with
 
     properties: deterministic
 
