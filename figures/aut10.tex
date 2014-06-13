@@ -1,0 +1,16 @@
+\documentclass{standalone}
+\input{common.tex}
+\begin{document}
+\begin{automaton}
+  \node[state] (1) {1};
+  \node[state, right of=1, yshift=1.5em] (2) {$2$};
+  \node[state, right of=1, yshift=-1.5em] (3) {$3$};
+  \path[->] (1) edge node[accset]{1} node[above]{$a$} (2)
+                edge node[accset,pos=.35]{0} node[accset,pos=.65]{1} node[above]{$\bar a$} (3);
+\end{automaton}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

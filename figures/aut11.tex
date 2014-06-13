@@ -1,0 +1,30 @@
+\documentclass{standalone}
+\input{common.tex}
+\begin{document}
+\begin{automaton}
+  \node[state, "$\F a$" {statename, above left}] (0) {0};
+  \node[state, right of=0, "$\top$" {statename, above right}] (1) {1};
+  \node[state, below of=0, "$\G(b\land\X c)$" statename] (2) {2};
+  \node[state, below of=1, initial right, "$c\vphantom{(}$" statename] (3) {3};
+  \node[xshift=-2em] at ($(0)!.5!(2)$) (02) {};
+
+  \path[->] (02) edge[out=0,in=-100] (0)
+                 edge[out=0,in=100] (2)
+            (0) edge[loop above] node[accset]{0} node{$\top$} (0)
+                edge node[above]{$a$} (1)
+            (1) edge[loop above] node{$\top$} (1)
+            (2) edge[out=0,in=30,loop] node[right]{$b$} (2)
+                edge (3)
+            (3) edge node[right]{$c$} (1);
+\end{automaton}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

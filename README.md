@@ -380,6 +380,8 @@ Examples
 
 ### Transition-based Rabin acceptance and explicit labels
 
+![automaton](figures/aut1.svg)
+
     HOA: v1
     States: 2
     Start: 0
@@ -397,6 +399,8 @@ Examples
 ### State-based Rabin acceptance and implicit labels
 
 Because of implicit labels, the automaton necessarily has to be deterministic and complete.
+
+![automaton](figures/aut2.svg)
 
     HOA: v1
     States: 3
@@ -418,6 +422,8 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
 ### TGBA with implicit labels
 
+![automaton](figures/aut3.svg)
+
     HOA: v1
     name: "GFa & GFb"
     States: 1
@@ -434,6 +440,8 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     --END--
 
 ### TGBA with explicit labels
+
+![automaton](figures/aut3.svg)
 
     HOA: v1
     name: "GFa & GFb"
@@ -453,6 +461,8 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 ### TGBA with explicit labels using aliases
 
 The following demonstrates the use of aliases to make the output slightly more readable (using `@a` instead of `0`), and to abbreviate commonly used subformulas (`@bc` instead of `1 & 2`).
+
+![automaton](figures/aut4.svg)
 
     HOA: v1
     name: "GFa & GF(b & c)"
@@ -475,6 +485,8 @@ The following demonstrates the use of aliases to make the output slightly more r
 
 Encoding `GFa` using state labels requires multiple initial states.
 
+![automaton](figures/aut5.svg)
+
     HOA: v1
     name: "GFa"
     States: 2
@@ -493,6 +505,8 @@ Encoding `GFa` using state labels requires multiple initial states.
 In this case, the acceptance and labels are carried by the states, so the only information given by the `edges` lists are the destinations states `0 1`.
 
 Note that even if a tool has no support for state labels or multiple initial states, the above automaton could easily be transformed into a transition-based one upon reading.  It suffices to add a new initial state connected to all the original initial states, and then to move all labels onto incoming transitions.  Acceptance sets can be moved to incoming or (more naturally) to outgoing transitions.  For instance the following transition-based Büchi automaton is equivalent to the previous example:
+
+![automaton](figures/aut6.svg)
 
     HOA: v1
     States: 3
@@ -515,6 +529,8 @@ Note that even if a tool has no support for state labels or multiple initial sta
 ### Mixing state-based and transition-based acceptance
 
 Here is a Büchi automaton for `GFa | G(b <-> Xa)`.
+
+![automaton](figures/aut7.svg)
 
     HOA: v1
     name: "GFa | G(b <-> Xa)"
@@ -543,6 +559,8 @@ Here is a Büchi automaton for `GFa | G(b <-> Xa)`.
 In this automaton, marking states 2 and 3 as belonging to set 0
 is equivalent to marking all their outgoing transitions as such:
 
+![automaton](figures/aut8.svg)
+
     HOA: v1
     name: "GFa | G(b <-> Xa)"
     States: 1
@@ -569,11 +587,15 @@ is equivalent to marking all their outgoing transitions as such:
 
 Mixing state-based and transition-based acceptance can also be done in the same state.  For instance a state like:
 
+![automaton](figures/aut9.svg)
+
     State: 1 {1}
      [0] 2
      [!0] 3 {0}
 
 is equivalent to
+
+![automaton](figures/aut10.svg)
 
     State: 1
      [0] 2 {1}
@@ -583,6 +605,8 @@ is equivalent to
 ### Alternating automata
 
 Here is an example of alternating transition-based co-Büchi automaton encoding `(Fa & G(b&Xc)) | c`, it shows an example of multiple initial states (including a conjunct), and an example of conjunct destination.
+
+![automaton](figures/aut11.svg)
 
     HOA: v1
     name: "(Fa & G(b&Xc)) | c"

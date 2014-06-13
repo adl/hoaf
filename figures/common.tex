@@ -1,0 +1,66 @@
+% Automata stuff
+\usepackage{tikz}
+\usetikzlibrary{automata}
+\usetikzlibrary{arrows}
+\usetikzlibrary{quotes}
+\usetikzlibrary{calc}
+
+\tikzstyle{automaton}=[
+  % Use nice arrows that do not touch their destination.
+  semithick,shorten >=1pt,>=stealth',
+  % Encourage a common distance between all states.
+  node distance=2cm,
+  % Disable the "start" text in front of the initial arrow.
+  initial text=,
+  % Reduce the size of the hidden node at the beginning of the initial arrow.
+  every initial by arrow/.style={every node/.style={inner sep=0pt}},
+  % Encourage a common size of all states that is smaller than the default.
+  every state/.style={minimum size=7.5mm,fill=white}
+]
+
+\tikzstyle{state-labels}=[state/.style=state with output,inner sep=2pt]
+\def\slabel#1{\nodepart{lower} #1}
+
+% State names are labels displayed below a state
+\tikzstyle{statename}=[
+  below,label distance=2pt,
+  fill=yellow!30!white,
+  rounded corners=1mm,inner sep=2pt
+]
+
+% Acceptance sets are displayed as small dark blue circle with white
+% sans-serif number.  Use anchor=center to ignore the predefined
+% anchor on edges like "loop above" or "loop left".
+\tikzstyle{accset}=[
+  fill=blue!50!black,draw=white,text=white,thin,
+  circle,inner sep=.9pt,anchor=center,font=\bfseries\sffamily\tiny
+]
+
+\tikzstyle{loop 30}=[in=15,out=45,loop,right]
+\tikzstyle{loop 45}=[in=30,out=60,loop,right]
+\tikzstyle{loop 135}=[in=120,out=150,loop,left]
+\tikzstyle{loop -30}=[in=-45,out=-15,loop,right]
+\tikzstyle{loop -45}=[in=-60,out=-30,loop,right]
+\tikzstyle{loop -60}=[in=-75,out=-45,loop,right]
+\tikzstyle{loop -120}=[in=-135,out=-105,loop,left]
+\tikzstyle{loop -135}=[in=-150,out=-120,loop,left]
+
+
+% Automaton environment with
+% 150% scaling, because SVG output is too small otherwise.
+\usepackage{environ}
+\NewEnviron{automaton}[1][]%
+{\scalebox{1.5}{\begin{tikzpicture}[automaton,#1]
+\BODY
+\end{tikzpicture}}}
+
+
+% LTL stuff
+\usepackage{amsmath}
+\DeclareMathOperator{\F}{\textup{\textsf{F}}}
+\DeclareMathOperator{\G}{\textup{\textsf{G}}}
+\DeclareMathOperator{\X}{\textup{\textsf{X}}}
+\newcommand{\U}{\mathbin{\textsf{U}}}
+\newcommand{\R}{\mathbin{\textsf{R}}}
+\newcommand{\W}{\mathbin{\textsf{W}}}
+\newcommand{\M}{\mathbin{\textsf{M}}}

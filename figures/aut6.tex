@@ -1,0 +1,20 @@
+\documentclass{standalone}
+\input{common.tex}
+\begin{document}
+\begin{automaton}
+  \node[state] (1) {$1$};
+  \node[state,right of=1] (2) {$2$};
+  \node[state,initial] at ($(1)!1!60:(2)$) (0) {$0$};
+  \path[->]
+     (0) edge node[left]{$a$} (1)
+         edge node[right]{$b$} (2)
+     (1) edge[loop below] node[accset]{0} node{$a\vphantom{\bar a}$} (1)
+         edge[bend left] node[accset]{0} node[above]{$\bar a$}(2)
+     (2) edge[loop below] node{$\bar a$} (2)
+         edge[bend left] node[above]{$a$} (1);
+\end{automaton}
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

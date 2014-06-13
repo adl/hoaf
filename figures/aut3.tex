@@ -1,0 +1,12 @@
+\documentclass{standalone}
+\input{common.tex}
+\begin{document}
+\begin{automaton}
+  \node[state,initial] (0) {$0$};
+  \path[->] (0)
+     edge[loop 135] node{$\bar a\land \bar b$} (0)
+     edge[loop 45] node[accset]{0} node{$a\land \bar b$} (0)
+     edge[loop -45] node[accset]{1} node{$\bar a\land b$} (0)
+     edge[loop -135] node[accset,pos=.15]{0} node[accset,pos=.75]{1} node{$a\land b$} (0);
+\end{automaton}
+\end{document}

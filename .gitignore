@@ -2,5 +2,5 @@
 *.pdf
 *~
 *.log
-*.tex
-
+*.aux
+autfmt.tex

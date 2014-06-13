@@ -1,0 +1,11 @@
+\documentclass{standalone}
+\input{common.tex}
+\begin{document}
+\begin{automaton}
+  \node[state,initial,"$a \U b$" statename] (0) {$0$};
+  \node[state,right of=0] (1) {$1$};
+  \path[->] (0) edge[loop above] node{$a\land \bar b$} (0)
+                edge node[accset]{0} node[above]{$b$} (1)
+            (1) edge[loop above] node[accset]{0} node{$\top$} (1);
+\end{automaton}
+\end{document}

@@ -1,0 +1,18 @@
+\documentclass{standalone}
+\input{common.tex}
+\begin{document}
+\begin{automaton}[state-labels]
+  \node[state,initial] (0) {$0$\slabel{$a\vphantom{\bar a}$}};
+  \node[accset] at (0.130) {0};
+  \node[state,right of=0,initial right] (1) {$1$\slabel{$\bar a$}};
+  \path[->]
+     (0) edge[loop above] (0)
+         edge[bend left] (1)
+     (1) edge[loop above] (1)
+         edge[bend left] (0);
+\end{automaton}
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

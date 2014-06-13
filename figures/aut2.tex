@@ -1,0 +1,25 @@
+\documentclass{standalone}
+\input{common.tex}
+\begin{document}
+\begin{automaton}
+  \node[state,initial,"$a \U b$" {statename, above left}] (0) {$0$};
+  \node[accset] at (0.130) {0};
+  \node[state,right of=0] (1) {$1$};
+  \node[accset] at (1.130) {1};
+  \node[state,below of=0,"sink state" {statename, above left}] (2) {$2$};
+  \node[accset] at (2.130) {0};
+
+  \path[->] (0) edge[loop above] node{$a\land \bar b$} (0)
+                edge[bend left]  node[above]{$\bar a\land b$} (1)
+                edge[bend right] node[above]{$a\land b$} (1)
+                edge node[left]{$\bar a\land \bar b$} (2)
+            (1) edge[loop above] node{$\bar a\land \bar b$} (1)
+                edge[loop 30] node{$a\land \bar b$} (1)
+                edge[loop -30] node{$\bar a\land b$} (1)
+                edge[loop below] node{$a\land b$} (1)
+            (2) edge[loop right] node{$\bar a\land \bar b$} (2)
+                edge[loop -60] node{$a\land \bar b$} (2)
+                edge[loop -120] node{$\bar a\land b$} (2)
+                edge[loop left] node{$a\land b$} (2);
+\end{automaton}
+\end{document}

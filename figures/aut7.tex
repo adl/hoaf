@@ -1,0 +1,21 @@
+\documentclass{standalone}
+\input{common.tex}
+\begin{document}
+\begin{automaton}
+  \node[state,initial] (0) {$0$};
+  \node[state,right of=0, "$\G\F a$" {statename, above right}] (1) {$1$};
+  \node[state,below of=0, "$a \lor \G(b \leftrightarrow \X a)$" {statename, xshift=-1em}] (2) {$2$};
+  \node[state,below of=1, "$\bar a \lor \G(b \leftrightarrow \X a)$" {statename, below, xshift=1em}] (3) {$3$};
+  \node[accset] at (2.130) {0};
+  \node[accset] at (3.130) {0};
+  \path[->] (0) edge node[above]{$\top$} (1)
+                edge node[left]{$b$} (2)
+                edge[bend left] node[right=1ex]{$\bar b$} (3)
+            (1) edge[loop above] node[accset]{0} node{$a$} (1)
+                edge[loop right] node{$\bar a$} (1)
+            (2) edge[loop left] node{$a\land b$} (2)
+                edge[bend left] node[above]{$a\land\bar b$} (3)
+            (3) edge[bend left] node[above]{$\bar a\land b$} (2)
+                edge[loop right] node{$\bar a\land \bar b$} (3);
+\end{automaton}
+\end{document}
