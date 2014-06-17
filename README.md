@@ -616,7 +616,7 @@ Here is an example of alternating transition-based co-Büchi automaton encoding 
     acc-name: co-Buchi
     Acceptance: 1 F0
     AP: 3 "a" "b" "c"
-    ---
+    --BODY--
     State: 0 "Fa"
     [t] 0 {0}
     [0] 1
@@ -626,6 +626,7 @@ Here is an example of alternating transition-based co-Büchi automaton encoding 
     [1] 2&3
     State: 3 "c"
     [2] 1
+    --END--
 
 
 Formal Semantics of Omega-Automata
