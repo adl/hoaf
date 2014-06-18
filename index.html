@@ -13,6 +13,7 @@
 <div id="TOCTXT">Table of Contents</div>
 <ul>
 <li><a href="#hanoi-omega-automata-format">Hanoi Omega Automata Format</a><ul>
+<li><a href="#current-status">Current status</a></li>
 <li><a href="#goals">Goals</a></li>
 <li><a href="#supported-types-of-omega-automata">Supported Types of Omega-Automata</a></li>
 <li><a href="#preliminary-notes">Preliminary Notes</a></li>
@@ -50,11 +51,17 @@
 </ul></li>
 <li><a href="#formal-semantics-of-omega-automata">Formal Semantics of Omega-Automata</a></li>
 <li><a href="#semantics-for-pure-state-based-acceptance">Semantics for Pure State-Based Acceptance</a></li>
+<li><a href="#authors">Authors</a></li>
 </ul></li>
 </ul>
 </div>
 <h1 id="hanoi-omega-automata-format">Hanoi Omega Automata Format</h1>
-<p>This working document describes the Hanoi Omega-Automata (HOA) format. The name is a reference to the ATVA'13 conference, which was organized in Hanoi, and where the foundation of this format was laid out.</p>
+<p>This document describes the Hanoi Omega-Automata (HOA) format. The name is a reference to the ATVA'13 conference, which was organized in Hanoi, and where the foundation of this format was laid out.</p>
+<h2 id="current-status">Current status</h2>
+<p>This is a working draft for version 1 of the format.</p>
+<p>The <a href="http://adl.github.io/hoaf/">HTML version of the document</a> is updated regularly from <a href="https://github.com/adl/hoaf/">the sources on github</a>.</p>
+<p>If you see any problem, please <a href="https://github.com/adl/hoaf/issues?state=open">report it on the issue tracker</a>.</p>
+<p>If you implement it, please do keep track of the changes we apply to this document as we resolve <a href="https://github.com/adl/hoaf/issues?state=open">issues</a> until version 1 is formally released.</p>
 <h2 id="goals">Goals</h2>
 <p>Design a format, inspired from <a href="http://www.ltl2dstar.de/docs/ltl2dstar.html#output-format"><code>ltl2dstar</code>'s format</a>, but which:</p>
 <ul>
@@ -526,5 +533,14 @@ State: 3 &quot;c&quot;
 <p>The only difference with the transition-based definition is that Sᵢ⊆Q instead of Sᵢ⊆R. The acceptance condition is still a formula defined over F(Sᵢ), F(¬Sᵢ), I(Sᵢ), or I(¬Sᵢ), but this time each Sᵢ is a set of <strong>states</strong> that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation ¬ should be done with respect to Q instead of R.</p>
 <p>An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptance set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language. If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.</p>
 <p>The two semantics disagree slightly on the handling of dead states. The state-based semantics allow dead states to appear in acceptance sets, while there is no way to do that with transition-based acceptance. This difference is inconsequential: a dead state is never going to contribute anything useful the recognized language.</p>
+<h2 id="authors">Authors</h2>
+<p>This document has been put together by the following people:</p>
+<ul>
+<li>Alexandre Duret-Lutz<br /></li>
+<li>František Blahoudek<br /></li>
+<li>Jan Křetínský<br /></li>
+<li>Jan Strejček<br /></li>
+<li>Joachim Klein</li>
+</ul>
 </body>
 </html>
