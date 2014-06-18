@@ -63,8 +63,8 @@ Common Tokens
 - `BOOLEAN`: `[tf]`
   The true and false Boolean constants.
 
-- `IDENTIFIER`: `[a-zA-Z_-][0-9a-zA-Z_-]*`
-  An identifier made of letters, digits, `-` and `_`.  Digits may not by used as first character, and `t` or `f` are not valid identifiers.
+- `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_-]*`
+  An identifier made of letters, digits, `-` and `_`.  Digits and `-` may not by used as first character, and `t` or `f` are not valid identifiers.
 
 - `ANAME`: `@[0-9a-zA-Z_-]+`
   An alias name, i.e., "@" followed by some alphanumeric characters, `-` or `_`.  These are used to identify atomic propositions or subformulas.
@@ -78,11 +78,11 @@ General Layout
 This format is designed so that we can write tools that can process automata in batch.  A tool could for instance get a stream of automata descriptions concatenated together as input and process these to output another stream of automata.
 
 Every automaton is described in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph.
-The two parts are separated by "--BODY--".  The token "--END--" marks the end of the automaton.
+The two parts are separated by `--BODY--`.  The token `--END--` marks the end of the automaton.
 
     automaton ::= header "--BODY--" body "--END--"
 
-Additionally, the "--ABORT--" token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output.  In a streaming scenario, a new automaton can start immediately after such "--ABORT--" token.
+Additionally, the `--ABORT--` token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output.  In a streaming scenario, a new automaton can start immediately after such an `--ABORT--` token.  Note that `foo--ABORT--` is a valid identifier and shall not abort streaming: to ensure proper tokenization always add a space or newline before `--ABORT--` to abort the output.
 
 Header
 ------
