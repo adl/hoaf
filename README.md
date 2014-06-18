@@ -1,7 +1,20 @@
 Hanoi Omega Automata Format
 ===========================
 
-This working document describes the Hanoi Omega-Automata (HOA) format.  The name is a reference to the ATVA'13 conference, which was organized in Hanoi, and where the foundation of this format was laid out.
+This document describes the Hanoi Omega-Automata (HOA) format.  The name is a reference to the ATVA'13 conference, which was organized in Hanoi, and where the foundation of this format was laid out.
+
+
+Current status
+--------------
+
+This is a working draft for version 1 of the format.
+
+The [HTML version of the document](http://adl.github.io/hoaf/) is updated regularly from [the sources on github](https://github.com/adl/hoaf/).
+
+If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
+
+If you implement it, please do keep track of the changes we apply to this document as we resolve [issues](https://github.com/adl/hoaf/issues?state=open) until version 1 is formally released.
+
 
 Goals
 -----
@@ -687,3 +700,15 @@ The only difference with the transition-based definition is that Sᵢ⊆Q instea
 An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptance set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language.  If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.
 
 The two semantics disagree slightly on the handling of dead states. The state-based semantics allow dead states to appear in acceptance sets, while there is no way to do that with transition-based acceptance.  This difference is inconsequential: a dead state is never going to contribute anything useful the recognized language.
+
+
+Authors
+-------
+
+This document has been put together by the following people:
+
+- Alexandre Duret-Lutz
+- František Blahoudek
+- Jan Křetínský
+- Jan Strejček
+- Joachim Klein
