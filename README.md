@@ -88,7 +88,7 @@ The header is a list of `header-item`s (a `HEADERNAME` followed by some data).  
 
 Any given `HEADERNAME` should occur at most once, except for `Start:` and `Alias:`.  The case of the `HEADERNAME`'s initial is used to specify whether tools may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such `HEADERNAME` they do not understand.  A `HEADERNAME` whose initial is lowercase may be safely ignored without affecting the semantics.
 
-Headers items `HOA:`, `States:`, and `Acceptance:` must always be present.
+Headers items `HOA:`, and `Acceptance:` must always be present.
 
 ### `HOA:`
 
@@ -98,13 +98,17 @@ Headers items `HOA:`, `States:`, and `Acceptance:` must always be present.
 
 ### `States:`
 
-This mandatory header item specifies the number of states in the automaton.  The states are assumed to be numbered consecutively from 0.   For instance:
+This optionnal header item specifies the number of states in the automaton.
+
+The states are assumed to be numbered consecutively from 0.   For instance:
 
     States: 10
 
 specifies an automaton with 10 states numbered from 0 to 9.
 
 An empty automaton, with no states, can be specified with `States: 0`.
+
+It is recommended to specify the number of states whenever possible, so that readers may preallocate data structures and perform better error checking.  Cases where `States:` could be missing are typically those where an automaton is constructed on-the-fly during its output, and the actual number of states is unknown before the end of the output.
 
 ### `Start:`
 
@@ -352,7 +356,7 @@ Body of the Automaton
 
 The header is separated from the rest of the structure with `--BODY--`.
 
-States should be numbered from 0 to n-1 and specified with the following grammar
+States should be numbered from 0 to n-1 (where n is the value given by the `States:` header item if present) and specified with the following grammar:
 
     body             ::= (state-name edges)*
     // the optional dstring can be used to name the state for
@@ -535,7 +539,6 @@ Here is a Büchi automaton for `GFa | G(b <-> Xa)`.
 
     HOA: v1
     name: "GFa | G(b <-> Xa)"
-    States: 1
     Start: 0
     acc-name: Buchi
     Acceptance: 1 I0
@@ -564,7 +567,6 @@ is equivalent to marking all their outgoing transitions as such:
 
     HOA: v1
     name: "GFa | G(b <-> Xa)"
-    States: 1
     Start: 0
     acc-name: Buchi
     Acceptance: 1 I0
