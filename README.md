@@ -60,8 +60,11 @@ Common Tokens
 - whitespace: `[ \t\n\r]`
   Except in double-quoted strings and comments, whitespace is used only for tokenization and can be discarded afterwards.
 
+- `BOOLEAN`: `[tf]`
+  The true and false Boolean constants.
+
 - `IDENTIFIER`: `[a-zA-Z_-][0-9a-zA-Z_-]*`
-  An identifier made of letters, digits, `-` and `_`.  Digits may not by used as first character.
+  An identifier made of letters, digits, `-` and `_`.  Digits may not by used as first character, and `t` or `f` are not valid identifiers.
 
 - `ANAME`: `@[0-9a-zA-Z_-]+`
   An alias name, i.e., "@" followed by some alphanumeric characters, `-` or `_`.  These are used to identify atomic propositions or subformulas.
@@ -91,11 +94,11 @@ Header
                  | "AP:" INT STRING*
                  | "Alias:" ANAME label-expr
                  | "Acceptance:" INT acceptance-cond
-                 | "acc-name:" IDENTIFIER (IDENTIFIER | INT)*
+                 | "acc-name:" IDENTIFIER (BOOLEAN|INT|IDENTIFIER)*
                  | "tool:" STRING STRING?
                  | "name:" STRING
                  | "properties:" IDENTIFIER*
-                 | HEADERNAME (INT|STRING|IDENTIFIER)*
+                 | HEADERNAME (BOOLEAN|INT|STRING|IDENTIFIER)*
 
 The header is a list of `header-item`s (a `HEADERNAME` followed by some data).  Except for the "HOA:" item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified below.   This format also makes provision of additional (unspecified) header names to be used.
 
@@ -159,12 +162,12 @@ The number of double-quoted strings must match exactly the number given.  This n
 Aliases are used to name atomic propositions or common subformulas that will be used later as labels in the automaton.  This format can be used without any aliases, refering to atomic propositions by their numbers.  Naming atomic propositions using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.
 
     headeritem ::= … | "Alias:" ANAME label-expr
-    label-expr ::= "t" | "f" | INT | ANAME | "!" label-expr
+    label-expr ::= BOOLEAN | INT | ANAME | "!" label-expr
                  | "(" label-expr ")"
                  | label-expr "&" label-expr
                  | label-expr "|" label-expr
 
-The `label-expr` will also be used to label transitions in automata.  INT refers to an atomic proposition number (as specified on the `AP:` line), ANAME refers to a previously defined alias, and "t" and "f" are the Boolean values.  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.  The `!` operator has priority over `&` which in turn has priority over `|`.  Parentheses may be used for grouping.
+The `label-expr` will also be used to label transitions in automata.  INT refers to an atomic proposition number (as specified on the `AP:` line), ANAME refers to a previously defined alias, and BOOLEAN are the Boolean values.  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.  The `!` operator has priority over `&` which in turn has priority over `|`.  Parentheses may be used for grouping.
 
 
 Here are some examples of aliases:
