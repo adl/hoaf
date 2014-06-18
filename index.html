@@ -101,16 +101,18 @@ header-item ::= &quot;States:&quot; INT
              | &quot;properties:&quot; IDENTIFIER*
              | HEADERNAME (INT|STRING|IDENTIFIER)*</code></pre>
 <p>The header is a list of <code>header-item</code>s (a <code>HEADERNAME</code> followed by some data). Except for the &quot;HOA:&quot; item, which should always come first, the items may occur in any order. Some <code>HEADERNAME</code>s have predefined semantics (and might be mandatory) as specified below. This format also makes provision of additional (unspecified) header names to be used.</p>
-<p>Any given <code>HEADERNAME</code> should occur at most once, except for <code>Start:</code> and <code>Alias:</code>. The case of the <code>HEADERNAME</code>'s initial is used to specify whether tools may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such <code>HEADERNAME</code> they do not understand. A <code>HEADERNAME</code> whose initial is lowercase may be safely ignored without affecting the semantics.</p>
-<p>Headers items <code>HOA:</code>, <code>States:</code>, and <code>Acceptance:</code> must always be present.</p>
+<p>Any given <code>HEADERNAME</code> should occur at most once, except for <code>Start:</code>, <code>Alias:</code>, and <code>properties:</code>. The case of the <code>HEADERNAME</code>'s initial is used to specify whether tools may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such <code>HEADERNAME</code> they do not understand. A <code>HEADERNAME</code> whose initial is lowercase may be safely ignored without affecting the semantics.</p>
+<p>Headers items <code>HOA:</code>, and <code>Acceptance:</code> must always be present.</p>
 <h3 id="hoa"><code>HOA:</code></h3>
 <p><code>HOA:</code> should always be the first token of the file. It is followed by an identifier that represents the version of the format. This document specifies the first version of this format so this header should appear as</p>
 <pre><code>HOA: v1</code></pre>
 <h3 id="states"><code>States:</code></h3>
-<p>This mandatory header item specifies the number of states in the automaton. The states are assumed to be numbered consecutively from 0. For instance:</p>
+<p>This optionnal header item specifies the number of states in the automaton.</p>
+<p>The states are assumed to be numbered consecutively from 0. For instance:</p>
 <pre><code>States: 10</code></pre>
 <p>specifies an automaton with 10 states numbered from 0 to 9.</p>
 <p>An empty automaton, with no states, can be specified with <code>States: 0</code>.</p>
+<p>It is recommended to specify the number of states whenever possible, so that readers may preallocate data structures and perform better error checking. Cases where <code>States:</code> could be missing are typically those where an automaton is constructed on-the-fly during its output, and the actual number of states is unknown before the end of the output.</p>
 <h3 id="start"><code>Start:</code></h3>
 <p>This optional header item specifies the initial states. Multiple initial states<br />can be specified by using several <code>Start:</code> headers with a different state number.</p>
 <p>Alternating automata can start in a conjunction of states specified<br />using the &quot;&amp;&quot; operator.</p>
@@ -187,7 +189,7 @@ acceptance-cond ::= &quot;I&quot; &quot;!&quot;? INT
 name: &quot;BA for GFa &amp; GFb&quot;</code></pre>
 <h3 id="properties"><code>properties:</code></h3>
 <pre><code>header-item ::= … | &quot;properties:&quot; IDENTIFIER*</code></pre>
-<p>The optional <code>properties:</code> header name can be followed by a list of identifiers that gives additional information about the automaton. These information should be redundant in the sense that ignoring them should not impact the behavior of the automaton. For instance stating that an automaton is deterministic with</p>
+<p>The optional <code>properties:</code> header name can be followed by a list of identifiers that gives additional information about the automaton. Multiple <code>properties:</code> lines can be used, it has the same effect as listing all properties on one line. These information should be redundant in the sense that ignoring them should not impact the behavior of the automaton. For instance stating that an automaton is deterministic with</p>
 <pre><code>properties: deterministic</code></pre>
 <p>may enable tools that read the automaton to choose a better data structure to store this automaton, but ignoring this header item will not suddenly make the automaton non-deterministic.</p>
 <p>The following properties have specified meanings, but additional may be added, and tools may simply ignore those they do not know:</p>
@@ -203,6 +205,7 @@ name: &quot;BA for GFa &amp; GFb&quot;</code></pre>
 <li><code>deterministic</code> hints that the automaton is deterministic, i.e., it has at most one initial state, and the outgoing transitions of each state have disjoint labels (note that this also applies in the presence of universal branching)<br /></li>
 <li><code>complete</code> hints that the automaton is complete, i.e., it has at least one state, and the transition function is total<br /></li>
 <li><code>unambiguous</code> hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton (this also applies in the presence of universal branching)<br /></li>
+<li><code>stutter-invariant</code> hints that the automaton describes a <a href="http://dx.doi.org/10.1007/3-540-48683-6_22">stutter-invariant</a> property<br /></li>
 <li><code>weak</code> hints that in each strongly connected component, all transitions (or all states) belong to the same accepting sets<br /></li>
 <li><code>inherently-weak</code> hints that the automaton does not mix accepting cycles and non-accepting cycles in the same SCC</li>
 </ul>
@@ -245,9 +248,9 @@ Acceptance: 6 (F0&amp;I1)|(F2&amp;I3)|(F4&amp;I5)</code></pre>
 <pre><code>Acceptance: 6 (I0&amp;F!1)|(I2&amp;F!3)|(I4&amp;F!5)</code></pre>
 <h3 id="generalized-rabin-acceptance">Generalized Rabin acceptance</h3>
 <p>Rabin acceptance has been generalized in works by <a href="http://arxiv.org/abs/1204.5057">Křetínský &amp; Esparza</a> or <a href="http://dx.doi.org/10.1007/978-3-319-02444-8_4">Babiak et al.</a>. They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like {(E₁,{F₁₁,F₁₂,F₁₃}), (E₂,{F₂₁,F₂₂})}, and where a run is accepting if there exist some i such that the run visits finitely often the set Eᵢ and infinitely often all the sets Fᵢⱼ. Such an acceptance condition can be specified with:</p>
-<pre><code>acc-name: generalized-Rabin 3 2
+<pre><code>acc-name: generalized-Rabin 2 3 2
 Acceptance: 7 (F0&amp;I1&amp;I2&amp;I3)|(F4&amp;I5&amp;I6)</code></pre>
-<p>The number of parameters <code>generalized-Rabin</code> has corresponds to the numbers of generalized Rabin pairs, and each parameters gives the number of Fᵢⱼ sets in the corresponding pair.</p>
+<p>The first parameter of <code>generalized-Rabin</code> gives the number of generalized pairs and the following parameters give the number of Fᵢⱼ sets in the corresponding pairs.</p>
 <h3 id="parity-automata">Parity automata</h3>
 <p>For parity automata <code>acc-name: parity</code> has three parameters to support combinations of <code>min</code>/<code>max</code> and <code>even</code>/<code>odd</code>, and to specify the range of acceptance sets used.</p>
 <p>If the automaton should accept when the least identifier of acceptance sets visited infinitely often is even, we write:</p>
@@ -261,7 +264,7 @@ Acceptance 6 I5 | (F5&amp;F4&amp;I3) | (F5&amp;F4&amp;F3&amp;F2&amp;I1)</code></
 <p>Combinations <code>min odd</code> or <code>max even</code> are also possible.</p>
 <h2 id="body-of-the-automaton">Body of the Automaton</h2>
 <p>The header is separated from the rest of the structure with <code>--BODY--</code>.</p>
-<p>States should be numbered from 0 to n-1 and specified with the following grammar</p>
+<p>States should be numbered from 0 to n-1 (where n is the value given by the <code>States:</code> header item if present) and specified with the following grammar:</p>
 <pre><code>body             ::= (state-name edges)*
 // the optional dstring can be used to name the state for
 // cosmetic or debugging purposes, as in ltl2dstar&#39;s format
@@ -405,7 +408,6 @@ State: 2  /* former state 1 */
 <p><img src="figures/aut7.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
 name: &quot;GFa | G(b &lt;-&gt; Xa)&quot;
-States: 1
 Start: 0
 acc-name: Buchi
 Acceptance: 1 I0
@@ -430,7 +432,6 @@ State: 3 &quot;!a &amp; G(b &lt;-&gt; Xa)&quot; {0}
 <p><img src="figures/aut8.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
 name: &quot;GFa | G(b &lt;-&gt; Xa)&quot;
-States: 1
 Start: 0
 acc-name: Buchi
 Acceptance: 1 I0
@@ -472,7 +473,7 @@ Start: 3
 acc-name: co-Buchi
 Acceptance: 1 F0
 AP: 3 &quot;a&quot; &quot;b&quot; &quot;c&quot;
----
+--BODY--
 State: 0 &quot;Fa&quot;
 [t] 0 {0}
 [0] 1
@@ -481,7 +482,8 @@ State: 1 &quot;true&quot;
 State: 2 &quot;G(b&amp;Xc)&quot;
 [1] 2&amp;3
 State: 3 &quot;c&quot;
-[2] 1</code></pre>
+[2] 1
+--END--</code></pre>
 <h2 id="formal-semantics-of-omega-automata">Formal Semantics of Omega-Automata</h2>
 <p>The following definition specifies alternating automata with transition-based acceptance. Because of universal branching, the initial states and destination states of transitions are non-empty sets of states (i.e., elements of 2^Q\∅) interpreted as conjunctions. Automata without universal branching use just elements of Q as initial or destination states.</p>
 <p>Each omega-automaton described in this format can be seen as an automaton (AP,Q,R,I,F,Acc) with labels on transitions and transition-based acceptance, where:</p>
