@@ -351,16 +351,16 @@ For parity automata `acc-name: parity` has three parameters to support combinati
 If the automaton should accept when the least identifier of acceptance sets visited infinitely often is even, we write:
 
     acc-name: parity min even 5
-    Acceptance 5 I0 | (F0&F1&I2) | (F0&F1&F2&F3&I4)
+    Acceptance: 5 I0 | (F0&F1&I2) | (F0&F1&F2&F3&I4)
 
 or
 
-    Acceptance 5 I0 | F0&F1&(I2 | F2&F3&I4)
+    Acceptance: 5 I0 | F0&F1&(I2 | F2&F3&I4)
 
 If the greatest identifier has to be odd, we write:
 
     acc-name: parity max odd 6
-    Acceptance 6 I5 | (F5&F4&I3) | (F5&F4&F3&F2&I1)
+    Acceptance: 6 I5 | (F5&F4&I3) | (F5&F4&F3&F2&I1)
 
 Combinations `min odd` or `max even` are also possible.
 
