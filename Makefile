@@ -27,3 +27,10 @@ gh-pages: webpack
 	git commit -m "Update webpages from $$v" && \
 	git push origin gh-pages && \
 	git checkout -f "$$b"
+
+.PHONY: extract-examples
+
+extract-examples: README.md
+	rm -rf examples/
+	mkdir -p examples
+	scripts/extract-hoa README.md examples
