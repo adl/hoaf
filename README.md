@@ -189,7 +189,7 @@ The first three aliases are just mnemonic names for the atomic propositions, whi
                      | acceptance-cond & acceptance-cond
                      | acceptance-cond | acceptance-cond
 
-The mandatory `Acceptance:` header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition.  If m sets are declared, these sets are numbered from 0 to m-1.   In this vesion of the format, the `IDENTIFIER` used in `acceptance-cond` can only be `F` or `I`.
+The mandatory `Acceptance:` header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition.  If m sets are declared, these sets are numbered from 0 to m-1.   In this version of the format, the `IDENTIFIER` used in `acceptance-cond` can only be `F` or `I`.
 
 The acceptance condition is specified as a positive Boolean combination of expressions of the form `F(x)`, `F(!x)`, `I(x)`, `I(!x)`  where:
 
