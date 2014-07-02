@@ -200,7 +200,7 @@ The acceptance condition is specified as a positive Boolean combination of expre
 
 The `&` operator has priority over `|`, and parentheses may be used for grouping.
 
-Additionally the `t` and `f` Boolean constants can be used with obvious meanings (the `t` acceptance is always verified, while `f` never is).
+Additionally the `t` and `f` Boolean constants can be used with their obvious meanings (`t` is always accepting while  `f` is never accepting).
 
 As explained previously, our semantics for acceptance are transition-based, so if an automaton uses both accepting states and accepting transitions, the acceptance of the states should be transferred to their outgoing transitions so that complementation of acceptance sets can be performed with respect to all transitions.
 
@@ -383,7 +383,7 @@ or
     acc-name: Streett 0
     Acceptance: 0 t
 
-Such an all-accepting condition typically occur when translating safety formula, or when building monitors.  In these specialized cases, it might not really make sense to name the acceptance `generalized-Buchi` or `generalized-Streett`.  For this reason, we also support the name `all` as a synonym:
+Such an all-accepting condition typically occurs when translating safety formula, or when building monitors.  In these specialized cases, it might not really make sense to name the acceptance `generalized-Buchi` or `generalized-Streett`.  For this reason, we also support the name `all` as a synonym:
 
     acc-name: all
     Acceptance: 0 t
