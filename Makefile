@@ -25,5 +25,5 @@ gh-pages: webpack
 	tar zxvf www.tgz && \
 	tar ztf www.tgz | xargs git add -f && \
 	git commit -m "Update webpages from $$v" && \
-	git push origin gh-pages \
+	git push origin gh-pages && \
 	git checkout -f "$$b"
