@@ -74,10 +74,10 @@
 <li>supports streams of omega-automata (i.e., multiple automata can be concatenated together and processed in batch).</li>
 </ul>
 <h2 id="supported-types-of-omega-automata">Supported Types of Omega-Automata</h2>
-<p>The HOA format supports many types of finite automata over infinite words: automata with labels on transitions or labels on states, and with wide range of acceptance conditions based on states or transitions appearing (in)finitely often in an automaton run. Instead of providing semantics for each supported type of omega-automata, we provide only semantics for alternating automata with labels on transitions and transition-based accepting conditions. Labels on states and state-based acceptance are formally seen as syntactic sugar (their semantics fully corresponding to the expected one). Automata in HOA format can have multiple initial states.</p>
+<p>The HOA format supports many types of finite automata over infinite words: automata with labels on transitions or labels on states, and with a wide range of acceptance conditions based on states or transitions appearing (in)finitely often in an automaton run. Instead of providing semantics for each supported type of omega-automata, we provide only semantics for the general case of alternating automata with labels on transitions and transition-based accepting conditions. Labels on states and state-based acceptance are formally seen as syntactic sugar (their semantics fully corresponding to the expected one). Automata in HOA format can have multiple initial states.</p>
 <h2 id="preliminary-notes">Preliminary Notes</h2>
 <p>Input alphabets of all considered automata types consist of letters that are subsets of atomic propositions (AP). To make the automata description more concise, we label states or transitions of automata with Boolean formulas over AP representing choices between multiple letters. A Boolean formula represents the set of letters satisfying the formula: a letter satisfies a formula if the valuation assigning True to all atomic propositions in the letter and False to all other atomic propositions is a model of the formula. We use B(AP) do denote the set of Boolean formulas over AP.</p>
-<p>The format considers acceptance conditions built on a finite set {S₀,S₁,…,Sₖ} of acceptance sets. Each acceptance set Sᵢ is a subset of automata states and transitions. Loosely speaking, an acceptance condition says which acceptance sets should be visited infinitely often and which only finitely often by a run to be accepting. More precisely, an acceptance condition is a positive Boolean formula over atoms of the form F(Sᵢ), F(¬Sᵢ), I(Sᵢ), or I(¬Sᵢ). The atom F(Sᵢ) indicates that all states and transitions in Sᵢ should occur finitely often in the run, while I(Sᵢ) denotes that some state or transition of Sᵢ should be visited infinitely often. A state in an acceptance set is formally seen as an abbreviation for inclusion of all transitions leaving the state. The negation symbol ¬ represents the complement of the set with respect all transitions. Many examples of classical acceptance conditions (Büchi, Rabin, Streett, parity) will be given later.</p>
+<p>The format considers acceptance conditions built on a finite set {S₀,S₁,…,Sₖ} of acceptance sets. Each acceptance set Sᵢ is a subset of automata states and transitions. Loosely speaking, an acceptance condition says which acceptance sets should be visited infinitely often and which only finitely often by a run to be accepting. More precisely, an acceptance condition is a positive Boolean formula over atoms of the form F(Sᵢ), F(¬Sᵢ), I(Sᵢ), or I(¬Sᵢ). The atom F(Sᵢ) indicates that all states and transitions in Sᵢ should occur at most finitely often in the run, while I(Sᵢ) denotes that some state or transition of Sᵢ should be visited infinitely often. A state in an acceptance set is formally seen as an abbreviation for inclusion of all transitions leaving the state. The negation symbol ¬ represents the complement of the set with respect to all transitions. Many examples of classical acceptance conditions (Büchi, Rabin, Streett, parity) will be given later.</p>
 <p>The format has a common approach to atomic propositions, states, and acceptance sets: the number of propositions/states/sets, say n, is first declared and all propositions/states/sets are then referenced as 0,1,…,n-1.</p>
 <h2 id="common-tokens">Common Tokens</h2>
 <ul>
@@ -90,7 +90,7 @@
 <li><p><code>HEADERNAME</code>: <code>[a-zA-Z_-][0-9a-zA-Z_-]*:</code><br /> Header names are likes identifiers, except that they are immediately followed by a colon (i.e. no comment or space allowed). If an <code>IDENTIFIER</code> is immediately followed by a colon, it should be considered as a <code>HEADERNAME</code>.</p></li>
 </ul>
 <h2 id="general-layout">General Layout</h2>
-<p>This format is designed so that we can write tools that can process automata in batch. A tool could for instance input a stream of automata concatenated together, and process these to output another stream of automata.</p>
+<p>This format is designed so that we can write tools that can process automata in batch. A tool could for instance get a stream of automata descriptions concatenated together as input and process these to output another stream of automata.</p>
 <p>Every automaton is described in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph.<br />The two parts are separated by &quot;--BODY--&quot;. The token &quot;--END--&quot; marks the end of the automaton.</p>
 <pre><code>automaton ::= header &quot;--BODY--&quot; body &quot;--END--&quot;</code></pre>
 <p>Additionally, the &quot;--ABORT--&quot; token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output. In a streaming scenario, a new automaton can start immediately after such &quot;--ABORT--&quot; token.</p>
@@ -196,7 +196,7 @@ acceptance-cond ::= &quot;I&quot; &quot;!&quot;? INT
 name: &quot;BA for GFa &amp; GFb&quot;</code></pre>
 <h3 id="properties"><code>properties:</code></h3>
 <pre><code>header-item ::= … | &quot;properties:&quot; IDENTIFIER*</code></pre>
-<p>The optional <code>properties:</code> header name can be followed by a list of identifiers that gives additional information about the automaton. Multiple <code>properties:</code> lines can be used, it has the same effect as listing all properties on one line. These information should be redundant in the sense that ignoring them should not impact the behavior of the automaton. For instance stating that an automaton is deterministic with</p>
+<p>The optional <code>properties:</code> header name can be followed by a list of identifiers that gives additional information about the automaton. Multiple <code>properties:</code> lines can be used, it has the same effect as listing all properties on one line. This information should be redundant in the sense that ignoring them should not impact the behavior of the automaton. For instance stating that an automaton is deterministic with</p>
 <pre><code>properties: deterministic</code></pre>
 <p>may enable tools that read the automaton to choose a better data structure to store this automaton, but ignoring this header item will not suddenly make the automaton non-deterministic.</p>
 <p>The following properties have specified meanings, but additional may be added, and tools may simply ignore those they do not know:</p>
@@ -237,7 +237,7 @@ Acceptance: 3 F0|F1|F2</code></pre>
 <pre><code>Acceptance: 3 I!0 &amp; I!1 &amp; I!2</code></pre>
 <p>(Spot actually makes an extra pass at the end of the translation to complement the acceptance sets in order to obtain the more usual generalized Büchi <code>I0&amp;I1&amp;I2</code> acceptance).</p>
 <h3 id="streett-acceptance">Streett acceptance</h3>
-<p>Pairs of acceptance sets {(L₁,U₁),…,(Lₖ,Uₖ)}. A run is accepting iff for each pair (Lᵢ,Uᵢ) if it visits Lᵢ infinitely often, then it also visits Uᵢ infinitely often. Assuming k=3 and numbering these 6 sets from left (L₁) to right (U₃), this corresponds to:</p>
+<p>Pairs of acceptance sets {(L₁,U₁),…,(Lₖ,Uₖ)}. A run is accepting for a pair (Lᵢ,Uᵢ) iff the run visiting Lᵢ infinitely often implies that the run also visits Uᵢ infinitely often. A run is accepting iff it is accepting for all pairs. Assuming k=3 and numbering these 6 sets from left (L₁) to right (U₃), this corresponds to:</p>
 <pre><code>acc-name: Streett 3
 Acceptance: 6 (F0|I1)&amp;(F2|I3)&amp;(F4|I5)</code></pre>
 <p>The parameter <code>3</code> in <code>acc-name: Streett 3</code> refers to the number of Streett pairs.</p>
@@ -254,7 +254,7 @@ Acceptance: 6 (F0&amp;I1)|(F2&amp;I3)|(F4&amp;I5)</code></pre>
 <p>S. Krishnan, in <a href="http://dx.doi.org/10.1007/3-540-58325-4_202">his ISAAC'94 paper</a>, uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} such that the set of recurring states of a an accepting run should intersect Lᵢ and be included in Uᵢ, for some pair (Lᵢ,Uᵢ). A similar definition is used by Manna and Pnueli in their &quot;Hierarchy of Temporal Properties&quot; paper. This corresponds to:</p>
 <pre><code>Acceptance: 6 (I0&amp;F!1)|(I2&amp;F!3)|(I4&amp;F!5)</code></pre>
 <h3 id="generalized-rabin-acceptance">Generalized Rabin acceptance</h3>
-<p>Rabin acceptance has been generalized in works by <a href="http://arxiv.org/abs/1204.5057">Křetínský &amp; Esparza</a> or <a href="http://dx.doi.org/10.1007/978-3-319-02444-8_4">Babiak et al.</a>. They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like {(E₁,{F₁₁,F₁₂,F₁₃}), (E₂,{F₂₁,F₂₂})}, and where a run is accepting if there exist some i such that the run visits finitely often the set Eᵢ and infinitely often all the sets Fᵢⱼ. Such an acceptance condition can be specified with:</p>
+<p>Rabin acceptance has been generalized in works by <a href="http://arxiv.org/abs/1204.5057">Křetínský &amp; Esparza</a> or <a href="http://dx.doi.org/10.1007/978-3-319-02444-8_4">Babiak et al.</a>. They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like {(E₁,{F₁₁,F₁₂,F₁₃}), (E₂,{F₂₁,F₂₂})}, and where a run is accepting if there exists some i such that the run visits finitely often the set Eᵢ and infinitely often all the sets Fᵢⱼ. Such an acceptance condition can be specified with:</p>
 <pre><code>acc-name: generalized-Rabin 2 3 2
 Acceptance: 7 (F0&amp;I1&amp;I2&amp;I3)|(F4&amp;I5&amp;I6)</code></pre>
 <p>The first parameter of <code>generalized-Rabin</code> gives the number of generalized pairs and the following parameters give the number of Fᵢⱼ sets in the corresponding pairs.</p>
@@ -262,12 +262,12 @@ Acceptance: 7 (F0&amp;I1&amp;I2&amp;I3)|(F4&amp;I5&amp;I6)</code></pre>
 <p>For parity automata <code>acc-name: parity</code> has three parameters to support combinations of <code>min</code>/<code>max</code> and <code>even</code>/<code>odd</code>, and to specify the range of acceptance sets used.</p>
 <p>If the automaton should accept when the least identifier of acceptance sets visited infinitely often is even, we write:</p>
 <pre><code>acc-name: parity min even 5
-Acceptance 5 I0 | (F0&amp;F1&amp;I2) | (F0&amp;F1&amp;F2&amp;F3&amp;I4)</code></pre>
+Acceptance: 5 I0 | (F0&amp;F1&amp;I2) | (F0&amp;F1&amp;F2&amp;F3&amp;I4)</code></pre>
 <p>or</p>
-<pre><code>Acceptance 5 I0 | F0&amp;F1&amp;(I2 | F2&amp;F3&amp;I4)</code></pre>
+<pre><code>Acceptance: 5 I0 | F0&amp;F1&amp;(I2 | F2&amp;F3&amp;I4)</code></pre>
 <p>If the greatest identifier has to be odd, we write:</p>
 <pre><code>acc-name: parity max odd 6
-Acceptance 6 I5 | (F5&amp;F4&amp;I3) | (F5&amp;F4&amp;F3&amp;F2&amp;I1)</code></pre>
+Acceptance: 6 I5 | (F5&amp;F4&amp;I3) | (F5&amp;F4&amp;F3&amp;F2&amp;I1)</code></pre>
 <p>Combinations <code>min odd</code> or <code>max even</code> are also possible.</p>
 <h2 id="body-of-the-automaton">Body of the Automaton</h2>
 <p>The header is separated from the rest of the structure with <code>--BODY--</code>.</p>
