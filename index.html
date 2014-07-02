@@ -85,15 +85,16 @@
 <li><p><code>INT</code>: <code>0|[1-9][0-9]*</code><br /> A non-negative integer less than 2^31 written in base 10 (with no useless <code>0</code> at the beginning).</p></li>
 <li><p>comments: <code>/* … */</code><br /> Comments may be introduced between any token by enclosing them with <code>/*</code> and <code>*/</code> (with proper nesting, i.e. <code>/*a/*b*/c*/</code> is one comment). C++-style comments are not considered because they require newlines. Tools can use comments to output additional information (e.g. debugging data) that should be discarded upon reading.</p></li>
 <li><p>whitespace: <code>[ \t\n\r]</code><br /> Except in double-quoted strings and comments, whitespace is used only for tokenization and can be discarded afterwards.</p></li>
-<li><p><code>IDENTIFIER</code>: <code>[a-zA-Z_-][0-9a-zA-Z_-]*</code><br /> An identifier made of letters, digits, <code>-</code> and <code>_</code>. Digits may not by used as first character.</p></li>
+<li><p><code>BOOLEAN</code>: <code>[tf]</code><br /> The true and false Boolean constants.</p></li>
+<li><p><code>IDENTIFIER</code>: <code>[a-zA-Z_][0-9a-zA-Z_-]*</code><br /> An identifier made of letters, digits, <code>-</code> and <code>_</code>. Digits and <code>-</code> may not by used as first character, and <code>t</code> or <code>f</code> are not valid identifiers.</p></li>
 <li><p><code>ANAME</code>: <code>@[0-9a-zA-Z_-]+</code><br /> An alias name, i.e., &quot;@&quot; followed by some alphanumeric characters, <code>-</code> or <code>_</code>. These are used to identify atomic propositions or subformulas.</p></li>
 <li><p><code>HEADERNAME</code>: <code>[a-zA-Z_-][0-9a-zA-Z_-]*:</code><br /> Header names are likes identifiers, except that they are immediately followed by a colon (i.e. no comment or space allowed). If an <code>IDENTIFIER</code> is immediately followed by a colon, it should be considered as a <code>HEADERNAME</code>.</p></li>
 </ul>
 <h2 id="general-layout">General Layout</h2>
 <p>This format is designed so that we can write tools that can process automata in batch. A tool could for instance get a stream of automata descriptions concatenated together as input and process these to output another stream of automata.</p>
-<p>Every automaton is described in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph.<br />The two parts are separated by &quot;--BODY--&quot;. The token &quot;--END--&quot; marks the end of the automaton.</p>
+<p>Every automaton is described in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph.<br />The two parts are separated by <code>--BODY--</code>. The token <code>--END--</code> marks the end of the automaton.</p>
 <pre><code>automaton ::= header &quot;--BODY--&quot; body &quot;--END--&quot;</code></pre>
-<p>Additionally, the &quot;--ABORT--&quot; token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output. In a streaming scenario, a new automaton can start immediately after such &quot;--ABORT--&quot; token.</p>
+<p>Additionally, the <code>--ABORT--</code> token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output. In a streaming scenario, a new automaton can start immediately after such an <code>--ABORT--</code> token. Note that <code>foo--ABORT--</code> is a valid identifier and shall not abort streaming: to ensure proper tokenization always add a space or newline before <code>--ABORT--</code> to abort the output.</p>
 <h2 id="header">Header</h2>
 <pre><code>header ::= format-version header-items*
 format-version ::= &quot;HOA:&quot; IDENTIFIER
@@ -102,11 +103,11 @@ header-item ::= &quot;States:&quot; INT
              | &quot;AP:&quot; INT STRING*
              | &quot;Alias:&quot; ANAME label-expr
              | &quot;Acceptance:&quot; INT acceptance-cond
-             | &quot;acc-name:&quot; IDENTIFIER (IDENTIFIER | INT)*
+             | &quot;acc-name:&quot; IDENTIFIER (BOOLEAN|INT|IDENTIFIER)*
              | &quot;tool:&quot; STRING STRING?
              | &quot;name:&quot; STRING
              | &quot;properties:&quot; IDENTIFIER*
-             | HEADERNAME (INT|STRING|IDENTIFIER)*</code></pre>
+             | HEADERNAME (BOOLEAN|INT|STRING|IDENTIFIER)*</code></pre>
 <p>The header is a list of <code>header-item</code>s (a <code>HEADERNAME</code> followed by some data). Except for the &quot;HOA:&quot; item, which should always come first, the items may occur in any order. Some <code>HEADERNAME</code>s have predefined semantics (and might be mandatory) as specified below. This format also makes provision of additional (unspecified) header names to be used.</p>
 <p>Any given <code>HEADERNAME</code> should occur at most once, except for <code>Start:</code>, <code>Alias:</code>, and <code>properties:</code>. The case of the <code>HEADERNAME</code>'s initial is used to specify whether tools may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such <code>HEADERNAME</code> they do not understand. A <code>HEADERNAME</code> whose initial is lowercase may be safely ignored without affecting the semantics.</p>
 <p>Headers items <code>HOA:</code>, and <code>Acceptance:</code> must always be present.</p>
@@ -140,11 +141,11 @@ state-conj ::= INT | INT &quot;&amp;&quot; state-conj</code></pre>
 <h3 id="alias"><code>Alias:</code></h3>
 <p>Aliases are used to name atomic propositions or common subformulas that will be used later as labels in the automaton. This format can be used without any aliases, refering to atomic propositions by their numbers. Naming atomic propositions using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.</p>
 <pre><code>headeritem ::= … | &quot;Alias:&quot; ANAME label-expr
-label-expr ::= &quot;t&quot; | &quot;f&quot; | INT | ANAME | &quot;!&quot; label-expr
+label-expr ::= BOOLEAN | INT | ANAME | &quot;!&quot; label-expr
              | &quot;(&quot; label-expr &quot;)&quot;
              | label-expr &quot;&amp;&quot; label-expr
              | label-expr &quot;|&quot; label-expr</code></pre>
-<p>The <code>label-expr</code> will also be used to label transitions in automata. INT refers to an atomic proposition number (as specified on the <code>AP:</code> line), ANAME refers to a previously defined alias, and &quot;t&quot; and &quot;f&quot; are the Boolean values. The <code>Alias:</code> line may appear multiple times, but it is forbidden to redefine an alias. The <code>!</code> operator has priority over <code>&amp;</code> which in turn has priority over <code>|</code>. Parentheses may be used for grouping.</p>
+<p>The <code>label-expr</code> will also be used to label transitions in automata. INT refers to an atomic proposition number (as specified on the <code>AP:</code> line), ANAME refers to a previously defined alias, and BOOLEAN are the Boolean values. The <code>Alias:</code> line may appear multiple times, but it is forbidden to redefine an alias. The <code>!</code> operator has priority over <code>&amp;</code> which in turn has priority over <code>|</code>. Parentheses may be used for grouping.</p>
 <p>Here are some examples of aliases:</p>
 <pre><code>AP: 3 &quot;a&quot; &quot;proc@state&quot; &quot;a[x] &gt;= 2&quot;
 Alias: @a 0
@@ -155,21 +156,21 @@ Alias: @c @ps|@a2</code></pre>
 <h3 id="acceptance"><code>Acceptance:</code></h3>
 <pre><code>header-item ::= … | &quot;Acceptance:&quot; INT acceptance-cond
 
-acceptance-cond ::= &quot;I&quot; &quot;!&quot;? INT
-                 | &quot;F&quot; &quot;!&quot;? INT
+acceptance-cond ::= IDENTIFIER &quot;(&quot; &quot;!&quot;? INT &quot;)&quot;
                  | (acceptance-cond)
                  | acceptance-cond &amp; acceptance-cond
                  | acceptance-cond | acceptance-cond</code></pre>
-<p>The mandatory <code>Acceptance:</code> header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are used to build the acceptance condition. If m sets are declared, these sets are numbered from 0 to m-1.<br />The acceptance condition is specified as a positive Boolean combination of atoms of the form <code>Fx</code>, <code>F!x</code>, <code>Ix</code>, <code>I!x</code> where:</p>
+<p>The mandatory <code>Acceptance:</code> header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition. If m sets are declared, these sets are numbered from 0 to m-1. In this version of the format, the <code>IDENTIFIER</code> used in <code>acceptance-cond</code> can only be <code>F</code> or <code>I</code>.</p>
+<p>The acceptance condition is specified as a positive Boolean combination of expressions of the form <code>F(x)</code>, <code>F(!x)</code>, <code>I(x)</code>, <code>I(!x)</code> where:</p>
 <ul>
-<li><code>x</code> is a integer in [0,m) representing an accepting set,<br /></li>
-<li><code>!x</code> represent the complement of that set,<br /></li>
-<li><code>F</code> and <code>I</code> specify whether that set should be visited finitely or infinitely often.</li>
+<li><code>x</code> is an integer in [0,m) representing an accepting set,<br /></li>
+<li><code>!x</code> represents the complement of that set,<br /></li>
+<li><code>F(x)</code> and <code>I(x)</code> specify whether that set should be visited finitely or infinitely often.</li>
 </ul>
 <p>The <code>&amp;</code> operator has priority over <code>|</code>, and parentheses may be used for grouping.</p>
 <p>As explained previously, our semantics for acceptance are transition-based, so if an automaton uses both accepting states and accepting transitions, the acceptance of the states should be transferred to their outgoing transitions so that complementation of acceptance sets can be performed with respect to all transitions.</p>
 <p>For instance</p>
-<pre><code>Acceptance: 2 (F!0 &amp; I1)</code></pre>
+<pre><code>Acceptance: 2 F(!0) &amp; I(1)</code></pre>
 <p>declares two acceptance sets. A run of the automaton is accepting if it visits the complement of the first set finitely often, and if it visits the second set infinitely often. More examples will be given in the next section.</p>
 <h3 id="acc-name"><code>acc-name:</code></h3>
 <pre><code>header-item ::= … | &quot;acc-name:&quot; IDENTIFIER (IDENTIFIER | INT)*</code></pre>
@@ -222,52 +223,52 @@ name: &quot;BA for GFa &amp; GFb&quot;</code></pre>
 <h3 id="buchi-or-co-buchi">Büchi or co-Büchi</h3>
 <p>Simply:</p>
 <pre><code>acc-name: Buchi
-Acceptance: 1 I0</code></pre>
+Acceptance: 1 I(0)</code></pre>
 <p>or</p>
 <pre><code>acc-name: co-Buchi
-Acceptance: 1 F0</code></pre>
+Acceptance: 1 F(0)</code></pre>
 <h3 id="generalized-buchi-or-co-buchi">Generalized Büchi or co-Büchi</h3>
 <p>A generalized automaton with three acceptance sets can be defined with:</p>
 <pre><code>acc-name: generalized-Buchi 3
-Acceptance: 3 I0&amp;I1&amp;I2</code></pre>
+Acceptance: 3 I(0)&amp;I(1)&amp;I(2)</code></pre>
 <p>A deterministic automaton with such acceptance conditions could be complemented without changing its transition structure by simply complementing the acceptance, giving a generalized co-Büchi automaton:</p>
 <pre><code>acc-name: generalized-co-Buchi
-Acceptance: 3 F0|F1|F2</code></pre>
+Acceptance: 3 F(0)|F(1)|F(2)</code></pre>
 <p>A promise automaton generated by the tableau construction of <a href="http://spot.lip6.fr/userdoc/ltl2tgba.html"><code>ltl2tgba</code></a> could be output with:</p>
-<pre><code>Acceptance: 3 I!0 &amp; I!1 &amp; I!2</code></pre>
+<pre><code>Acceptance: 3 I(!0) &amp; I(!1) &amp; I(!2)</code></pre>
 <p>(Spot actually makes an extra pass at the end of the translation to complement the acceptance sets in order to obtain the more usual generalized Büchi <code>I0&amp;I1&amp;I2</code> acceptance).</p>
 <h3 id="streett-acceptance">Streett acceptance</h3>
 <p>Pairs of acceptance sets {(L₁,U₁),…,(Lₖ,Uₖ)}. A run is accepting for a pair (Lᵢ,Uᵢ) iff the run visiting Lᵢ infinitely often implies that the run also visits Uᵢ infinitely often. A run is accepting iff it is accepting for all pairs. Assuming k=3 and numbering these 6 sets from left (L₁) to right (U₃), this corresponds to:</p>
 <pre><code>acc-name: Streett 3
-Acceptance: 6 (F0|I1)&amp;(F2|I3)&amp;(F4|I5)</code></pre>
+Acceptance: 6 (F(0)|I(1))&amp;(F(2)|I(3))&amp;(F(4)|I(5))</code></pre>
 <p>The parameter <code>3</code> in <code>acc-name: Streett 3</code> refers to the number of Streett pairs.</p>
 <p>Note that an acceptance set may be used more than once. For instance when translating <code>(GF(a) -&gt; GF(b)) &amp; (GF(b) -&gt; GF(c))</code> into a Streett automaton, it would make sense to use:</p>
-<pre><code>Acceptance: 3 (F0|I1)&amp;(F1|I2)</code></pre>
+<pre><code>Acceptance: 3 (F(0)|I(1))&amp;(F(1)|I(2))</code></pre>
 <h3 id="rabin-acceptance">Rabin acceptance</h3>
 <p>There are several equivalent presentations of Rabin acceptance, and working with tools that use different definitions is often a source of confusion. Our notations of the acceptance condition accommodate all styles, while giving a clear and unambiguous semantics.</p>
 <p>J. Klein, in <a href="http://www.ltl2dstar.de/docs/ltl2dstar.html#dra_dsa"><code>ltl2dstar</code></a>, uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} where there should be some pair (Lᵢ,Uᵢ) such that states in Lᵢ are visited infinitely often, but states in Uᵢ are visited finitely often. This is simply the complement of the Streett acceptance above:</p>
-<pre><code>Acceptance: 6 (I0&amp;F1)|(I2&amp;F3)|(I4&amp;F5)</code></pre>
+<pre><code>Acceptance: 6 (I(0)&amp;F(1))|(I(2)&amp;F(3))|(I(4)&amp;F(5))</code></pre>
 <p>K. Löding, in <a href="http://automata.rwth-aachen.de/~loeding/diploma_loeding.pdf">his diploma thesis</a>, uses pairs {(E₁,F₁),…,(Eₖ,Fₖ)} where Eᵢ should be visited finitely often, and Fᵢ should be visited infinitely often. This is just a reordering of the previous pairs:</p>
 <pre><code>acc-name: Rabin 3
-Acceptance: 6 (F0&amp;I1)|(F2&amp;I3)|(F4&amp;I5)</code></pre>
+Acceptance: 6 (F(0)&amp;I(1))|(F(2)&amp;I(3))|(F(4)&amp;I(5))</code></pre>
 <p>The parameter <code>3</code> in <code>acc-name: Rabin 3</code> refers to the number of Rabin pairs.<br />The reason this definition was choosen for <code>acc-name: Rabin</code> is that is seems to be the most commonly used.</p>
 <p>S. Krishnan, in <a href="http://dx.doi.org/10.1007/3-540-58325-4_202">his ISAAC'94 paper</a>, uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} such that the set of recurring states of a an accepting run should intersect Lᵢ and be included in Uᵢ, for some pair (Lᵢ,Uᵢ). A similar definition is used by Manna and Pnueli in their &quot;Hierarchy of Temporal Properties&quot; paper. This corresponds to:</p>
-<pre><code>Acceptance: 6 (I0&amp;F!1)|(I2&amp;F!3)|(I4&amp;F!5)</code></pre>
+<pre><code>Acceptance: 6 (I(0)&amp;F(!1))|(I(2)&amp;F(!3))|(I(4)&amp;F(!5))</code></pre>
 <h3 id="generalized-rabin-acceptance">Generalized Rabin acceptance</h3>
 <p>Rabin acceptance has been generalized in works by <a href="http://arxiv.org/abs/1204.5057">Křetínský &amp; Esparza</a> or <a href="http://dx.doi.org/10.1007/978-3-319-02444-8_4">Babiak et al.</a>. They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like {(E₁,{F₁₁,F₁₂,F₁₃}), (E₂,{F₂₁,F₂₂})}, and where a run is accepting if there exists some i such that the run visits finitely often the set Eᵢ and infinitely often all the sets Fᵢⱼ. Such an acceptance condition can be specified with:</p>
 <pre><code>acc-name: generalized-Rabin 2 3 2
-Acceptance: 7 (F0&amp;I1&amp;I2&amp;I3)|(F4&amp;I5&amp;I6)</code></pre>
+Acceptance: 7 (F(0)&amp;I(1)&amp;I(2)&amp;I(3))|(F(4)&amp;I(5)&amp;I(6))</code></pre>
 <p>The first parameter of <code>generalized-Rabin</code> gives the number of generalized pairs and the following parameters give the number of Fᵢⱼ sets in the corresponding pairs.</p>
 <h3 id="parity-automata">Parity automata</h3>
 <p>For parity automata <code>acc-name: parity</code> has three parameters to support combinations of <code>min</code>/<code>max</code> and <code>even</code>/<code>odd</code>, and to specify the range of acceptance sets used.</p>
 <p>If the automaton should accept when the least identifier of acceptance sets visited infinitely often is even, we write:</p>
 <pre><code>acc-name: parity min even 5
-Acceptance: 5 I0 | (F0&amp;F1&amp;I2) | (F0&amp;F1&amp;F2&amp;F3&amp;I4)</code></pre>
+Acceptance: 5 I(0) | (F(0)&amp;F(1)&amp;I(2)) | (F(0)&amp;F(1)&amp;F(2)&amp;F(3)&amp;I(4))</code></pre>
 <p>or</p>
-<pre><code>Acceptance: 5 I0 | F0&amp;F1&amp;(I2 | F2&amp;F3&amp;I4)</code></pre>
+<pre><code>Acceptance: 5 I(0) | F(0)&amp;F(1)&amp;(I(2) | F(2)&amp;F(3)&amp;I(4))</code></pre>
 <p>If the greatest identifier has to be odd, we write:</p>
 <pre><code>acc-name: parity max odd 6
-Acceptance: 6 I5 | (F5&amp;F4&amp;I3) | (F5&amp;F4&amp;F3&amp;F2&amp;I1)</code></pre>
+Acceptance: 6 I(5) | (F(5)&amp;F(4)&amp;I(3)) | (F(5)&amp;F(4)&amp;F(3)&amp;F(2)&amp;I(1))</code></pre>
 <p>Combinations <code>min odd</code> or <code>max even</code> are also possible.</p>
 <h2 id="body-of-the-automaton">Body of the Automaton</h2>
 <p>The header is separated from the rest of the structure with <code>--BODY--</code>.</p>
@@ -293,7 +294,7 @@ label            ::= &quot;[&quot; label-expr &quot;]&quot;</code></pre>
 States: 2
 Start: 0
 acc-name: Rabin 1
-Acceptance: 2 (F0 &amp; I1)
+Acceptance: 2 (F(0) &amp; I(1))
 AP: 2 &quot;a&quot; &quot;b&quot;
 --BODY--
 State: 0 &quot;a U b&quot;   /* An example of named state */
@@ -309,7 +310,7 @@ State: 1
 States: 3
 Start: 0
 acc-name: Rabin 1
-Acceptance: 2 (F0 &amp; I1)
+Acceptance: 2 (F(0) &amp; I(1))
 AP: 2 &quot;a&quot; &quot;b&quot;
 --BODY--
 State: 0 &quot;a U b&quot; { 0 }
@@ -329,7 +330,7 @@ name: &quot;GFa &amp; GFb&quot;
 States: 1
 Start: 0
 acc-name: generalized-Buchi 2
-Acceptance: 2 (I0 &amp; I1)
+Acceptance: 2 (I(0) &amp; I(1))
 AP: 2 &quot;a&quot; &quot;b&quot;
 --BODY--
 State: 0
@@ -345,7 +346,7 @@ name: &quot;GFa &amp; GFb&quot;
 States: 1
 Start: 0
 acc-name: generalized-Buchi 2
-Acceptance: 2 (I0 &amp; I1)
+Acceptance: 2 (I(0) &amp; I(1))
 AP: 2 &quot;a&quot; &quot;b&quot;
 --BODY--
 State: 0
@@ -362,7 +363,7 @@ name: &quot;GFa &amp; GF(b &amp; c)&quot;
 States: 1
 Start: 0
 acc-name: generalized-Buchi 2
-Acceptance: 2 (I0 &amp; I1)
+Acceptance: 2 (I(0) &amp; I(1))
 AP: 3 &quot;a&quot; &quot;b&quot; &quot;c&quot;
 Alias: @a 0
 Alias: @bc 1 &amp; 2
@@ -382,7 +383,7 @@ States: 2
 Start: 0
 Start: 1
 acc-name: Buchi
-Acceptance: 1 I0
+Acceptance: 1 I(0)
 AP: 1 &quot;a&quot;
 --BODY--
 State: [0] 0 {0}
@@ -397,7 +398,7 @@ State: [!0] 1
 States: 3
 Start: 0
 acc-name: Buchi
-Acceptance: 1 I0
+Acceptance: 1 I(0)
 AP: 1 &quot;a&quot;
 --BODY--
 State: 0
@@ -417,7 +418,7 @@ State: 2  /* former state 1 */
 name: &quot;GFa | G(b &lt;-&gt; Xa)&quot;
 Start: 0
 acc-name: Buchi
-Acceptance: 1 I0
+Acceptance: 1 I(0)
 AP: 2 &quot;a&quot; &quot;b&quot;
 properties: explicit-labels trans-labels
 --BODY--
@@ -441,7 +442,7 @@ State: 3 &quot;!a &amp; G(b &lt;-&gt; Xa)&quot; {0}
 name: &quot;GFa | G(b &lt;-&gt; Xa)&quot;
 Start: 0
 acc-name: Buchi
-Acceptance: 1 I0
+Acceptance: 1 I(0)
 AP: 2 &quot;a&quot; &quot;b&quot;
 properties: explicit-labels trans-labels trans-acc
 --BODY--
@@ -478,7 +479,7 @@ States: 4
 Start: 0&amp;2
 Start: 3
 acc-name: co-Buchi
-Acceptance: 1 F0
+Acceptance: 1 F(0)
 AP: 3 &quot;a&quot; &quot;b&quot; &quot;c&quot;
 --BODY--
 State: 0 &quot;Fa&quot;
