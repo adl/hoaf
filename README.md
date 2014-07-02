@@ -241,7 +241,7 @@ For instance:
 
     header-item ::= … | "properties:" IDENTIFIER*
 
-The optional `properties:` header name can be followed by a list of identifiers that gives additional information about the automaton.  Multiple `properties:` lines can be used, it has the same effect as listing all properties on one line.  These information should be redundant in the sense that ignoring them should not impact the behavior of the automaton.  For instance stating that an automaton is deterministic with
+The optional `properties:` header name can be followed by a list of identifiers that gives additional information about the automaton.  Multiple `properties:` lines can be used, it has the same effect as listing all properties on one line.  This information should be redundant in the sense that ignoring them should not impact the behavior of the automaton.  For instance stating that an automaton is deterministic with
 
     properties: deterministic
 
@@ -337,7 +337,7 @@ S. Krishnan, in [his ISAAC'94 paper](http://dx.doi.org/10.1007/3-540-58325-4_202
 
 ### Generalized Rabin acceptance
 
-Rabin acceptance has been generalized in works by [Křetínský & Esparza](http://arxiv.org/abs/1204.5057) or [Babiak et al.](http://dx.doi.org/10.1007/978-3-319-02444-8_4).  They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like {(E₁,{F₁₁,F₁₂,F₁₃}), (E₂,{F₂₁,F₂₂})}, and where a run is accepting if there exist some i such that the run visits finitely often the set Eᵢ and infinitely often all the sets Fᵢⱼ.  Such an acceptance condition can be specified with:
+Rabin acceptance has been generalized in works by [Křetínský & Esparza](http://arxiv.org/abs/1204.5057) or [Babiak et al.](http://dx.doi.org/10.1007/978-3-319-02444-8_4).  They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like {(E₁,{F₁₁,F₁₂,F₁₃}), (E₂,{F₂₁,F₂₂})}, and where a run is accepting if there exists some i such that the run visits finitely often the set Eᵢ and infinitely often all the sets Fᵢⱼ.  Such an acceptance condition can be specified with:
 
     acc-name: generalized-Rabin 2 3 2
     Acceptance: 7 (F0&I1&I2&I3)|(F4&I5&I6)
