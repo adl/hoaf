@@ -188,6 +188,7 @@ The first three aliases are just mnemonic names for the atomic propositions, whi
                      | (acceptance-cond)
                      | acceptance-cond & acceptance-cond
                      | acceptance-cond | acceptance-cond
+		     | BOOLEAN
 
 The mandatory `Acceptance:` header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition.  If m sets are declared, these sets are numbered from 0 to m-1.   In this version of the format, the `IDENTIFIER` used in `acceptance-cond` can only be `F` or `I`.
 
@@ -198,6 +199,8 @@ The acceptance condition is specified as a positive Boolean combination of expre
 - `F(x)` and `I(x)` specify whether that set should be visited finitely or infinitely often.
 
 The `&` operator has priority over `|`, and parentheses may be used for grouping.
+
+Additionally the `t` and `f` Boolean constants can be used with obvious meanings (the `t` acceptance is always verified, while `f` never is).
 
 As explained previously, our semantics for acceptance are transition-based, so if an automaton uses both accepting states and accepting transitions, the acceptance of the states should be transferred to their outgoing transitions so that complementation of acceptance sets can be performed with respect to all transitions.
 
@@ -366,6 +369,41 @@ If the greatest identifier has to be odd, we write:
     Acceptance: 6 I(5) | (F(5)&F(4)&I(3)) | (F(5)&F(4)&F(3)&F(2)&I(1))
 
 Combinations `min odd` or `max even` are also possible.
+
+
+### Trivial acceptance conditions: `all` and `none`
+
+When `generalized-Büchi` or `Streett` are used with `0` acceptance sets, it degenerates to an automaton that accepts all recognized words:
+
+    acc-name: generalized-Buchi 0
+    Acceptance: 0 t
+
+or
+
+    acc-name: Streett 0
+    Acceptance: 0 t
+
+Such an all-accepting condition typically occur when translating safety formula, or when building monitors.  In these specialized cases, it might not really make sense to name the acceptance `generalized-Buchi` or `generalized-Streett`.  For this reason, we also support the name `all` as a synonym:
+
+    acc-name: all
+    Acceptance: 0 t
+
+
+Similarly, but less interestingly, `generalized-co-Buchi` and `Rabin` all degenerate to `f` when using 0 acceptance pairs, and this acceptance condition can also be called `none`.  The following four acceptance specification are therefore equivalent and describe automata that will reject all words:
+
+    acc-name: generalized-co-Buchi 0
+    Acceptance: 0 f
+
+    acc-name: Rabin 0
+    Acceptance: 0 f
+
+    acc-name: generalized-Rabin 0
+    Acceptance: 0 f
+
+    acc-name: none
+    Acceptance: 0 f
+
+
 
 Body of the Automaton
 ---------------------
