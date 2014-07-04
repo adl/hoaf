@@ -9,7 +9,7 @@ Current status
 
 This is a working draft for version 1 of the format.
 
-The [HTML version of the document](http://adl.github.io/hoaf/) is updated regularly from [the sources on github](https://github.com/adl/hoaf/).
+The [HTML version of the document](http://adl.github.io/hoaf/) is updated regularly from [the sources on github](https://github.com/adl/hoaf/).  All the examples shown here can also be [downloaded separately](http://adl.github.io/hoaf/examples.html) to exercise a parser.
 
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 

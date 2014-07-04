@@ -23,6 +23,25 @@ h1 a, h2 a, h3 a, h4 a, h5 a {
     color: #0000d0;
 }
 
+table.examples {
+    border-width: 0pt;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+table.examples tr:nth-child(odd) {
+    background-color: #dddddd;
+    padding: 1em;
+}
+table.examples tr:nth-child(even) {
+    background-color: #eeeeee;
+    padding: 1em;
+}
+table.examples td {
+    padding: 1em;
+    text-align: center;
+}
+
 img[alt="automaton"]{ float: right; }
 
 h1, h2, h3, h4, h5 { font-family: verdana;
