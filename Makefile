@@ -11,11 +11,14 @@ index.html: README.md pandoc.css template.html
 autfmt.pdf: README.md
 	$(PANDOC) README.md --latex-engine=xelatex -o $@
 
+examples/examples.zip: scripts/extract.pl README.md
+	scripts/extract.pl README.md
+	zip -9 $@ examples/*.hoa
 
 .PHONY: webpack gh-pages
-webpack: index.html
+webpack: index.html examples/examples.zip
 	$(MAKE) $(MAKEFLAGS) -C figures
-	tar zcvf www.tgz index.html pandoc.css figures/*.svg
+	tar zcvf www.tgz index.html pandoc.css figures/*.svg examples/examples.zip examples/*.hoa
 
 gh-pages: webpack
 	v=`git describe --always --abbrev=8 --dirty`; \

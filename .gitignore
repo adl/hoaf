@@ -3,4 +3,10 @@
 *~
 *.log
 *.aux
+*.svg
 autfmt.tex
+*.fls
+*.fdb_latexmk
+auto/
+*.tgz
+
