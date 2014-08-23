@@ -4,7 +4,7 @@ body {
     padding-left: 1em;
     max-width: 44em;
     color: black;
-    font-family: Verdana, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 100%;
     line-height: 140%;
     text-align: justify;
@@ -15,7 +15,7 @@ pre {
     padding: 0.5em;
 }
 code {
-    font-family: monospace;
+    font-family: "Courier New", Courier, monospace;
     font-size: 110%;
 }
 h1 a, h2 a, h3 a, h4 a, h5 a {
