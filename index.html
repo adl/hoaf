@@ -5,7 +5,6 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="pandoc.css" type="text/css" />
   <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
@@ -125,7 +124,7 @@ header-item ::= &quot;States:&quot; INT
 <p>It is recommended to specify the number of states whenever possible, so that readers may preallocate data structures and perform better error checking. Cases where <code>States:</code> could be missing are typically those where an automaton is constructed on-the-fly during its output, and the actual number of states is unknown before the end of the output.</p>
 <h3 id="start"><code>Start:</code></h3>
 <p>This optional header item specifies the initial states. Multiple initial states<br />can be specified by using several <code>Start:</code> headers with a different state number.</p>
-<p>Alternating automata can start in a conjunction of states specified<br />using the &quot;&amp;&quot; operator.</p>
+<p>Alternating automata can start in a conjunction of states specified<br />using the <code>&amp;</code> operator.</p>
 <pre><code>header-item ::= … | &quot;Start:&quot; state-conj
 state-conj ::= INT | INT &quot;&amp;&quot; state-conj</code></pre>
 <p>If the <code>Start:</code> header item is omitted, then the automaton has no<br />initial state and denotes an empty language.</p>
@@ -163,7 +162,7 @@ acceptance-cond ::= IDENTIFIER &quot;(&quot; &quot;!&quot;? INT &quot;)&quot;
                  | acceptance-cond &amp; acceptance-cond
                  | acceptance-cond | acceptance-cond
                  | BOOLEAN</code></pre>
-<p>The mandatory <code>Acceptance:</code> header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition. If m sets are declared, these sets are numbered from 0 to m-1. In this version of the format, the <code>IDENTIFIER</code> used in <code>acceptance-cond</code> can only be <code>F</code> or <code>I</code>.</p>
+<p>The mandatory <code>Acceptance:</code> header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition. If <span class="math">\(m\)</span> sets are declared, these sets are numbered from <span class="math">\(0\)</span> to <span class="math">\(m-1\)</span>. In this version of the format, the <code>IDENTIFIER</code> used in <code>acceptance-cond</code> can only be <code>F</code> or <code>I</code>.</p>
 <p>The acceptance condition is specified as a positive Boolean combination of expressions of the form <code>F(x)</code>, <code>F(!x)</code>, <code>I(x)</code>, <code>I(!x)</code> where:</p>
 <ul>
 <li><code>x</code> is an integer in <span class="math">\([0,m)\)</span> representing an accepting set,<br /></li>
@@ -526,7 +525,7 @@ State: 3 &quot;c&quot;
 <li><span class="math">\(Q\)</span> is a finite set of states.<br /></li>
 <li><span class="math">\(R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation. A triplet <span class="math">\((s,\ell,D)\in R\)</span> represents a transition from <span class="math">\(s\)</span> to the conjunction of states in <span class="math">\(D\)</span>, labeled by a Boolean formula <span class="math">\(\ell\in\B(\AP)\)</span>.<br /></li>
 <li><span class="math">\(I\subseteq(2^Q\setminus\{\emptyset\})\)</span> is a set of initial conjunctions of states.<br /></li>
-<li><span class="math">\(F=\{S_0,S_1,\ldots,S_k\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(\mathbf{S_i\subseteq R}\)</span> is a subset of <strong>transitions</strong>.<br /></li>
+<li><span class="math">\(F=\{S_0,S_1,\ldots,S_k\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(S_i\subseteq R\)</span> is a subset of <strong>transitions</strong>.<br /></li>
 <li><span class="math">\(\mathit{Acc}\)</span> is an Boolean formula over <span class="math">\(\{F(S),F(\lnot S),I(S),I(\lnot S)\mid S\in F\}\)</span>.</li>
 </ul>
 <p>The automaton is interpreted over infinite words, where letters are subsets of AP. A <strong>run</strong> over a word <span class="math">\(w=a_0 a_1\ldots\)</span> is an infinite labeled directed acyclic graph <span class="math">\((V,E,\lambda)\)</span> such that:</p>
@@ -554,7 +553,7 @@ State: 3 &quot;c&quot;
 <li><span class="math">\(Q\)</span> is a finite set of states.<br /></li>
 <li><span class="math">\(R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation,<br /></li>
 <li><span class="math">\(I\subseteq(2^Q\setminus\{\emptyset\})\)</span> is a set of initial conjunctions of states,<br /></li>
-<li><span class="math">\(F=\{S_0,S_1,\ldots,S_k\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(\mathbf{S_i\subseteq Q}\)</span> is a subset of <strong>states</strong>.<br /></li>
+<li><span class="math">\(F=\{S_0,S_1,\ldots,S_k\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(S_i\subseteq Q\)</span> is a subset of <strong>states</strong>.<br /></li>
 <li><span class="math">\(\mathit{Acc}\)</span> is an acceptance condition.</li>
 </ul>
 <p>The only difference with the transition-based definition is that <span class="math">\(S_i\subseteq Q\)</span> instead of <span class="math">\(S_i\subseteq R\)</span>. The acceptance condition is still a formula defined over <span class="math">\(F(S_i)\)</span>, <span class="math">\(F(\lnot S_i)\)</span>, <span class="math">\(I(S_i)\)</span>, or <span class="math">\(I(\lnot S_i)\)</span>, but this time each <span class="math">\(S_i\)</span> is a set of <strong>states</strong> that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation <span class="math">\(\lnot\)</span> should be done with respect to <span class="math">\(Q\)</span> instead of <span class="math">\(R\)</span>.</p>

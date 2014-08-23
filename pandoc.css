@@ -4,9 +4,10 @@ body {
     padding-left: 1em;
     max-width: 44em;
     color: black;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 100%;
-    line-height: 140%;
+    background-color: white;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 15px;
+    line-height: 20px;
     text-align: justify;
 }
 pre {
@@ -15,12 +16,22 @@ pre {
     padding: 0.5em;
 }
 code {
-    font-family: "Courier New", Courier, monospace;
-    font-size: 110%;
+    white-space: pre;
+    background-color: #f3f3f3;
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    font-size: 100%;
 }
+pre code {
+    background-color: #ececec;
+}
+
 h1 a, h2 a, h3 a, h4 a, h5 a {
     text-decoration: none;
     color: #0000d0;
+}
+
+h1 code, h2 code, h3 code, h4 code, h5 code {
+    background-color: white;
 }
 
 table.examples {
@@ -44,7 +55,7 @@ table.examples td {
 
 img[alt="automaton"]{ float: right; }
 
-h1, h2, h3, h4, h5 { font-family: verdana;
+h1, h2, h3, h4, h5 { font-family: Georgia, "Times New Roman",Times,serif;
                      font-weight: bold;
                      border-bottom: 1px dotted black;
                      color: #0000d0;
@@ -131,4 +142,9 @@ dd p {
 }
 #TOC:hover ul {
 	display: block;
+}
+
+#TOC ul code {
+    font-size: 11px;
+    background-color: #ddddff;
 }
