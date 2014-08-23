@@ -132,7 +132,7 @@ This optional header item specifies the initial states.    Multiple initial stat
 can be specified by using several `Start:` headers with a different state number.
 
 Alternating automata can start in a conjunction of states specified
-using the "&" operator.
+using the `&` operator.
 
     header-item ::= … | "Start:" state-conj
     state-conj ::= INT | INT "&" state-conj
@@ -190,7 +190,7 @@ The first three aliases are just mnemonic names for the atomic propositions, whi
                      | acceptance-cond | acceptance-cond
                      | BOOLEAN
 
-The mandatory `Acceptance:` header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition.  If m sets are declared, these sets are numbered from 0 to m-1.   In this version of the format, the `IDENTIFIER` used in `acceptance-cond` can only be `F` or `I`.
+The mandatory `Acceptance:` header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition.  If $m$ sets are declared, these sets are numbered from $0$ to $m-1$.   In this version of the format, the `IDENTIFIER` used in `acceptance-cond` can only be `F` or `I`.
 
 The acceptance condition is specified as a positive Boolean combination of expressions of the form `F(x)`, `F(!x)`, `I(x)`, `I(!x)`  where:
 
@@ -697,7 +697,7 @@ Each omega-automaton described in this format can be seen as an automaton $\lang
 - $Q$ is a finite set of states.
 - $R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A triplet $(s,\ell,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in\B(\AP)$.
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states.
-- $F=\{S_0,S_1,\ldots,S_k\}$ is a finite set of acceptance sets.  Each acceptance set $\mathbf{S_i\subseteq R}$ is a subset of **transitions**.
+- $F=\{S_0,S_1,\ldots,S_k\}$ is a finite set of acceptance sets.  Each acceptance set $S_i\subseteq R$ is a subset of **transitions**.
 - $\mathit{Acc}$ is an Boolean formula over $\{F(S),F(\lnot S),I(S),I(\lnot S)\mid S\in F\}$.
 
 The automaton is interpreted over infinite words, where letters are subsets of AP. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
@@ -733,7 +733,7 @@ The omega-automata are represented by a tuple $\langle\AP,Q,R,I,F,\mathit{Acc}\r
 - $Q$ is a finite set of states.
 - $R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})$ is a transition relation,
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states,
-- $F=\{S_0,S_1,\ldots,S_k\}$ is a finite set of acceptance sets.  Each acceptance set $\mathbf{S_i\subseteq Q}$ is a subset of **states**.
+- $F=\{S_0,S_1,\ldots,S_k\}$ is a finite set of acceptance sets.  Each acceptance set $S_i\subseteq Q$ is a subset of **states**.
 - $\mathit{Acc}$ is an acceptance condition.
 
 The only difference with the transition-based definition is that $S_i\subseteq Q$ instead of $S_i\subseteq R$.  The acceptance condition is still a formula defined over $F(S_i)$, $F(\lnot S_i)$, $I(S_i)$, or $I(\lnot S_i)$, but this time each $S_i$ is a set of **states** that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation $\lnot$ should be done with respect to $Q$ instead of $R$.
