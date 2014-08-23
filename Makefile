@@ -3,11 +3,10 @@
 html: index.html
 pdf: autfmt.pdf
 
-PANDOC = pandoc -f markdown_github -s
+PANDOC = pandoc -f markdown_github+tex_math_dollars -s
 
 index.html: README.md pandoc.css template.html
-	 $(PANDOC) README.md -c pandoc.css --toc --template template.html -o $@
-
+	 $(PANDOC) README.md  --mathjax -c pandoc.css --toc --template template.html -o $@
 autfmt.pdf: README.md
 	$(PANDOC) README.md --latex-engine=xelatex -o $@
 

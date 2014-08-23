@@ -39,11 +39,11 @@ The HOA format supports many types of finite automata over infinite words: autom
 Preliminary Notes
 -----------------
 
-Input alphabets of all considered automata types consist of letters that are subsets of atomic propositions (AP).  To make the automata description more concise, we label states or transitions of automata with Boolean formulas over AP representing choices between multiple letters.  A Boolean formula represents the set of letters satisfying the formula: a letter satisfies a formula if the valuation assigning True to all atomic propositions in the letter and False to all other atomic propositions is a model of the formula.  We use B(AP) do denote the set of Boolean formulas over AP.
+$\def\AP{\mathit{AP}}\def\B{\mathbb{B}}$Input alphabets of all considered automata types consist of letters that are subsets of atomic propositions ($\AP$).  To make the automata description more concise, we label states or transitions of automata with Boolean formulas over $\AP$ representing choices between multiple letters.  A Boolean formula represents the set of letters satisfying the formula: a letter satisfies a formula if the valuation assigning True to all atomic propositions in the letter and False to all other atomic propositions is a model of the formula.  We use $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
 
-The format considers acceptance conditions built on a finite set {S₀,S₁,…,Sₖ} of acceptance sets.  Each acceptance set Sᵢ is a subset of automata states and transitions.  Loosely speaking, an acceptance condition says which acceptance sets should be visited infinitely often and which only finitely often by a run to be accepting.  More precisely, an acceptance condition is a positive Boolean formula over atoms of the form F(Sᵢ), F(¬Sᵢ), I(Sᵢ), or I(¬Sᵢ).  The atom F(Sᵢ) indicates that all states and transitions in Sᵢ should occur at most finitely often in the run, while I(Sᵢ) denotes that some state or transition of Sᵢ should be visited infinitely often.  A state in an acceptance set is formally seen as an abbreviation for inclusion of all transitions leaving the state.  The negation symbol ¬ represents the complement of the set with respect to all transitions.  Many examples of classical acceptance conditions (Büchi, Rabin, Streett, parity) will be given later.
+The format considers acceptance conditions built on a finite set $\{S_0,S_1,\ldots,S_k\}$ of acceptance sets.  Each acceptance set $S_i$ is a subset of automata states and transitions.  Loosely speaking, an acceptance condition says which acceptance sets should be visited infinitely often and which only finitely often by a run to be accepting.  More precisely, an acceptance condition is a positive Boolean formula over atoms of the form $F(S_i)$, $F(\lnot S_i)$, $I(S_i)$, or $I(\lnot S_i)$.  The atom $F(S_i)$ indicates that all states and transitions in Sᵢ should occur at most finitely often in the run, while $I(S_i)$ denotes that some state or transition of Sᵢ should be visited infinitely often.  A state in an acceptance set is formally seen as an abbreviation for inclusion of all transitions leaving the state.  The negation symbol $\lnot$ represents the complement of the set with respect to all transitions.  Many examples of classical acceptance conditions (Büchi, Rabin, Streett, parity) will be given later.
 
-The format has a common approach to atomic propositions, states, and acceptance sets: the number of propositions/states/sets, say n, is first declared and all propositions/states/sets are then referenced as 0,1,…,n-1.
+The format has a common approach to atomic propositions, states, and acceptance sets: the number of propositions/states/sets, say $n$, is first declared and all propositions/states/sets are then referenced as $0,1,\ldots,n-1$.
 
 
 Common Tokens
@@ -52,7 +52,7 @@ Common Tokens
 - `STRING`: a C-like double-quoted string `"(\\.|[^\\"])*"`
 
 - `INT`: `0|[1-9][0-9]*`
-  A non-negative integer less than 2^31 written in base 10 (with no useless `0` at the beginning).
+  A non-negative integer less than $2^{31}$ written in base 10 (with no useless `0` at the beginning).
 
 - comments: `/* … */`
   Comments may be introduced between any token by enclosing them with `/*` and `*/` (with proper nesting, i.e.  `/*a/*b*/c*/`  is one comment).  C++-style comments are not considered because they require newlines.  Tools can use comments to output additional information (e.g. debugging data) that should be discarded upon reading.
@@ -167,7 +167,7 @@ Aliases are used to name atomic propositions or common subformulas that will be 
                  | label-expr "&" label-expr
                  | label-expr "|" label-expr
 
-The `label-expr` will also be used to label transitions in automata.  INT refers to an atomic proposition number (as specified on the `AP:` line), ANAME refers to a previously defined alias, and BOOLEAN are the Boolean values.  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.  The `!` operator has priority over `&` which in turn has priority over `|`.  Parentheses may be used for grouping.
+The `label-expr` will also be used to label transitions in automata.  `INT` refers to an atomic proposition number (as specified on the `AP:` line), `ANAME` refers to a previously defined alias, and `BOOLEAN` are the Boolean values (`t` or `f`).  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.  The `!` operator has priority over `&` which in turn has priority over `|`.  Parentheses may be used for grouping.
 
 
 Here are some examples of aliases:
@@ -194,7 +194,7 @@ The mandatory `Acceptance:` header item is used to specify the number of accepta
 
 The acceptance condition is specified as a positive Boolean combination of expressions of the form `F(x)`, `F(!x)`, `I(x)`, `I(!x)`  where:
 
-- `x` is an integer in [0,m) representing an accepting set,
+- `x` is an integer in $[0,m)$ representing an accepting set,
 - `!x` represents the complement of that set,
 - `F(x)` and `I(x)` specify whether that set should be visited finitely or infinitely often.
 
@@ -309,7 +309,7 @@ A promise automaton generated by the tableau construction of [`ltl2tgba`](http:/
 
 ### Streett acceptance
 
-Pairs of acceptance sets {(L₁,U₁),…,(Lₖ,Uₖ)}.  A run is accepting for a pair (Lᵢ,Uᵢ) iff the run visiting Lᵢ infinitely often implies that the run also visits Uᵢ infinitely often. A run is accepting iff it is accepting for all pairs. Assuming k=3 and numbering these 6 sets from left (L₁) to right (U₃), this corresponds to:
+Pairs of acceptance sets $\{(L_1,U_1),\ldots,(L_k,U_k)\}$.  A run is accepting for a pair $(L_i,U_i)$ iff the run visiting $L_i$ infinitely often implies that the run also visits $U_i$ infinitely often. A run is accepting iff it is accepting for all pairs. Assuming $k=3$ and numbering these 6 sets from left ($L_1$) to right ($U_3$), this corresponds to:
 
     acc-name: Streett 3
     Acceptance: 6 (F(0)|I(1))&(F(2)|I(3))&(F(4)|I(5))
@@ -324,11 +324,11 @@ Note that an acceptance set may be used more than once.  For instance when trans
 
 There are several equivalent presentations of Rabin acceptance, and working with tools that use different definitions is often a source of confusion.  Our notations of the acceptance condition accommodate all styles, while giving clear and unambiguous semantics.
 
-J. Klein, in [`ltl2dstar`](http://www.ltl2dstar.de/docs/ltl2dstar.html#dra_dsa), uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} where there should be some pair (Lᵢ,Uᵢ) such that states in Lᵢ are visited infinitely often, but states in Uᵢ are visited finitely often.  This is simply the complement of the Streett acceptance above:
+J. Klein, in [`ltl2dstar`](http://www.ltl2dstar.de/docs/ltl2dstar.html#dra_dsa), uses pairs $\{(L_1,U_1),\ldots,(L_k,U_k)\}$ where there should be some pair $(L_i,U_i)$ such that states in $L_i$ are visited infinitely often, but states in $U_i$ are visited finitely often.  This is simply the complement of the Streett acceptance above:
 
     Acceptance: 6 (I(0)&F(1))|(I(2)&F(3))|(I(4)&F(5))
 
-K. Löding, in [his diploma thesis](http://automata.rwth-aachen.de/~loeding/diploma_loeding.pdf), uses pairs {(E₁,F₁),…,(Eₖ,Fₖ)} where Eᵢ should be visited finitely often, and Fᵢ should be visited infinitely often.  This is just a reordering of the previous pairs:
+K. Löding, in [his diploma thesis](http://automata.rwth-aachen.de/~loeding/diploma_loeding.pdf), uses pairs $\{(E_1,F_1),\ldots,(E_k,F_k)\}$ where $E_i$ should be visited finitely often, and $F_i$ should be visited infinitely often.  This is just a reordering of the previous pairs:
 
     acc-name: Rabin 3
     Acceptance: 6 (F(0)&I(1))|(F(2)&I(3))|(F(4)&I(5))
@@ -336,19 +336,19 @@ K. Löding, in [his diploma thesis](http://automata.rwth-aachen.de/~loeding/dipl
 The parameter `3` in `acc-name: Rabin 3` refers to the number of Rabin pairs.
 The reason this definition was choosen for `acc-name: Rabin` is that is seems to be the most commonly used.
 
-S. Krishnan, in [his ISAAC'94 paper](http://dx.doi.org/10.1007/3-540-58325-4_202), uses pairs {(L₁,U₁),…,(Lₖ,Uₖ)} such that the set of recurring states of a an accepting run should intersect Lᵢ and be included in Uᵢ, for some pair (Lᵢ,Uᵢ).  A similar definition is used by Manna and Pnueli in their "Hierarchy of Temporal Properties" paper.  This corresponds to:
+S. Krishnan, in [his ISAAC'94 paper](http://dx.doi.org/10.1007/3-540-58325-4_202), uses pairs $\{(L_1,U_1),\ldots,(L_k,U_k)\}$ such that the set of recurring states of a an accepting run should intersect $L_i$ and be included in $U_i$, for some pair $(L_i,U_i)$.  A similar definition is used by Manna and Pnueli in their "Hierarchy of Temporal Properties" paper.  This corresponds to:
 
     Acceptance: 6 (I(0)&F(!1))|(I(2)&F(!3))|(I(4)&F(!5))
 
 
 ### Generalized Rabin acceptance
 
-Rabin acceptance has been generalized in works by [Křetínský & Esparza](http://arxiv.org/abs/1204.5057) or [Babiak et al.](http://dx.doi.org/10.1007/978-3-319-02444-8_4).  They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like {(E₁,{F₁₁,F₁₂,F₁₃}), (E₂,{F₂₁,F₂₂})}, and where a run is accepting if there exists some i such that the run visits finitely often the set Eᵢ and infinitely often all the sets Fᵢⱼ.  Such an acceptance condition can be specified with:
+Rabin acceptance has been generalized in works by [Křetínský & Esparza](http://arxiv.org/abs/1204.5057) or [Babiak et al.](http://dx.doi.org/10.1007/978-3-319-02444-8_4).  They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like $\{(E_1,\{F_{11},F_{12},F_{13}\}), (E_2,\{F_{21},F_{22}\})\}$, and where a run is accepting if there exists some i such that the run visits finitely often the set $E_i$ and infinitely often all the sets $F_{ij}$.  Such an acceptance condition can be specified with:
 
     acc-name: generalized-Rabin 2 3 2
     Acceptance: 7 (F(0)&I(1)&I(2)&I(3))|(F(4)&I(5)&I(6))
 
-The first parameter of `generalized-Rabin` gives the number of generalized pairs and the following parameters give the number of Fᵢⱼ sets in the corresponding pairs.
+The first parameter of `generalized-Rabin` gives the number of generalized pairs and the following parameters give the number of $F_{ij}$ sets in the corresponding pairs.
 
 ### Parity automata
 
@@ -410,7 +410,7 @@ Body of the Automaton
 
 The header is separated from the rest of the structure with `--BODY--`.
 
-States should be numbered from 0 to n-1 (where n is the value given by the `States:` header item if present) and specified with the following grammar:
+States should be numbered from $0$ to $n-1$ (where $n$ is the value given by the `States:` header item if present) and specified with the following grammar:
 
     body             ::= (state-name edges)*
     // the optional dstring can be used to name the state for
@@ -421,7 +421,7 @@ States should be numbered from 0 to n-1 (where n is the value given by the `Stat
     edge             ::= label? state-conj acc-sig?
     label            ::= "[" label-expr "]"
 
-The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from 0 to n-1, may be listed in any order, but should all be listed (i.e., if the header has `States: 10` then the body should have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
+The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from $0$ to $n-1$, may be listed in any order, but should all be listed (i.e., if the header has `States: 10` then the body should have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
 
 The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.  Since we use transition-based acceptance, when `acc-sig` is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to this set.  For instance `State: 0 {1 3}` would states that all transitions leaving state 0 are in acceptance sets 1 and 3.
 
@@ -431,7 +431,7 @@ If a state has a `label`, no outgoing edge of this state should have a `label`: 
 
 If an edge has a `label`, all edges of this state should have a `label`.
 
-If one state has no `label`, and no labeled edges, then there should be exactly 2^*a* edges listed, where *a* is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition *t* is the *i*-th transition of a state (starting with 0), then the label of *t* can be deduced by interpreting *i* as a bitset. The label is a set of atomic propositions such that the atomic proposition *j* is in the set if the *j*-th least significant bit of *i* is set to 1.
+If one state has no `label`, and no labeled edges, then there should be exactly $2^a$ edges listed, where $a$ is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition $t$ is the $i$-th transition of a state (starting with 0), then the label of $t$ can be deduced by interpreting $i$ as a bitset. The label is a set of atomic propositions such that the atomic proposition $j$ is in the set if the $j$-th least significant bit of $i$ is set to 1.
 
 
 Examples
@@ -689,31 +689,31 @@ Here is an example of alternating transition-based co-Büchi automaton encoding 
 Formal Semantics of Omega-Automata
 ----------------------------------
 
-The following definition specifies alternating automata with transition-based acceptance.  Because of universal branching, the initial states and destination states of transitions are non-empty sets of states (i.e., elements of 2^Q\∅) interpreted as conjunctions.  Automata without universal branching use just elements of Q as initial or destination states.
+The following definition specifies alternating automata with transition-based acceptance.  Because of universal branching, the initial states and destination states of transitions are non-empty sets of states (i.e., elements of $2^Q\setminus\{\emptyset\}$) interpreted as conjunctions.  Automata without universal branching use just elements of Q as initial or destination states.
 
-Each omega-automaton described in this format can be seen as an automaton (AP,Q,R,I,F,Acc) with labels on transitions and transition-based acceptance, where:
+Each omega-automaton described in this format can be seen as an automaton $\langle\AP,Q,R,I,F,\mathit{Acc}\rangle$ with labels on transitions and transition-based acceptance, where:
 
-- AP is a finite set of atomic propositions. We use B(AP) do denote the set of Boolean formulas over AP.
-- Q is a finite set of states.
-- R⊆Q⨯B(AP)⨯(2^Q\∅) is a transition relation.  A triplet (s,ℓ,D)∈R represents a transition from s to the conjunction of states in D, labeled by ℓ, where the label ℓ is a Boolean formula over AP.
-- I⊆(2^Q\∅) is a set of initial conjunctions of states.
-- F={S₀,S₁,…,Sₖ} is a finite set of acceptance sets.  Each acceptance set **Sᵢ⊆R** is a subset of **transitions**.
-- Acc is an Boolean formula over {F(S),F(¬S),I(S),I(¬S)|S∈F}.
+- $\AP$ is a finite set of atomic propositions. We use $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
+- $Q$ is a finite set of states.
+- $R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A triplet $(s,\ell,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in\B(\AP)$.
+- $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states.
+- $F=\{S_0,S_1,\ldots,S_k\}$ is a finite set of acceptance sets.  Each acceptance set $\mathbf{S_i\subseteq R}$ is a subset of **transitions**.
+- $\mathit{Acc}$ is an Boolean formula over $\{F(S),F(\lnot S),I(S),I(\lnot S)\mid S\in F\}$.
 
-The automaton is interpreted over infinite words, where letters are subsets of AP. A **run** over a word w=a₀a₁… is an infinite labeled directed acyclic graph (V,E,λ) such that:
+The automaton is interpreted over infinite words, where letters are subsets of AP. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
 
-- V is partitioned into V₀∪V₁∪V₂… where the sets Vᵢ are disjoint,
-- for each edge e∈E there exists i≥0 such that e∈Vᵢ⨯Vᵢ+₁,
-- λ:V→Q is a labeling function such that {λ(x)|x∈V₀}∈I and for each x∈Vᵢ there exists a transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E})∈R such that ℓᵢ evaluates to True in the valuation assigning True to atomic propositions in aᵢ and False to all other atomic propositions. We say that the transition (λ(x),ℓᵢ,{λ(y)|(x,y)∈E}) is **applied to** x.
+- $V$ is partitioned into $V_0\cup V_₁\cup V_2\ldots$ where the sets $V_i$ are disjoint,
+- for each edge $e\in E$ there exists $i\ge 0$ such that $e\in V_i\times V_{i+1}$,
+- $\lambda:V\to Q$ is a labeling function such that $\{\lambda(x)\mid x\in V_0\}\in I$ and for each $x\in V_i$ there exists a transition $(\lambda(x),\ell_i,\{\lambda(y)\mid (x,y)\in E\})\in R$ such that $\ell_i$ evaluates to True in the valuation assigning True to atomic propositions in $a_i$ and False to all other atomic propositions. We say that the transition $(\lambda(x),\ell_i,\{\lambda(y)\mid(x,y)\in E\})$ is **applied to** $x$.
 
 Runs of automata without universal branching are simply infinite linear sequences of nodes.
 
-A run is **accepting** if each branch of the run (i.e., each infinite oriented path starting in V₀) satisfies the acceptance condition Acc, where a branch satisfies
+A run is **accepting** if each branch of the run (i.e., each infinite oriented path starting in $V_0$) satisfies the acceptance condition $\mathit{Acc}$, where a branch satisfies
 
-- F(S) if all transitions in S are applied only to finitely many nodes on the branch.
-- F(¬S) if all transitions outside S are applied only to finitely many nodes on the branch.
-- I(S) if some transition in S is applied to infinitely many nodes on the branch.
-- I(¬S) if some transition outside S is applied to infinitely many nodes on the branch.
+- $F(S)$ if all transitions in $S$ are applied only to finitely many nodes on the branch.
+- $F(\lnot S)$ if all transitions outside $S$ are applied only to finitely many nodes on the branch.
+- $I(S)$ if some transition in $S$ is applied to infinitely many nodes on the branch.
+- $I(\lnot S)$ if some transition outside $S$ is applied to infinitely many nodes on the branch.
 
 The automaton recognizes the language of all words for which there exists an accepting run of the automaton.
 
@@ -727,16 +727,16 @@ Semantics for Pure State-Based Acceptance
 
 In tools that manipulate only state-based acceptance, acceptance will only be used for states, and therefore the transition-based semantics are inconvenient.   For these tools, one can consider the following semantics.
 
-The omega-automata are represented by a tuple (AP,Q,R,I,F,Acc), where:
+The omega-automata are represented by a tuple $\langle\AP,Q,R,I,F,\mathit{Acc}\rangle$, where:
 
-- AP is a finite set of atomic propositions.
-- Q is a finite set of states.
-- R⊆Q⨯B(AP)⨯(2^Q\∅) is a transition relation,
-- I⊆(2^Q\∅) is a set of initial conjunctions of states,
-- F={S₀,S₁,…,Sₖ} is a finite set of acceptance sets.  Each acceptance set **Sᵢ⊆Q** is a subset of **states**.
-- Acc is an acceptance condition.
+- $\AP$ is a finite set of atomic propositions.
+- $Q$ is a finite set of states.
+- $R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})$ is a transition relation,
+- $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states,
+- $F=\{S_0,S_1,\ldots,S_k\}$ is a finite set of acceptance sets.  Each acceptance set $\mathbf{S_i\subseteq Q}$ is a subset of **states**.
+- $\mathit{Acc}$ is an acceptance condition.
 
-The only difference with the transition-based definition is that Sᵢ⊆Q instead of Sᵢ⊆R.  The acceptance condition is still a formula defined over F(Sᵢ), F(¬Sᵢ), I(Sᵢ), or I(¬Sᵢ), but this time each Sᵢ is a set of **states** that must occur infinitely or finitely often on each branch of an accepting run, and  the complement operation ¬ should be done with respect to Q instead of R.
+The only difference with the transition-based definition is that $S_i\subseteq Q$ instead of $S_i\subseteq R$.  The acceptance condition is still a formula defined over $F(S_i)$, $F(\lnot S_i)$, $I(S_i)$, or $I(\lnot S_i)$, but this time each $S_i$ is a set of **states** that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation $\lnot$ should be done with respect to $Q$ instead of $R$.
 
 An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptance set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language.  If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.
 
