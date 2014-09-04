@@ -218,7 +218,9 @@ name: &quot;BA for GFa &amp; GFb&quot;</code></pre>
 <li><code>unambiguous</code> hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton (this also applies in the presence of universal branching)<br /></li>
 <li><code>stutter-invariant</code> hints that the automaton describes a <a href="http://dx.doi.org/10.1007/3-540-48683-6_22">stutter-invariant</a> property<br /></li>
 <li><code>weak</code> hints that in each strongly connected component, all transitions (or all states) belong to the same accepting sets<br /></li>
-<li><code>inherently-weak</code> hints that the automaton does not mix accepting cycles and non-accepting cycles in the same SCC</li>
+<li><code>inherently-weak</code> hints that the automaton does not mix accepting cycles and non-accepting cycles in the same SCC<br /></li>
+<li><code>terminal</code> hints that the automaton is weak, that no non-accepting cycle can be reached from any accepting cycle, and that each SCC containing an accepting cycle is complete, i.e., the transition function is definied for each state of the SCC and each letter<br /></li>
+<li><code>tight</code> hints that the automaton is <a href="http://dx.doi.org/10.1007/978-3-540-31980-1_32">tight</a>, i.e. for every word <span class="math">\(w=w(0)w(1)\ldots\)</span> accepted by the automaton there exists an accepting run over <span class="math">\(w\)</span> such that whenever two suffixes <span class="math">\(w_i=w(i)w(i+1)\ldots\)</span> and <span class="math">\(w_j=w(j)w(j+1)\ldots\)</span> of <span class="math">\(w\)</span> are identical, the run reaches identical states (or sets of the states in the case of alternating automaton) by reading the corresponding prefixes <span class="math">\(w(0)\ldots w(i-1)\)</span> and <span class="math">\(w(0)\ldots w(j-1)\)</span></li>
 </ul>
 <p>Note that even if some property implies another one (for instance <code>explicit-labels</code> implies <code>trans-labels</code>) it is recommended to specify both.</p>
 <h2 id="acceptance-specifications">Acceptance Specifications</h2>
