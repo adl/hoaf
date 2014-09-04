@@ -269,6 +269,8 @@ The following properties have specified meanings, but additional may be added, a
 - `stutter-invariant` hints that the automaton describes a [stutter-invariant](http://dx.doi.org/10.1007/3-540-48683-6_22) property
 - `weak` hints that in each strongly connected component, all transitions (or all states) belong to the same accepting sets
 - `inherently-weak` hints that the automaton does not mix accepting cycles and non-accepting cycles in the same SCC
+- `terminal` hints that the automaton is weak, that no non-accepting cycle can be reached from any accepting cycle, and that each SCC containing an accepting cycle is complete, i.e., the transition function is definied for each state of the SCC and each letter
+- `tight` hints that the automaton is [tight](http://dx.doi.org/10.1007/978-3-540-31980-1_32), i.e. for every word $w=w(0)w(1)\ldots$ accepted by the automaton there exists an accepting run over $w$ such that whenever two suffixes $w_i=w(i)w(i+1)\ldots$ and $w_j=w(j)w(j+1)\ldots$ of $w$ are identical, the run reaches identical states (or sets of the states in the case of alternating automaton) by reading the corresponding prefixes $w(0)\ldots w(i-1)$ and $w(0)\ldots w(j-1)$
 
 Note that even if some property implies another one (for instance `explicit-labels` implies `trans-labels`) it is recommended to specify both.
 
