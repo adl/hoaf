@@ -4,7 +4,7 @@ States: 4
 Start: 0&2
 Start: 3
 acc-name: co-Buchi
-Acceptance: 1 F(0)
+Acceptance: 1 Fin(0)
 AP: 3 "a" "b" "c"
 --BODY--
 State: 0 "Fa"

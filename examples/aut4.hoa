@@ -3,7 +3,7 @@ name: "GFa & GF(b & c)"
 States: 1
 Start: 0
 acc-name: generalized-Buchi 2
-Acceptance: 2 (I(0) & I(1))
+Acceptance: 2 (Inf(0) & Inf(1))
 AP: 3 "a" "b" "c"
 Alias: @a 0
 Alias: @bc 1 & 2

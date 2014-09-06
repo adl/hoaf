@@ -2,7 +2,7 @@ HOA: v1
 States: 2
 Start: 0
 acc-name: Rabin 1
-Acceptance: 2 (F(0) & I(1))
+Acceptance: 2 (Fin(0) & Inf(1))
 AP: 2 "a" "b"
 --BODY--
 State: 0 "a U b"   /* An example of named state */

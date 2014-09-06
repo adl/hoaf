@@ -2,7 +2,7 @@ HOA: v1
 name: "GFa | G(b <-> Xa)"
 Start: 0
 acc-name: Buchi
-Acceptance: 1 I(0)
+Acceptance: 1 Inf(0)
 AP: 2 "a" "b"
 properties: explicit-labels trans-labels trans-acc
 --BODY--

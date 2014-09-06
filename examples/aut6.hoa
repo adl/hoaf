@@ -2,7 +2,7 @@ HOA: v1
 States: 3
 Start: 0
 acc-name: Buchi
-Acceptance: 1 I(0)
+Acceptance: 1 Inf(0)
 AP: 1 "a"
 --BODY--
 State: 0

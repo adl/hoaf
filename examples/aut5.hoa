@@ -4,7 +4,7 @@ States: 2
 Start: 0
 Start: 1
 acc-name: Buchi
-Acceptance: 1 I(0)
+Acceptance: 1 Inf(0)
 AP: 1 "a"
 --BODY--
 State: [0] 0 {0}
