@@ -87,7 +87,7 @@ Additionally, the `--ABORT--` token may be used after any token of this grammar 
 Header
 ------
 
-    header ::= format-version header-items*
+    header ::= format-version header-item*
     format-version ::= "HOA:" IDENTIFIER
     header-item ::= "States:" INT
                  | "Start:" state-conj
@@ -128,17 +128,14 @@ It is recommended to specify the number of states whenever possible, so that rea
 
 ### `Start:`
 
-This optional header item specifies the initial states.    Multiple initial states
-can be specified by using several `Start:` headers with a different state number.
+This optional header item specifies the initial states.    Multiple initial states can be specified by using several `Start:` headers with a different state number.
 
-Alternating automata can start in a conjunction of states specified
-using the `&` operator.
+Alternating automata can start in a conjunction of states specified using the `&` operator.
 
     header-item ::= … | "Start:" state-conj
-    state-conj ::= INT | INT "&" state-conj
+    state-conj ::= INT | state-conj "&" INT
 
-If the `Start:` header item is omitted, then the automaton has no
-initial state and denotes an empty language.
+If the `Start:` header item is omitted, then the automaton has no initial state and denotes an empty language.
 
 
 ### `AP:`
@@ -185,9 +182,9 @@ The first three aliases are just mnemonic names for the atomic propositions, whi
     header-item ::= … | "Acceptance:" INT acceptance-cond
 
     acceptance-cond ::= IDENTIFIER "(" "!"? INT ")"
-                     | (acceptance-cond)
-                     | acceptance-cond & acceptance-cond
-                     | acceptance-cond | acceptance-cond
+                     | "(" acceptance-cond ")"
+                     | acceptance-cond "&" acceptance-cond
+                     | acceptance-cond "|" acceptance-cond
                      | BOOLEAN
 
 The mandatory `Acceptance:` header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition.  If $m$ sets are declared, these sets are numbered from $0$ to $m-1$.   In this version of the format, the `IDENTIFIER` used in `acceptance-cond` can only be `Fin` or `Inf`.
@@ -419,12 +416,11 @@ The header is separated from the rest of the structure with `--BODY--`.
 
 States should be numbered from $0$ to $n-1$ (where $n$ is the value given by the `States:` header item if present) and specified with the following grammar:
 
-    body             ::= (state-name edges)*
+    body             ::= (state-name edge*)*
     // the optional dstring can be used to name the state for
     // cosmetic or debugging purposes, as in ltl2dstar's format
     state-name       ::= "State:" label? INT STRING? acc-sig?
     acc-sig          ::= "{" INT* "}"
-    edges            ::= edge*
     edge             ::= label? state-conj acc-sig?
     label            ::= "[" label-expr "]"
 
