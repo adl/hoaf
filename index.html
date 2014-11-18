@@ -97,7 +97,7 @@
 <pre><code>automaton ::= header &quot;--BODY--&quot; body &quot;--END--&quot;</code></pre>
 <p>Additionally, the <code>--ABORT--</code> token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output. In a streaming scenario, a new automaton can start immediately after such an <code>--ABORT--</code> token. Note that <code>foo--ABORT--</code> is a valid identifier and shall not abort streaming: to ensure proper tokenization always add a space or newline before <code>--ABORT--</code> to abort the output.</p>
 <h2 id="header">Header</h2>
-<pre><code>header ::= format-version header-items*
+<pre><code>header ::= format-version header-item*
 format-version ::= &quot;HOA:&quot; IDENTIFIER
 header-item ::= &quot;States:&quot; INT
              | &quot;Start:&quot; state-conj
@@ -123,11 +123,11 @@ header-item ::= &quot;States:&quot; INT
 <p>An empty automaton, with no states, can be specified with <code>States: 0</code>.</p>
 <p>It is recommended to specify the number of states whenever possible, so that readers may preallocate data structures and perform better error checking. Cases where <code>States:</code> could be missing are typically those where an automaton is constructed on-the-fly during its output, and the actual number of states is unknown before the end of the output.</p>
 <h3 id="start"><code>Start:</code></h3>
-<p>This optional header item specifies the initial states. Multiple initial states<br />can be specified by using several <code>Start:</code> headers with a different state number.</p>
-<p>Alternating automata can start in a conjunction of states specified<br />using the <code>&amp;</code> operator.</p>
+<p>This optional header item specifies the initial states. Multiple initial states can be specified by using several <code>Start:</code> headers with a different state number.</p>
+<p>Alternating automata can start in a conjunction of states specified using the <code>&amp;</code> operator.</p>
 <pre><code>header-item ::= … | &quot;Start:&quot; state-conj
-state-conj ::= INT | INT &quot;&amp;&quot; state-conj</code></pre>
-<p>If the <code>Start:</code> header item is omitted, then the automaton has no<br />initial state and denotes an empty language.</p>
+state-conj ::= INT | state-conj &quot;&amp;&quot; INT</code></pre>
+<p>If the <code>Start:</code> header item is omitted, then the automaton has no initial state and denotes an empty language.</p>
 <h3 id="ap"><code>AP:</code></h3>
 <p><code>AP:</code> gives the number of atomic propositions, followed by the name of each of these atomic propositions (using double-quoted C-strings). Atomic propositions are implicitly numbered from left to right, starting at 0.</p>
 <p>For instance</p>
@@ -158,9 +158,9 @@ Alias: @c @ps|@a2</code></pre>
 <pre><code>header-item ::= … | &quot;Acceptance:&quot; INT acceptance-cond
 
 acceptance-cond ::= IDENTIFIER &quot;(&quot; &quot;!&quot;? INT &quot;)&quot;
-                 | (acceptance-cond)
-                 | acceptance-cond &amp; acceptance-cond
-                 | acceptance-cond | acceptance-cond
+                 | &quot;(&quot; acceptance-cond &quot;)&quot;
+                 | acceptance-cond &quot;&amp;&quot; acceptance-cond
+                 | acceptance-cond &quot;|&quot; acceptance-cond
                  | BOOLEAN</code></pre>
 <p>The mandatory <code>Acceptance:</code> header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition. If <span class="math">\(m\)</span> sets are declared, these sets are numbered from <span class="math">\(0\)</span> to <span class="math">\(m-1\)</span>. In this version of the format, the <code>IDENTIFIER</code> used in <code>acceptance-cond</code> can only be <code>Fin</code> or <code>Inf</code>.</p>
 <p>The acceptance condition is specified as a positive Boolean combination of expressions of the form <code>Fin(x)</code>, <code>Fin(!x)</code>, <code>Inf(x)</code>, and <code>Inf(!x)</code> where:</p>
@@ -305,12 +305,11 @@ Acceptance: 0 f</code></pre>
 <h2 id="body-of-the-automaton">Body of the Automaton</h2>
 <p>The header is separated from the rest of the structure with <code>--BODY--</code>.</p>
 <p>States should be numbered from <span class="math">\(0\)</span> to <span class="math">\(n-1\)</span> (where <span class="math">\(n\)</span> is the value given by the <code>States:</code> header item if present) and specified with the following grammar:</p>
-<pre><code>body             ::= (state-name edges)*
+<pre><code>body             ::= (state-name edge*)*
 // the optional dstring can be used to name the state for
 // cosmetic or debugging purposes, as in ltl2dstar&#39;s format
 state-name       ::= &quot;State:&quot; label? INT STRING? acc-sig?
 acc-sig          ::= &quot;{&quot; INT* &quot;}&quot;
-edges            ::= edge*
 edge             ::= label? state-conj acc-sig?
 label            ::= &quot;[&quot; label-expr &quot;]&quot;</code></pre>
 <p>The <code>INT</code> occurring in the <code>state-name</code> rule is the number of this state. States should be numbered from <span class="math">\(0\)</span> to <span class="math">\(n-1\)</span>, may be listed in any order, but should all be listed (i.e., if the header has <code>States: 10</code> then the body should have ten <code>State: INT</code> statements, with all numbers from 0 to 9). In addition to a number, a state may optionally be given a name (the <code>STRING</code> token) for cosmetic or practical purposes.</p>
