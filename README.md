@@ -207,6 +207,8 @@ For instance
 
 declares two acceptance sets.  A run of the automaton is accepting if it visits the complement of the first set finitely often, and if it visits the second set infinitely often.  More examples will be given in a later section.
 
+An acceptance condition declaring $m$ sets needs not actually use all of these sets.  In this case the unused sets can be ignored if they appear in the body of the automaton.
+
 ### `acc-name:`
 
     header-item ::= … | "acc-name:" IDENTIFIER (IDENTIFIER | INT)*
