@@ -175,6 +175,7 @@ acceptance-cond ::= IDENTIFIER &quot;(&quot; &quot;!&quot;? INT &quot;)&quot;
 <p>For instance</p>
 <pre><code>Acceptance: 2 Fin(!0) &amp; Inf(1)</code></pre>
 <p>declares two acceptance sets. A run of the automaton is accepting if it visits the complement of the first set finitely often, and if it visits the second set infinitely often. More examples will be given in a later section.</p>
+<p>An acceptance condition declaring <span class="math">\(m\)</span> sets needs not actually use all of these sets. In this case the unused sets can be ignored if they appear in the body of the automaton.</p>
 <h3 id="acc-name"><code>acc-name:</code></h3>
 <pre><code>header-item ::= … | &quot;acc-name:&quot; IDENTIFIER (IDENTIFIER | INT)*</code></pre>
 <p>This optional header item gives a symbolic name to the acceptance conditions specified by the mandatory <code>Acceptance:</code> header item.</p>
@@ -532,7 +533,7 @@ State: 3 &quot;c&quot;
 <li><span class="math">\(R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation. A triplet <span class="math">\((s,\ell,D)\in R\)</span> represents a transition from <span class="math">\(s\)</span> to the conjunction of states in <span class="math">\(D\)</span>, labeled by a Boolean formula <span class="math">\(\ell\in\B(\AP)\)</span>.<br /></li>
 <li><span class="math">\(I\subseteq(2^Q\setminus\{\emptyset\})\)</span> is a set of initial conjunctions of states.<br /></li>
 <li><span class="math">\(F=\{S_0,S_1,\ldots,S_k\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(S_i\subseteq R\)</span> is a subset of <strong>transitions</strong>.<br /></li>
-<li><span class="math">\(\mathit{Acc}\)</span> is an Boolean formula over <span class="math">\(\{\Fin(S),\Fin(\lnot S),\Inf(S),\Inf(\lnot S)\mid S\in F\}\)</span>.</li>
+<li><span class="math">\(\mathit{Acc}\)</span> is a Boolean formula over <span class="math">\(\{\Fin(S),\Fin(\lnot S),\Inf(S),\Inf(\lnot S)\mid S\in F\}\)</span>.</li>
 </ul>
 <p>The automaton is interpreted over infinite words, where letters are subsets of AP. A <strong>run</strong> over a word <span class="math">\(w=a_0 a_1\ldots\)</span> is an infinite labeled directed acyclic graph <span class="math">\((V,E,\lambda)\)</span> such that:</p>
 <ul>
