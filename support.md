@@ -57,7 +57,7 @@ Prism's source code is distributed under the [GNU General Public License, versio
 `Rabinizer`
 -----------
 
-[Rabinizer 3](https://www7.in.tum.de/~kretinsk/rabinizer3.html) can translate can translate LTL formulas into three kinds of automata that can be output in HOA:
+[Rabinizer 3](https://www7.in.tum.de/~kretinsk/rabinizer3.html) can translate can translate LTL formulas into four kinds of automata that can be output in HOA:
 
 - deterministic Rabin automata,
 - deterministic transition-based Rabin automata,
