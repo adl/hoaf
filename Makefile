@@ -1,12 +1,15 @@
 .PHONY: html pdf
 
-html: index.html
+html: index.html support.html
 pdf: autfmt.pdf
 
 PANDOC = pandoc -f markdown_github+tex_math_dollars -s
 
 index.html: README.md pandoc.css template.html
 	 $(PANDOC) README.md  --mathjax -c pandoc.css --toc --template template.html -o $@
+support.html: support.md pandoc.css template.html
+	 $(PANDOC) support.md -c pandoc.css --toc --template template.html -o $@
+
 autfmt.pdf: README.md
 	$(PANDOC) README.md --latex-engine=xelatex -o $@
 
@@ -15,9 +18,9 @@ examples/examples.zip: scripts/extract.pl README.md
 	zip -9 $@ examples/*.hoa
 
 .PHONY: webpack gh-pages
-webpack: index.html examples/examples.zip
+webpack: index.html support.html examples/examples.zip
 	$(MAKE) $(MAKEFLAGS) -C figures
-	tar zcvf www.tgz index.html examples.html pandoc.css figures/*.svg examples/examples.zip examples/*.hoa
+	tar zcvf www.tgz index.html examples.html support.html pandoc.css figures/*.svg examples/examples.zip examples/*.hoa
 
 gh-pages: webpack
 	v=`git describe --always --abbrev=8 --dirty`; \
