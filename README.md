@@ -141,7 +141,7 @@ If the `Start:` header item is omitted, then the automaton has no initial state 
 
 ### `AP:`
 
-`AP:` gives the number of atomic propositions, followed by the name of each of these atomic propositions (using double-quoted C-strings).  Atomic propositions are implicitly numbered from left to right, starting at 0.
+`AP:` gives the number of atomic propositions, followed by unique names for each of these atomic propositions (using double-quoted C-strings).  Atomic propositions are implicitly numbered from left to right, starting at 0.
 
 For instance
 
@@ -153,7 +153,7 @@ specifies three atomic propositions:
 - atomic proposition 1 is `"proc@state"`
 - atomic proposition 2 is `"a[x] >= 2"`
 
-The number of double-quoted strings must match exactly the number given.  This number may be 0, in which case it is not followed by any string, and this is equivalent to not using `AP:`.
+The number of double-quoted strings must match exactly the number given, and should all be different.  This number may be 0, in which case it is not followed by any string, and this is equivalent to not using `AP:`.
 
 ### `Alias:`
 
