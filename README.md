@@ -15,6 +15,7 @@ If you see any problem, please [report it on the issue tracker](https://github.c
 
 If you implement it, please do keep track of the changes we apply to this document as we resolve [issues](https://github.com/adl/hoaf/issues?state=open) until version 1 is formally released.
 
+Current tool support is described on a [separate page](support.html).
 
 Goals
 -----
