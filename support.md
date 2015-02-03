@@ -38,10 +38,11 @@ Since version 1.1.0, [`ltl3ba`](http://sourceforge.net/projects/ltl3ba/) can tra
 `ltl3dra`
 ---------
 
-Since version 0.2, [`ltl3dra`](http://sourceforge.net/projects/ltl3dra/) can translate LTL formulas into two kinds of automata that can be output in the HOA format:
+Since version 0.2, [`ltl3dra`](http://sourceforge.net/projects/ltl3dra/) can translate LTL formulas into three kinds of automata that can be output in the HOA format:
 
 - deterministic Rabin automata,
-- deterministic transition-based generalized Rabin automata.
+- deterministic transition-based generalized Rabin automata,
+- very weak co-Büchi alternating automata.
 
 `ltl3dra`'s source code is distributed under the [GNU General Public License, version 2](http://www.gnu.org/licenses/gpl-2.0.html).
 
