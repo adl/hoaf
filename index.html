@@ -63,6 +63,7 @@
 <p>The <a href="http://adl.github.io/hoaf/">HTML version of the document</a> is updated regularly from <a href="https://github.com/adl/hoaf/">the sources on github</a>. All the examples shown here can also be <a href="http://adl.github.io/hoaf/examples.html">downloaded separately</a> to exercise a parser.</p>
 <p>If you see any problem, please <a href="https://github.com/adl/hoaf/issues?state=open">report it on the issue tracker</a>.</p>
 <p>If you implement it, please do keep track of the changes we apply to this document as we resolve <a href="https://github.com/adl/hoaf/issues?state=open">issues</a> until version 1 is formally released.</p>
+<p>Current tool support is described on a <a href="support.html">separate page</a>.</p>
 <h2 id="goals">Goals</h2>
 <p>Design a format, inspired from <a href="http://www.ltl2dstar.de/docs/ltl2dstar.html#output-format"><code>ltl2dstar</code>'s format</a>, but which:</p>
 <ul>
@@ -129,7 +130,7 @@ header-item ::= &quot;States:&quot; INT
 state-conj ::= INT | state-conj &quot;&amp;&quot; INT</code></pre>
 <p>If the <code>Start:</code> header item is omitted, then the automaton has no initial state and denotes an empty language.</p>
 <h3 id="ap"><code>AP:</code></h3>
-<p><code>AP:</code> gives the number of atomic propositions, followed by the name of each of these atomic propositions (using double-quoted C-strings). Atomic propositions are implicitly numbered from left to right, starting at 0.</p>
+<p><code>AP:</code> gives the number of atomic propositions, followed by unique names for each of these atomic propositions (using double-quoted C-strings). Atomic propositions are implicitly numbered from left to right, starting at 0.</p>
 <p>For instance</p>
 <pre><code>AP: 3 &quot;a&quot; &quot;proc@state&quot; &quot;a[x] &gt;= 2&quot;</code></pre>
 <p>specifies three atomic propositions:</p>
@@ -138,7 +139,7 @@ state-conj ::= INT | state-conj &quot;&amp;&quot; INT</code></pre>
 <li>atomic proposition 1 is <code>&quot;proc@state&quot;</code><br /></li>
 <li>atomic proposition 2 is <code>&quot;a[x] &gt;= 2&quot;</code></li>
 </ul>
-<p>The number of double-quoted strings must match exactly the number given. This number may be 0, in which case it is not followed by any string, and this is equivalent to not using <code>AP:</code>.</p>
+<p>The number of double-quoted strings must match exactly the number given, and should all be different. This number may be 0, in which case it is not followed by any string, and this is equivalent to not using <code>AP:</code>.</p>
 <h3 id="alias"><code>Alias:</code></h3>
 <p>Aliases are used to name atomic propositions or common subformulas that will be used later as labels in the automaton. This format can be used without any aliases, refering to atomic propositions by their numbers. Naming atomic propositions using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.</p>
 <pre><code>headeritem ::= … | &quot;Alias:&quot; ANAME label-expr

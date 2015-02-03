@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <link rel="stylesheet" href="pandoc.css" type="text/css" />
+</head>
+<body>
+<div id="TOC">
+<div id="TOCTXT">Table of Contents</div>
+<ul>
+<li><a href="#hoa-format-tool-support">HOA Format Tool Support</a><ul>
+<li><a href="#jhoafparser-library"><code>jhoafparser</code> library</a></li>
+<li><a href="#ltl2dstar"><code>ltl2dstar</code></a></li>
+<li><a href="#ltl3ba"><code>ltl3ba</code></a></li>
+<li><a href="#ltl3dra"><code>ltl3dra</code></a></li>
+<li><a href="#prism"><code>Prism</code></a></li>
+<li><a href="#rabinizer"><code>Rabinizer</code></a></li>
+<li><a href="#spot"><code>Spot</code></a></li>
+</ul></li>
+</ul>
+</div>
+<h1 id="hoa-format-tool-support">HOA Format Tool Support</h1>
+<p>The following tools implement support for the <a href="index.html">HOA format</a>, either as output or as input.</p>
+<h2 id="jhoafparser-library"><code>jhoafparser</code> library</h2>
+<p>This is a Java parser for the HOA format. This parser includes an abstraction layer (<code>HOAConsumer</code>) allowing applications to react to the different parts of the format.</p>
+<p><strong>LINK MISSING</strong></p>
+<p><code>jhoafparser</code> is distributed under the <a href="https://www.gnu.org/licenses/lgpl-2.1.html">GNU Lesser General Public License, version 2.1</a></p>
+<h2 id="ltl2dstar"><code>ltl2dstar</code></h2>
+<p>Since version 0.5.2, <a href="http://ltl2dstar.de/"><code>ltl2dstar</code></a> can convert LTL formulas into three kinds of automata that can be output in the HOA format:</p>
+<ul>
+<li>deterministic Rabin automata,<br /></li>
+<li>deterministic Street automata,<br /></li>
+<li>non-deterministic Büchi automata (after conversion from DRA or DSA).</li>
+</ul>
+<p><code>ltl2dstar</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
+<h2 id="ltl3ba"><code>ltl3ba</code></h2>
+<p>Since version 1.1.0, <a href="http://sourceforge.net/projects/ltl3ba/"><code>ltl3ba</code></a> can translate LTL formulas into three kinds of automata that can be output in the HOA format:</p>
+<ul>
+<li>Büchi automata,<br /></li>
+<li>transition-based generalized Büchi automata,<br /></li>
+<li>very weak co-Büchi alternating automata.</li>
+</ul>
+<p><code>ltl3ba</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
+<h2 id="ltl3dra"><code>ltl3dra</code></h2>
+<p>Since version 0.2, <a href="http://sourceforge.net/projects/ltl3dra/"><code>ltl3dra</code></a> can translate LTL formulas into two kinds of automata that can be output in the HOA format:</p>
+<ul>
+<li>deterministic Rabin automata,<br /></li>
+<li>deterministic transition-based generalized Rabin automata.</li>
+</ul>
+<p><code>ltl3dra</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
+<h2 id="prism"><code>Prism</code></h2>
+<p>A development version of Prism (<strong>LINK MISSING</strong>) supports all acceptance conditions in accordance with the HOA format, and will use <code>jhoafparser</code> to input HOA.</p>
+<p>Prism's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
+<h2 id="rabinizer"><code>Rabinizer</code></h2>
+<p><a href="https://www7.in.tum.de/~kretinsk/rabinizer3.html">Rabinizer 3</a> can translate can translate LTL formulas into four kinds of automata that can be output in the HOA format:</p>
+<ul>
+<li>deterministic Rabin automata,<br /></li>
+<li>deterministic transition-based Rabin automata,<br /></li>
+<li>deterministic generalized Rabin automata,<br /></li>
+<li>deterministic transition-based generalized Rabin automata.</li>
+</ul>
+<p><em>The web page and source code of Rabinizer does not state any license.</em></p>
+<h2 id="spot"><code>Spot</code></h2>
+<p><a href="http://spot.lip6.fr/wiki/GetSpot">Spot 1.2.6</a> contains <code>ltl2tgba</code>, a tool that translates LTL or PSL formulas, and <code>dstar2tgba</code> a tool that convert <code>ltl2dstar</code>'s Rabin or Streett output (expressed in the original DSTAR format, not yet in the HOA format). Both tools can output the following types of automata in the HOA format:</p>
+<ul>
+<li>transition-based generalized Büchi automata,<br /></li>
+<li>Büchi automata,<br /></li>
+<li>monitors.</li>
+</ul>
+<p>The development version of what will become Spot 2.0 has several tools that can output or input these automata. In addition to <code>ltl2tgba</code> and <code>dstar2tgba</code>, there are the following tools:</p>
+<ul>
+<li><code>randaut</code>: generates random generalized Büchi automata<br /></li>
+<li><code>autfilt</code>: reads automata (in the HOA format, the LBT's format or never claims), transform them, filter them, and output them (in the HOA format, the LBT's format, as never claims, or dot output for graphical display)<br /></li>
+<li><code>ltlcross</code>: compares and checks LTL/PSL translators (can read HOA, LBT, never claims, or ltl2dstar's output)<br /></li>
+<li><code>ltldo</code>: Wrap existing LTL to Büchi translator tools, providing them all the range of input and output Spot supports. For instance running <code>ltldo spin -f GFa -H</code> will use <a href="http://spinroot.com/">spin</a> to translate <code>[]&lt;&gt;a</code> and convert the result to the HOA format.</li>
+</ul>
+<p>In these tools HOA support is currently limited to non-alternating automata with a generalized Büchi acceptance condition (this includes Büchi and the trivial &quot;all accepting&quot; condition). The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.</p>
+<p>Until a release is done, a fully functionnal development version can be downloaded <a href="https://www.lrde.epita.fr/~adl/dl/spot-1.99a.tar.gz">here</a>, and the documentation of the tools offered can be read <a href="https://www.lrde.epita.fr/~adl/dl/spot-1.99-userdoc/tools.html">there</a>.</p>
+<p>Spot's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>.</p>
+</body>
+</html>
