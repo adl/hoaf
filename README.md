@@ -1,4 +1,4 @@
-Hanoi Omega Automata Format
+Hanoi Omega-Automata Format
 ===========================
 
 This document describes the Hanoi Omega-Automata (HOA) format.  The name is a reference to the ATVA'13 conference, which was organized in Hanoi, and where the foundations of this format were laid.
