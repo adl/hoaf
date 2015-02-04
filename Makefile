@@ -25,7 +25,8 @@ webpack: index.html support.html examples/examples.zip
 gh-pages: webpack
 	v=`git describe --always --abbrev=8 --dirty`; \
 	b=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`; \
-	git checkout -f gh-pages && \
+	git fetch && \
+	git checkout -f -B gh-pages origin/gh-pages && \
 	git pull origin gh-pages && \
 	tar zxvf www.tgz && \
 	tar ztf www.tgz | xargs git add -f && \
