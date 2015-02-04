@@ -16,7 +16,7 @@
 <li><a href="#ltl2dstar"><code>ltl2dstar</code></a></li>
 <li><a href="#ltl3ba"><code>ltl3ba</code></a></li>
 <li><a href="#ltl3dra"><code>ltl3dra</code></a></li>
-<li><a href="#prism"><code>Prism</code></a></li>
+<li><a href="#prism"><code>PRISM</code></a></li>
 <li><a href="#rabinizer"><code>Rabinizer</code></a></li>
 <li><a href="#spot"><code>Spot</code></a></li>
 </ul></li>
@@ -45,15 +45,17 @@
 </ul>
 <p><code>ltl3ba</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
 <h2 id="ltl3dra"><code>ltl3dra</code></h2>
-<p>Since version 0.2, <a href="http://sourceforge.net/projects/ltl3dra/"><code>ltl3dra</code></a> can translate LTL formulas into two kinds of automata that can be output in the HOA format:</p>
+<p>Since version 0.2, <a href="http://sourceforge.net/projects/ltl3dra/"><code>ltl3dra</code></a> can translate LTL formulas into three kinds of automata that can be output in the HOA format:</p>
 <ul>
 <li>deterministic Rabin automata,<br /></li>
-<li>deterministic transition-based generalized Rabin automata.</li>
+<li>deterministic transition-based generalized Rabin automata,<br /></li>
+<li>very weak co-Büchi alternating automata.</li>
 </ul>
 <p><code>ltl3dra</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
-<h2 id="prism"><code>Prism</code></h2>
-<p>A development version of Prism (<strong>LINK MISSING</strong>) supports all acceptance conditions in accordance with the HOA format, and will use <code>jhoafparser</code> to input HOA.</p>
-<p>Prism's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
+<h2 id="prism"><code>PRISM</code></h2>
+<p><a href="http://www.prismmodelchecker.org/">PRISM</a> uses omega automata for probabilistic verification of LTL (and similar logics) against probabilistic models such as Markov chains and Markov decisions processes.</p>
+<p>The current development version of PRISM (<strong>LINK MISSING</strong>), which will form the next public release, includes support for plugging in external LTL-to-automaton generation tools using the HOA format. PRISM incorporates <code>jhoafparser</code> for the purposes of importing the generated automata and now supports verification of a variety of acceptance conditions: arbitrary generic acceptance conditions for Markov chains and Rabin or generalized Rabin conditions for Markov decision processes.</p>
+<p>PRISM's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
 <h2 id="rabinizer"><code>Rabinizer</code></h2>
 <p><a href="https://www7.in.tum.de/~kretinsk/rabinizer3.html">Rabinizer 3</a> can translate can translate LTL formulas into four kinds of automata that can be output in the HOA format:</p>
 <ul>
