@@ -49,7 +49,7 @@ Since version 0.2, [`ltl3dra`](http://sourceforge.net/projects/ltl3dra/) can tra
 
 [PRISM](http://www.prismmodelchecker.org/) uses omega automata for probabilistic verification of LTL (and similar logics) against probabilistic models such as Markov chains and Markov decisions processes.
 
-The current development version of PRISM (**LINK MISSING**), which will form the next public release, includes support for plugging in external LTL-to-automaton generation tools using the HOA format. PRISM incorporates `jhoafparser` for the purposes of importing the generated automata and now supports verification of a variety of acceptance conditions: arbitrary generic acceptance conditions for Markov chains and Rabin or generalized Rabin conditions for Markov decision processes.
+The [current development version of PRISM](http://www.prismmodelchecker.org/downloads/prism-4.2.1.dev.r9667-src.tar.gz), which will form the next public release, includes support for plugging in external LTL-to-automaton generation tools using the HOA format. PRISM incorporates `jhoafparser` for the purposes of importing the generated automata and now supports verification of a variety of acceptance conditions: arbitrary generic acceptance conditions for Markov chains and Rabin or generalized Rabin conditions for Markov decision processes.
 
 PRISM's source code is distributed under the [GNU General Public License, version 2](http://www.gnu.org/licenses/gpl-2.0.html).
 
