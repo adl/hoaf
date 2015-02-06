@@ -7,15 +7,12 @@ This document describes the Hanoi Omega-Automata (HOA) format.  The name is a re
 Current status
 --------------
 
-This is a working draft for version 1 of the format.
-
-The [HTML version of the document](http://adl.github.io/hoaf/) is updated regularly from [the sources on github](https://github.com/adl/hoaf/).  All the examples shown here can also be [downloaded separately](http://adl.github.io/hoaf/examples.html) to exercise a parser.
-
+This is version 1 of the format.  The [HTML version of this document](http://adl.github.io/hoaf/) is updated from [the sources on github](https://github.com/adl/hoaf/).
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
-If you implement it, please do keep track of the changes we apply to this document as we resolve [issues](https://github.com/adl/hoaf/issues?state=open) until version 1 is formally released.
+Current tool support is described on a [separate page](http://adl.github.io/hoaf/support.html).
 
-Current tool support is described on a [separate page](support.html).
+All the examples shown here can also be [downloaded separately](http://adl.github.io/hoaf/examples.html).
 
 Goals
 -----
