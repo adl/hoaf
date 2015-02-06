@@ -7,9 +7,7 @@ The following tools implement support for the [HOA format](index.html), either a
 `jhoafparser` library
 ---------------------
 
-This is a Java parser for the HOA format.  This parser includes an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format.
-
-**LINK MISSING**
+[`jhoafparser`](http://www.ltl2dstar.de/jhoafparser/) is a Java-based parser for the HOA format. The parser includes an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format, as well as a command-line tool that can be used for validation of HOA automata.
 
 `jhoafparser` is distributed under the [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
 
