@@ -17,7 +17,7 @@ All the examples shown here can also be [downloaded separately](http://adl.githu
 Goals
 -----
 
-Design a format, inspired from [`ltl2dstar`'s format](http://www.ltl2dstar.de/docs/ltl2dstar.html#output-format), but which:
+Design a format, inspired from [`ltl2dstar`'s format](http://www.ltl2dstar.de/docs/ltl2dstar.html#output-format-dstar), but which:
 
 - is more compact when a lot of atomic propositions are used, or when the automaton is not complete.
 - supports non-deterministic and alternating omega-automata.
