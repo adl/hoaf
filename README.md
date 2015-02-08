@@ -7,7 +7,7 @@ This document describes the Hanoi Omega-Automata (HOA) format.  The name is a re
 Current status
 --------------
 
-This is version 1 of the format.  The [HTML version of this document](http://adl.github.io/hoaf/) is updated from [the sources on github](https://github.com/adl/hoaf/).
+This is version 1 of the format.  The [HTML](http://adl.github.io/hoaf/) and [PDF](http://adl.github.io/hoaf/hoaf.pdf) versions of this document are updated from [the sources on github](https://github.com/adl/hoaf/).
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Current tool support is described on a [separate page](http://adl.github.io/hoaf/support.html).
