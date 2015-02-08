@@ -1,3 +1,10 @@
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{enumitem}
+\usepackage[rflt]{floatflt}
+\setlist{nosep}
+
+\usepackage{standalone}
+
 % Automata stuff
 \usepackage{tikz}
 \usetikzlibrary{automata}
@@ -49,13 +56,13 @@
 % 150% scaling, because SVG output is too small otherwise.
 \usepackage{environ}
 \NewEnviron{automaton}[1][]%
-{\scalebox{1.5}{\begin{tikzpicture}[automaton,#1]
+{\hfill\smash{{\begin{tikzpicture}[automaton,baseline=(current bounding box.north),#1]
 \BODY
-\end{tikzpicture}}}
+\end{tikzpicture}}}\vspace*{-2em}}
 
-
-% LTL stuff
-\usepackage{amsmath}
+\let\G\undefined
+\let\U\undefined
+\let\M\undefined
 \DeclareMathOperator{\F}{\textup{\textsf{F}}}
 \DeclareMathOperator{\G}{\textup{\textsf{G}}}
 \DeclareMathOperator{\X}{\textup{\textsf{X}}}

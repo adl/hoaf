@@ -2,9 +2,9 @@
 \input{common.tex}
 \begin{document}
 \begin{automaton}[state-labels]
-  \node[state,initial] (0) {$0$\slabel{$a\vphantom{\bar a}$}};
+  \node[state,initial] (0) {$0$\nodepart{lower}{$a\vphantom{\bar a}$}};
   \node[accset] at (0.130) {0};
-  \node[state,right of=0,initial right] (1) {$1$\slabel{$\bar a$}};
+  \node[state,right of=0,initial right] (1) {$1$\nodepart{lower}{$\bar a$}};
   \path[->]
      (0) edge[loop above] (0)
          edge[bend left] (1)

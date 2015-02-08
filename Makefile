@@ -10,17 +10,23 @@ index.html: README.md pandoc.css template.html
 support.html: support.md pandoc.css template.html
 	 $(PANDOC) support.md -c pandoc.css --toc --template template.html -o $@
 
-autfmt.pdf: README.md
-	$(PANDOC) README.md --latex-engine=xelatex -o $@
+hoaf.tex: README.md header.tex
+	sed 's/^[:space:]*-[^-]/\n&/' README.md > README.tmp.md
+	$(PANDOC) README.tmp.md -t latex -H header.tex -o - |\
+	sed 's/\$$\(\\def[^$$]*\)\$$/\1\n/;s/^\\includegraphics{\(.*\)\.svg}/\\input{\1.tex}/;' |\
+	perl -0777 -pe 's:\\input{figures/.*?\\end{verbatim}:\\begin{samepage}$$&\\end{samepage}:somg' > $@
+
+hoaf.pdf: hoaf.tex
+	xelatex hoaf.tex
 
 examples/examples.zip: scripts/extract.pl README.md
 	scripts/extract.pl README.md
 	zip -9 $@ examples/*.hoa
 
 .PHONY: webpack gh-pages
-webpack: index.html support.html examples/examples.zip
+webpack: index.html support.html hoaf.pdf examples/examples.zip
 	$(MAKE) $(MAKEFLAGS) -C figures
-	tar zcvf www.tgz index.html examples.html support.html pandoc.css figures/*.svg examples/examples.zip examples/*.hoa
+	tar zcvf www.tgz index.html hoaf.pdf examples.html support.html pandoc.css figures/*.svg examples/examples.zip examples/*.hoa
 
 gh-pages: webpack
 	v=`git describe --always --abbrev=8 --dirty`; \
