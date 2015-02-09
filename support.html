@@ -18,12 +18,16 @@
 <li><a href="#ltl3dra"><code>ltl3dra</code></a></li>
 <li><a href="#prism"><code>PRISM</code></a></li>
 <li><a href="#rabinizer"><code>Rabinizer</code></a></li>
-<li><a href="#spot"><code>Spot</code></a></li>
+<li><a href="#spot"><code>Spot</code></a><ul>
+<li><a href="#running-in-a-virtual-machine">Running in a virtual machine</a></li>
+<li><a href="#using-the-live-cd">Using the Live CD</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </div>
 <h1 id="hoa-format-tool-support">HOA Format Tool Support</h1>
 <p>The following tools implement support for the <a href="index.html">HOA format</a>, either as output or as input.</p>
+<p>For your convenience, we provide a <a href="#live-cd">live CD</a> to play around with the tools.</p>
 <h2 id="jhoafparser-library"><code>jhoafparser</code> library</h2>
 <p><a href="http://www.ltl2dstar.de/jhoafparser/"><code>jhoafparser</code></a> is a Java-based parser for the HOA format. The parser includes an abstraction layer (<code>HOAConsumer</code>) allowing applications to react to the different parts of the format, as well as a command-line tool that can be used for validation of HOA automata.</p>
 <p><code>jhoafparser</code> is distributed under the <a href="https://www.gnu.org/licenses/lgpl-2.1.html">GNU Lesser General Public License, version 2.1</a></p>
@@ -81,5 +85,22 @@
 <p>In these tools HOA support is currently limited to non-alternating automata with a generalized Büchi acceptance condition (this includes Büchi and the trivial &quot;all accepting&quot; condition). The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.</p>
 <p>Until a release is done, a fully functionnal development version can be downloaded <a href="https://www.lrde.epita.fr/~adl/dl/spot-1.99a.tar.gz">here</a>, and the documentation of the tools offered can be read <a href="https://www.lrde.epita.fr/~adl/dl/spot-1.99-userdoc/tools.html">there</a>.</p>
 <p>Spot's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>.</p>
+<p><a name="live-cd"><br />Live CD<br />-------<br /></a></p>
+<p>You can obtain an <a href="http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso">ISO image</a> (740MB, SHASUM: 257a17cf9149953870537f2b9434eb081b68075c),<br />containing a Debian Live CD with all the various tools preinstalled for<br />your convenience. You can run it in a virtual machine or burn it on a<br />DVD and boot from it.</p>
+<h3 id="running-in-a-virtual-machine">Running in a virtual machine</h3>
+<p>As virtual machine, we have tried <a href="http://wiki.qemu.org/Main_Page">QEMU</a><br />and <a href="http://www.virtualbox.org/">VirtualBox</a>.</p>
+<p>For VirtualBox, create a new virtual machine, attach the ISO image as a CD-drive and boot.<br />For RAM, use at least 512MB, preferably 1GB.</p>
+<p>With KVM/QEMU on a Linux system, you can start the Live CD with</p>
+<p><code>kvm -cdrom hoaf-live.iso -boot d -m 1024 -net nic -net user</code></p>
+<p>or</p>
+<p><code>qemu-system-i386 -cdrom hoaf-live.iso -boot d -m 1024 -net nic -net user</code></p>
+<p>depending on your installation, providing the virtual machine with 1GB of RAM.<br />If you omit the <code>-net</code> parameters, the VM will not have a network connection,<br />but everything else should work fine. For the latter command, if your kernel supports KVM<br />and you have enabled hardware virtualization support in the BIOS, you can use<br /><code>--enable-kvm</code> to get much better performance.</p>
+<h3 id="using-the-live-cd">Using the Live CD</h3>
+<p>After the initial boot, press Enter to boot the live<br />system. When the boot process is completed, you can login to the graphical desktop,<br />with username <code>hoaf</code> and password <code>hoaf</code>.</p>
+<p>On the desktop, you will find links to the HOA format specification, a terminal and a<br /><a href="http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/README">README file</a>,<br />suggesting example command-lines to try.</p>
+<p>Note, that the keyboard layout is initially set to US.<br />To change the keyboard layout to match the one on your computer, start the terminal and<br />run</p>
+<p><code>setxkbmap lang</code></p>
+<p>where <code>lang</code> is your language code, e.g., <code>de</code> for German, <code>fr</code> for French, ...</p>
+<p>Enjoy!</p>
 </body>
 </html>
