@@ -3,6 +3,7 @@ HOA Format Tool Support
 
 The following tools implement support for the [HOA format](index.html), either as output or as input.
 
+For your convenience, we provide a [live CD](#live-cd) to play around with the tools.
 
 `jhoafparser` library
 ---------------------
@@ -85,3 +86,57 @@ In these tools HOA support is currently limited to non-alternating automata with
 Until a release is done, a fully functionnal development version can be downloaded [here](https://www.lrde.epita.fr/~adl/dl/spot-1.99a.tar.gz), and the documentation of the tools offered can be read [there](https://www.lrde.epita.fr/~adl/dl/spot-1.99-userdoc/tools.html).
 
 Spot's source code is distributed under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.html).
+
+
+<a name="live-cd">
+Live CD
+-------
+</a>
+
+You can obtain an [ISO image](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso) (740MB, SHASUM: 257a17cf9149953870537f2b9434eb081b68075c),
+containing a Debian Live CD with all the various tools preinstalled for
+your convenience. You can run it in a virtual machine or burn it on a
+DVD and boot from it.
+
+### Running in a virtual machine
+
+As virtual machine, we have tried [QEMU](http://wiki.qemu.org/Main_Page)
+and [VirtualBox](http://www.virtualbox.org/).
+
+For VirtualBox, create a new virtual machine, attach the ISO image as a CD-drive and boot.
+For RAM, use at least 512MB, preferably 1GB.
+
+With KVM/QEMU on a Linux system, you can start the Live CD with
+
+`kvm -cdrom hoaf-live.iso -boot d -m 1024 -net nic -net user`
+
+or
+
+`qemu-system-i386 -cdrom hoaf-live.iso -boot d -m 1024 -net nic -net user`
+
+depending on your installation, providing the virtual machine with 1GB of RAM. 
+If you omit the `-net` parameters, the VM will not have a network connection,
+but everything else should work fine. For the latter command, if your kernel supports KVM
+and you have enabled hardware virtualization support in the BIOS, you can use
+`--enable-kvm` to get much better performance.
+
+
+### Using the Live CD
+
+After the initial boot, press Enter to boot the live
+system. When the boot process is completed, you can login to the graphical desktop,
+with username `hoaf` and password `hoaf`.
+
+On the desktop, you will find links to the HOA format specification, a terminal and a 
+[README file](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/README),
+suggesting example command-lines to try.
+
+Note, that the keyboard layout is initially set to US.
+To change the keyboard layout to match the one on your computer, start the terminal and
+run
+
+`setxkbmap lang`
+
+where `lang` is your language code, e.g., `de` for German, `fr` for French, ...
+
+Enjoy!
