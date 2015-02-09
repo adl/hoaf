@@ -6,9 +6,9 @@ pdf: autfmt.pdf
 PANDOC = pandoc -f markdown_github+tex_math_dollars -s
 
 index.html: README.md pandoc.css template.html
-	 $(PANDOC) README.md  --mathjax -c pandoc.css --toc --template template.html -o $@
+	 $(PANDOC) -T 'The Hanoi Omega-Automata Format' README.md  --mathjax -c pandoc.css --toc --template template.html -o $@
 support.html: support.md pandoc.css template.html
-	 $(PANDOC) support.md -c pandoc.css --toc --template template.html -o $@
+	 $(PANDOC) -T 'HOA Format Tool Support' support.md -c pandoc.css --toc --template template.html -o $@
 
 hoaf.tex: README.md header.tex
 	sed 's/^[:space:]*-[^-]/\n&/' README.md > README.tmp.md
