@@ -90,49 +90,34 @@ Spot's source code is distributed under the [GNU General Public License, version
 
 ## <a name="live-cd">Live CD</a>
 
-You can obtain an [ISO image](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso) (740MB, SHASUM: 257a17cf9149953870537f2b9434eb081b68075c),
-containing a Debian Live CD with all the various tools preinstalled for
-your convenience. You can run it in a virtual machine or burn it on a
-DVD and boot from it.
+You can obtain an [ISO image](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso) (740MB, SHASUM: 257a17cf9149953870537f2b9434eb081b68075c), containing a Debian Live CD with all the various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it.
 
 ### Running in a virtual machine
 
-As virtual machine, we have tried [QEMU](http://wiki.qemu.org/Main_Page)
-and [VirtualBox](http://www.virtualbox.org/).
+As virtual machine, we have tried [QEMU](http://wiki.qemu.org/Main_Page) and [VirtualBox](http://www.virtualbox.org/).
 
-For VirtualBox, create a new virtual machine, attach the ISO image as a CD-drive and boot.
-For RAM, use at least 512MB, preferably 1GB.
+For VirtualBox, create a new virtual machine, attach the ISO image as a CD-drive and boot. For RAM, use at least 512MB, preferably 1GB.
 
 With KVM/QEMU on a Linux system, you can start the Live CD with
 
-`kvm -cdrom hoaf-live.iso -boot d -m 1024 -net nic -net user`
+    kvm -cdrom hoaf-live.iso -boot d -m 1024 -net nic -net user
 
 or
 
-`qemu-system-i386 -cdrom hoaf-live.iso -boot d -m 1024 -net nic -net user`
+    qemu-system-i386 -cdrom hoaf-live.iso -boot d -m 1024 -net nic -net user
 
-depending on your installation, providing the virtual machine with 1GB of RAM. 
-If you omit the `-net` parameters, the VM will not have a network connection,
-but everything else should work fine. For the latter command, if your kernel supports KVM
-and you have enabled hardware virtualization support in the BIOS, you can use
-`--enable-kvm` to get much better performance.
+depending on your installation, providing the virtual machine with 1GB of RAM. If you omit the `-net` parameters, the VM will not have a network connection, but everything else should work fine. For the latter command, if your kernel supports KVM and you have enabled hardware virtualization support in the BIOS, you can use `--enable-kvm` to get much better performance.
 
 
 ### Using the Live CD
 
-After the initial boot, press Enter to boot the live
-system. When the boot process is completed, you can login to the graphical desktop,
-with username `hoaf` and password `hoaf`.
+After the initial boot, press Enter to boot the live system. When the boot process is completed, you can login to the graphical desktop, with username `hoaf` and password `hoaf`.
 
-On the desktop, you will find links to the HOA format specification, a terminal and a 
-[README file](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/README),
-suggesting example command-lines to try.
+On the desktop, you will find links to the HOA format specification, a terminal and a [README file](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/README), suggesting example command-lines to try.
 
-Note, that the keyboard layout is initially set to US.
-To change the keyboard layout to match the one on your computer, start the terminal and
-run
+Note, that the keyboard layout is initially set to US. To change the keyboard layout to match the one on your computer, start the terminal and run
 
-`setxkbmap lang`
+    setxkbmap lang
 
 where `lang` is your language code, e.g., `de` for German, `fr` for French, ...
 
