@@ -88,10 +88,7 @@ Until a release is done, a fully functionnal development version can be download
 Spot's source code is distributed under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.html).
 
 
-<a name="live-cd">
-Live CD
--------
-</a>
+## <a name="live-cd">Live CD</a>
 
 You can obtain an [ISO image](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso) (740MB, SHASUM: 257a17cf9149953870537f2b9434eb081b68075c),
 containing a Debian Live CD with all the various tools preinstalled for
