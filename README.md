@@ -67,8 +67,8 @@ Common Tokens
 - `ANAME`: `@[0-9a-zA-Z_-]+`
   An alias name, i.e., "@" followed by some alphanumeric characters, `-` or `_`.  These are used to identify atomic propositions or subformulas.
 
-- `HEADERNAME`: `[a-zA-Z_-][0-9a-zA-Z_-]*:`
-  Header names are likes identifiers, except that they are immediately followed by a colon (i.e. no comment or space allowed).  If an `IDENTIFIER` is immediately followed by a colon, it should be considered as a `HEADERNAME`.
+- `HEADERNAME`: `[a-zA-Z_][0-9a-zA-Z_-]*:`
+  Header names are similar to identifiers, except that they are immediately followed by a colon (i.e. no comment or space allowed).  If an `IDENTIFIER` or a `BOOLEAN` is immediately followed by a colon, it should be considered as a `HEADERNAME`.
 
 General Layout
 --------------
