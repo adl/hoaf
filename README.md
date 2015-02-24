@@ -3,16 +3,23 @@ The Hanoi Omega-Automata Format
 
 This document describes the Hanoi Omega-Automata (HOA) format.  The name is a reference to the ATVA'13 conference, which was organized in Hanoi, and where the foundations of this format were laid.
 
-
-Current status
---------------
-
-This is version 1 of the format.  The [HTML](http://adl.github.io/hoaf/) and [PDF](http://adl.github.io/hoaf/hoaf.pdf) versions of this document are updated from [the sources on github](https://github.com/adl/hoaf/).
-If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
+The [HTML](http://adl.github.io/hoaf/) and [PDF](http://adl.github.io/hoaf/hoaf.pdf) versions of this document are updated from [the sources on github](https://github.com/adl/hoaf/).
 
 Current tool support is described on a [separate page](http://adl.github.io/hoaf/support.html).
 
 All the examples shown here can also be [downloaded separately](http://adl.github.io/hoaf/examples.html).
+
+Current status
+--------------
+
+This is version 1 of the format.  The document may evolve slightly to clarify some parts and fix typos, but you should expect no major semantic change.
+
+If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
+
+Change log:
+- 2015-02-24: Clarify that `HEADERNAME` may not start with `-`.
+- 2015-02-06: Version 1 published.
+
 
 Goals
 -----
