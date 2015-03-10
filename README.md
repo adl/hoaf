@@ -337,7 +337,7 @@ J. Klein, in [`ltl2dstar`](http://www.ltl2dstar.de/docs/ltl2dstar.html#dra_dsa),
 
     Acceptance: 6 (Inf(0)&Fin(1))|(Inf(2)&Fin(3))|(Inf(4)&Fin(5))
 
-K. Löding, in [his diploma thesis](http://automata.rwth-aachen.de/~loeding/diploma_loeding.pdf), uses pairs $\{(E_1,F_1),\ldots,(E_k,F_k)\}$ where $E_i$ should be visited finitely often, and $F_i$ should be visited infinitely often.  This is just a reordering of the previous pairs:
+C. Löding, in [his diploma thesis](http://automata.rwth-aachen.de/~loeding/diploma_loeding.pdf), uses pairs $\{(E_1,F_1),\ldots,(E_k,F_k)\}$ where $E_i$ should be visited finitely often, and $F_i$ should be visited infinitely often.  This is just a reordering of the previous pairs:
 
     acc-name: Rabin 3
     Acceptance: 6 (Fin(0)&Inf(1))|(Fin(2)&Inf(3))|(Fin(4)&Inf(5))
