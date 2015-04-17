@@ -66,7 +66,8 @@
 <p>If you see any problem, please <a href="https://github.com/adl/hoaf/issues?state=open">report it on the issue tracker</a>.</p>
 <p>Change log:</p>
 <ul>
-<li>2015-02-24: Clarify that <code>HEADERNAME</code> may not start with <code>-</code>.<br /></li>
+<li>2015-04-17: Fix transition-based semantics to deal with duplicate transitions. (<a href="https://github.com/adl/hoaf/issues/38">#38</a>)<br /></li>
+<li>2015-02-24: Clarify that <code>HEADERNAME</code> may not start with <code>-</code>. (<a href="https://github.com/adl/hoaf/issues/37">#37</a>)<br /></li>
 <li>2015-02-06: Version 1 published.</li>
 </ul>
 <h2 id="goals">Goals</h2>
@@ -536,12 +537,12 @@ State: 3 &quot;c&quot;
 <ul>
 <li><span class="math">\(\AP\)</span> is a finite set of atomic propositions. We use <span class="math">\(\B(\AP)\)</span> to denote the set of Boolean formulas over <span class="math">\(\AP\)</span>.<br /></li>
 <li><span class="math">\(Q\)</span> is a finite set of states.<br /></li>
-<li><span class="math">\(R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation. A triplet <span class="math">\((s,\ell,D)\in R\)</span> represents a transition from <span class="math">\(s\)</span> to the conjunction of states in <span class="math">\(D\)</span>, labeled by a Boolean formula <span class="math">\(\ell\in\B(\AP)\)</span>.<br /></li>
+<li><span class="math">\(R\subseteq Q\times\B(\AP)\times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation. A quadruplet <span class="math">\((s,\ell,M,D)\in R\)</span> represents a transition from <span class="math">\(s\)</span> to the conjunction of states in <span class="math">\(D\)</span>, labeled by a Boolean formula <span class="math">\(\ell\in\B(\AP)\)</span>, and belonging to the acceptance sets listed in <span class="math">\(M\subseteq \{0,1,\ldots,m-1\}\)</span>, where <span class="math">\(m\)</span> is the declared number of acceptance sets.<br /></li>
 <li><span class="math">\(I\subseteq(2^Q\setminus\{\emptyset\})\)</span> is a set of initial conjunctions of states.<br /></li>
-<li><span class="math">\(F=\{S_0,S_1,\ldots,S_k\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(S_i\subseteq R\)</span> is a subset of <strong>transitions</strong>.<br /></li>
-<li><span class="math">\(\mathit{Acc}\)</span> is a Boolean formula over <span class="math">\(\{\Fin(S),\Fin(\lnot S),\Inf(S),\Inf(\lnot S)\mid S\in F\}\)</span>.</li>
+<li><span class="math">\(F=\{S_0,S_1,\ldots,S_{m-1}\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(S_i = \{ (s,\ell,M,D)\in R \mid i\in M \}\)</span> is a subset of <strong>transitions</strong>.<br /></li>
+<li><span class="math">\(\mathit{Acc}\)</span> is a Boolean formula over <span class="math">\(\{\Fin(i),\Fin(\lnot i),\Inf(i),\Inf(\lnot i)\mid i\in \{0,1,\ldots,m-1\}\}\)</span>.</li>
 </ul>
-<p>The automaton is interpreted over infinite words, where letters are subsets of AP. A <strong>run</strong> over a word <span class="math">\(w=a_0 a_1\ldots\)</span> is an infinite labeled directed acyclic graph <span class="math">\((V,E,\lambda)\)</span> such that:</p>
+<p>The automaton is interpreted over infinite words, where letters are subsets of <span class="math">\(\AP\)</span>. A <strong>run</strong> over a word <span class="math">\(w=a_0 a_1\ldots\)</span> is an infinite labeled directed acyclic graph <span class="math">\((V,E,\lambda)\)</span> such that:</p>
 <ul>
 <li><span class="math">\(V\)</span> is partitioned into <span class="math">\(V_0\cup V_₁\cup V_2\ldots\)</span> where the sets <span class="math">\(V_i\)</span> are disjoint,<br /></li>
 <li>for each edge <span class="math">\(e\in E\)</span> there exists <span class="math">\(i\ge 0\)</span> such that <span class="math">\(e\in V_i\times V_{i+1}\)</span>,<br /></li>
@@ -550,10 +551,10 @@ State: 3 &quot;c&quot;
 <p>Runs of automata without universal branching are simply infinite linear sequences of nodes.</p>
 <p>A run is <strong>accepting</strong> if each branch of the run (i.e., each infinite oriented path starting in <span class="math">\(V_0\)</span>) satisfies the acceptance condition <span class="math">\(\mathit{Acc}\)</span>, where a branch satisfies</p>
 <ul>
-<li><span class="math">\(\Fin(S)\)</span> if all transitions in <span class="math">\(S\)</span> are applied only to finitely many nodes on the branch.<br /></li>
-<li><span class="math">\(\Fin(\lnot S)\)</span> if all transitions outside <span class="math">\(S\)</span> are applied only to finitely many nodes on the branch.<br /></li>
-<li><span class="math">\(\Inf(S)\)</span> if some transition in <span class="math">\(S\)</span> is applied to infinitely many nodes on the branch.<br /></li>
-<li><span class="math">\(\Inf(\lnot S)\)</span> if some transition outside <span class="math">\(S\)</span> is applied to infinitely many nodes on the branch.</li>
+<li><span class="math">\(\Fin(i)\)</span> if all transitions in <span class="math">\(S_i\)</span> are applied only to finitely many nodes on the branch.<br /></li>
+<li><span class="math">\(\Fin(\lnot i)\)</span> if all transitions outside <span class="math">\(S_i\)</span> are applied only to finitely many nodes on the branch.<br /></li>
+<li><span class="math">\(\Inf(i)\)</span> if some transition in <span class="math">\(S_i\)</span> is applied to infinitely many nodes on the branch.<br /></li>
+<li><span class="math">\(\Inf(\lnot i)\)</span> if some transition outside <span class="math">\(S_i\)</span> is applied to infinitely many nodes on the branch.</li>
 </ul>
 <p>The automaton recognizes the language of all words for which there exists an accepting run of the automaton.</p>
 <p>As mentioned above, the format also supports labels on states. This is formally seen as an abbreviation for the situation where all transitions leaving the state have this label. The format even admits automata combining states with labels, unlabeled states with labels on all outgoing transitions, and unlabeled states with implicitly labeled transitions.</p>
@@ -566,10 +567,10 @@ State: 3 &quot;c&quot;
 <li><span class="math">\(Q\)</span> is a finite set of states.<br /></li>
 <li><span class="math">\(R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation,<br /></li>
 <li><span class="math">\(I\subseteq(2^Q\setminus\{\emptyset\})\)</span> is a set of initial conjunctions of states,<br /></li>
-<li><span class="math">\(F=\{S_0,S_1,\ldots,S_k\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(S_i\subseteq Q\)</span> is a subset of <strong>states</strong>.<br /></li>
+<li><span class="math">\(F=\{S_0,S_1,\ldots,S_{m-1}\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(S_i\subseteq Q\)</span> is a subset of <strong>states</strong>.<br /></li>
 <li><span class="math">\(\mathit{Acc}\)</span> is an acceptance condition.</li>
 </ul>
-<p>The only difference with the transition-based definition is that <span class="math">\(S_i\subseteq Q\)</span> instead of <span class="math">\(S_i\subseteq R\)</span>. The acceptance condition is still a formula defined over <span class="math">\(\Fin(S_i)\)</span>, <span class="math">\(\Fin(\lnot S_i)\)</span>, <span class="math">\(\Inf(S_i)\)</span>, or <span class="math">\(\Inf(\lnot S_i)\)</span>, but this time each <span class="math">\(S_i\)</span> is a set of <strong>states</strong> that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation <span class="math">\(\lnot\)</span> should be done with respect to <span class="math">\(Q\)</span> instead of <span class="math">\(R\)</span>.</p>
+<p>The only difference with the transition-based definition is that <span class="math">\(S_i\subseteq Q\)</span> instead of <span class="math">\(S_i\subseteq R\)</span>. The acceptance condition is still a formula defined over <span class="math">\(\Fin(i)\)</span>, <span class="math">\(\Fin(\lnot i)\)</span>, <span class="math">\(\Inf(i)\)</span>, or <span class="math">\(\Inf(\lnot i)\)</span>, but this time each <span class="math">\(i\)</span> refers to the set <span class="math">\(S_i\)</span> of <strong>states</strong> that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation <span class="math">\(\lnot\)</span> should be done with respect to <span class="math">\(Q\)</span> instead of <span class="math">\(R\)</span>.</p>
 <p>An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptance set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language. If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.</p>
 <p>The two semantics disagree slightly on the handling of dead states. The state-based semantics allow dead states to appear in acceptance sets, while there is no way to do that with transition-based acceptance. This difference is inconsequential: a dead state is never going to contribute anything useful the recognized language.</p>
 <h2 id="authors">Authors</h2>
