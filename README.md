@@ -17,6 +17,7 @@ This is version 1 of the format.  The document may evolve slightly to clarify so
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Change log:
+- 2015-04-17: Some clarification in case `States:` is missing. ([#39](https://github.com/adl/hoaf/issues/39))
 - 2015-04-17: Fix transition-based semantics to deal with duplicate transitions. ([#38](https://github.com/adl/hoaf/issues/38))
 - 2015-02-24: Clarify that `HEADERNAME` may not start with `-`. ([#37](https://github.com/adl/hoaf/issues/37))
 - 2015-02-06: Version 1 published.
@@ -422,7 +423,7 @@ Body of the Automaton
 
 The header is separated from the rest of the structure with `--BODY--`.
 
-States should be numbered from $0$ to $n-1$ (where $n$ is the value given by the `States:` header item if present) and specified with the following grammar:
+States are specified with the following grammar:
 
     body             ::= (state-name edge*)*
     // the optional dstring can be used to name the state for
@@ -432,7 +433,9 @@ States should be numbered from $0$ to $n-1$ (where $n$ is the value given by the
     edge             ::= label? state-conj acc-sig?
     label            ::= "[" label-expr "]"
 
-The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from $0$ to $n-1$, may be listed in any order, but should all be listed (i.e., if the header has `States: 10` then the body should have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
+The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from $0$ to $n-1$, where $n$ is the value given by the `States:` header item if it present.  If the `States:` header item is missing, $n-1$ should be assumed to be the highest state number listed either in the automaton body (either when defining a state, or when used as a destination of a transition) or as some initial state.
+
+States may be listed in any order, but should all be listed (i.e., if the header has `States: 10` then the body should have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
 
 The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.  Since we use transition-based acceptance, when `acc-sig` is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to this set.  For instance `State: 0 {1 3}` would states that all transitions leaving state 0 are in acceptance sets 1 and 3.
 
