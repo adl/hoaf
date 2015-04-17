@@ -433,7 +433,7 @@ States are specified with the following grammar:
     edge             ::= label? state-conj acc-sig?
     label            ::= "[" label-expr "]"
 
-The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from $0$ to $n-1$, where $n$ is the value given by the `States:` header item if it present.  If the `States:` header item is missing, $n-1$ should be assumed to be the highest state number listed either in the automaton body (either when defining a state, or when used as a destination of a transition) or as some initial state.
+The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from $0$ to $n-1$, where $n$ is the value given by the `States:` header item if it is present.  If the `States:` header item is missing, $n-1$ should be assumed to be the highest state number listed either in the automaton body (either when defining a state, or when used as a destination of a transition) or as some initial state.
 
 States may be listed in any order, but should all be listed (i.e., if the header has `States: 10` then the body should have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
 
