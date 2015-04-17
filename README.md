@@ -17,7 +17,8 @@ This is version 1 of the format.  The document may evolve slightly to clarify so
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Change log:
-- 2015-02-24: Clarify that `HEADERNAME` may not start with `-`.
+- 2015-04-17: Fix transition-based semantics to deal with duplicate transitions. ([#38](https://github.com/adl/hoaf/issues/38))
+- 2015-02-24: Clarify that `HEADERNAME` may not start with `-`. ([#37](https://github.com/adl/hoaf/issues/37))
 - 2015-02-06: Version 1 published.
 
 
@@ -705,12 +706,12 @@ Each omega-automaton described in this format can be seen as an automaton $\lang
 
 - $\AP$ is a finite set of atomic propositions. We use $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
 - $Q$ is a finite set of states.
-- $R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A triplet $(s,\ell,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in\B(\AP)$.
+- $R\subseteq Q\times\B(\AP)\times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A quadruplet $(s,\ell,M,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in\B(\AP)$, and belonging to the acceptance sets listed in $M\subseteq \{0,1,\ldots,m-1\}$, where $m$ is the declared number of acceptance sets.
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states.
-- $F=\{S_0,S_1,\ldots,S_k\}$ is a finite set of acceptance sets.  Each acceptance set $S_i\subseteq R$ is a subset of **transitions**.
-- $\mathit{Acc}$ is a Boolean formula over $\{\Fin(S),\Fin(\lnot S),\Inf(S),\Inf(\lnot S)\mid S\in F\}$.
+- $F=\{S_0,S_1,\ldots,S_{m-1}\}$ is a finite set of acceptance sets.  Each acceptance set $S_i = \{ (s,\ell,M,D)\in R \mid i\in M \}$ is a subset of **transitions**.
+- $\mathit{Acc}$ is a Boolean formula over $\{\Fin(i),\Fin(\lnot i),\Inf(i),\Inf(\lnot i)\mid i\in \{0,1,\ldots,m-1\}\}$.
 
-The automaton is interpreted over infinite words, where letters are subsets of AP. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
+The automaton is interpreted over infinite words, where letters are subsets of $\AP$. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
 
 - $V$ is partitioned into $V_0\cup V_₁\cup V_2\ldots$ where the sets $V_i$ are disjoint,
 - for each edge $e\in E$ there exists $i\ge 0$ such that $e\in V_i\times V_{i+1}$,
@@ -720,10 +721,10 @@ Runs of automata without universal branching are simply infinite linear sequence
 
 A run is **accepting** if each branch of the run (i.e., each infinite oriented path starting in $V_0$) satisfies the acceptance condition $\mathit{Acc}$, where a branch satisfies
 
-- $\Fin(S)$ if all transitions in $S$ are applied only to finitely many nodes on the branch.
-- $\Fin(\lnot S)$ if all transitions outside $S$ are applied only to finitely many nodes on the branch.
-- $\Inf(S)$ if some transition in $S$ is applied to infinitely many nodes on the branch.
-- $\Inf(\lnot S)$ if some transition outside $S$ is applied to infinitely many nodes on the branch.
+- $\Fin(i)$ if all transitions in $S_i$ are applied only to finitely many nodes on the branch.
+- $\Fin(\lnot i)$ if all transitions outside $S_i$ are applied only to finitely many nodes on the branch.
+- $\Inf(i)$ if some transition in $S_i$ is applied to infinitely many nodes on the branch.
+- $\Inf(\lnot i)$ if some transition outside $S_i$ is applied to infinitely many nodes on the branch.
 
 The automaton recognizes the language of all words for which there exists an accepting run of the automaton.
 
@@ -743,10 +744,10 @@ The omega-automata are represented by a tuple $\langle\AP,Q,R,I,F,\mathit{Acc}\r
 - $Q$ is a finite set of states.
 - $R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})$ is a transition relation,
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states,
-- $F=\{S_0,S_1,\ldots,S_k\}$ is a finite set of acceptance sets.  Each acceptance set $S_i\subseteq Q$ is a subset of **states**.
+- $F=\{S_0,S_1,\ldots,S_{m-1}\}$ is a finite set of acceptance sets.  Each acceptance set $S_i\subseteq Q$ is a subset of **states**.
 - $\mathit{Acc}$ is an acceptance condition.
 
-The only difference with the transition-based definition is that $S_i\subseteq Q$ instead of $S_i\subseteq R$.  The acceptance condition is still a formula defined over $\Fin(S_i)$, $\Fin(\lnot S_i)$, $\Inf(S_i)$, or $\Inf(\lnot S_i)$, but this time each $S_i$ is a set of **states** that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation $\lnot$ should be done with respect to $Q$ instead of $R$.
+The only difference with the transition-based definition is that $S_i\subseteq Q$ instead of $S_i\subseteq R$.  The acceptance condition is still a formula defined over $\Fin(i)$, $\Fin(\lnot i)$, $\Inf(i)$, or $\Inf(\lnot i)$, but this time each $i$ refers to the set $S_i$ of **states** that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation $\lnot$ should be done with respect to $Q$ instead of $R$.
 
 An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptance set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language.  If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.
 
