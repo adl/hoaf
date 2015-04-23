@@ -5,33 +5,47 @@ body {
     max-width: 44em;
     color: black;
     background-color: white;
-    font-family: Georgia, "Times New Roman", Times, serif;
-    font-size: 15px;
-    line-height: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 100%;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+
     text-align: justify;
 }
 pre {
     background-color: #ececec;
-    color: #111111;
+    color: #333;
     padding: 0.5em;
+}
+pre code {
+    color: #333;
 }
 code {
     white-space: pre;
-    background-color: #f3f3f3;
-    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-    font-size: 100%;
+    background-color: #f9f2f4;
+    color: #C7254E;
+    padding: 2px 4px;
+    font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
 }
 pre code {
-    background-color: #ececec;
+    background-color: inherit;
+}
+td code {
+    background-color: inherit;
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a {
     text-decoration: none;
-    color: #0000d0;
+    color: inherit;
 }
 
 h1 code, h2 code, h3 code, h4 code, h5 code {
-    background-color: white;
+    color: inherit;
+}
+
+h1 code, h2 code, h3 code, h4 code, h5 code {
+    background-color: #eaeaff;
 }
 
 table.examples {
@@ -55,9 +69,10 @@ table.examples td {
 
 img[alt="automaton"]{ float: right; }
 
-h1, h2, h3, h4, h5 { font-family: Georgia, "Times New Roman",Times,serif;
+h1, h2, h3, h4, h5 {
                      font-weight: bold;
-                     border-bottom: 1px dotted black;
+                     border-bottom: 2px solid #8888d0;
+		     background-color: #eaeaff;
                      color: #0000d0;
 		     margin-left: -2em;
 		     padding-left: 2em;
@@ -65,7 +80,8 @@ h1, h2, h3, h4, h5 { font-family: Georgia, "Times New Roman",Times,serif;
 		     padding-right: 2em;
 }
 h1 {
-        font-size: 130%;
+    text-align: center;
+    font-size: 200%;
 }
 
 h2 {
@@ -111,20 +127,21 @@ dd p {
 
 #TOC {
 	max-width: 30em;
-	font-size: 10pt;
+	font-size: 80%;
 	position: fixed;
 	right: 0em;
 	top: 0em;
-	background: #ddddff;
+	background: #eaeaff;
 	color: #000000;
 	-webkit-box-shadow: 0 0 1em #777777;
 	-moz-box-shadow: 0 0 1em #777777;
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomleft: 5px;
 	text-align: right;
-	/* ensure doesn't flow off the screen when expanded */
+	/* ensure it doesn't flow off the screen when expanded */
 	max-height: 80%;
 	overflow: auto;
+	z-index: 2;
 }
 #TOCTXT  {
 	font-size: 10pt;
@@ -145,6 +162,7 @@ dd p {
 }
 
 #TOC ul code {
-    font-size: 11px;
-    background-color: #ddddff;
+    font-size: 80%;
+    color: #0000d0;
+    background-color: #eaeaff;
 }
