@@ -90,7 +90,7 @@ Spot's source code is distributed under the [GNU General Public License, version
 
 ## <a name="live-cd">Live CD</a>
 
-You can obtain an [ISO image](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso) (740MB, SHASUM: 257a17cf9149953870537f2b9434eb081b68075c), containing a Debian Live CD with all the various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it.
+You can obtain an [ISO image](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso) (740MB, SHASUM: a23c47374b5a2ae7e31f9c9cb2d6908384c7cf29), containing a Debian Live CD with all the various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it.
 
 ### Running in a virtual machine
 
