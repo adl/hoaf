@@ -396,7 +396,7 @@ or
     acc-name: Streett 0
     Acceptance: 0 t
 
-Such an all-accepting condition typically occurs when translating safety formula, or when building monitors.  In these specialized cases, it might not really make sense to name the acceptance `generalized-Buchi` or `generalized-Streett`.  For this reason, we also support the name `all` as a synonym:
+Such an all-accepting condition typically occurs when translating safety formula, or when building monitors.  In these specialized cases, it might not really make sense to name the acceptance `generalized-Buchi` or `Streett`.  For this reason, we also support the name `all` as a synonym:
 
     acc-name: all
     Acceptance: 0 t
