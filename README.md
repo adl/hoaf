@@ -303,12 +303,12 @@ or
 
 ### Generalized Büchi or generalized co-Büchi
 
-A generalized automaton with three acceptance sets can be defined with:
+A generalized Büchi automaton with three acceptance sets can be defined with:
 
     acc-name: generalized-Buchi 3
     Acceptance: 3 Inf(0)&Inf(1)&Inf(2)
 
-A deterministic automaton with such acceptance conditions could be complemented without changing its transition structure by simply complementing the acceptance, giving a generalized co-Büchi automaton:
+A deterministic automaton with such an acceptance condition could be complemented without changing its transition structure by simply complementing the acceptance, giving a generalized co-Büchi automaton:
 
     acc-name: generalized-co-Buchi 3
     Acceptance: 3 Fin(0)|Fin(1)|Fin(2)
