@@ -17,6 +17,7 @@ This is version 1 of the format.  The document may evolve slightly to clarify so
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Change log:
+- 2015-05-20: More compact encoding for parity acceptance. ([#42](https://github.com/adl/hoaf/issues/42))
 - 2015-04-17: Some clarification in case `States:` is missing. ([#39](https://github.com/adl/hoaf/issues/39))
 - 2015-04-17: Fix transition-based semantics to deal with duplicate transitions. ([#38](https://github.com/adl/hoaf/issues/38))
 - 2015-02-24: Clarify that `HEADERNAME` may not start with `-`. ([#37](https://github.com/adl/hoaf/issues/37))
@@ -368,18 +369,16 @@ For parity automata `acc-name: parity` has three parameters to support combinati
 If the automaton should accept when the least identifier of acceptance sets visited infinitely often is even, we write:
 
     acc-name: parity min even 5
-    Acceptance: 5 Inf(0) | (Fin(0)&Fin(1)&Inf(2)) |
-                  (Fin(0)&Fin(1)&Fin(2)&Fin(3)&Inf(4))
+    Acceptance: 5 Inf(0) | (Fin(1)&Inf(2)) | (Fin(1)&Fin(3)&Inf(4))
 
-or
+or more compactly
 
-    Acceptance: 5 Inf(0) | Fin(0)&Fin(1)&(Inf(2) | Fin(2)&Fin(3)&Inf(4))
+    Acceptance: 5 Inf(0) | Fin(1)&(Inf(2) | Fin(3)&Inf(4))
 
 If the greatest identifier has to be odd, we write:
 
     acc-name: parity max odd 6
-    Acceptance: 6 Inf(5) | (Fin(5)&Fin(4)&Inf(3)) |
-                  (Fin(5)&Fin(4)&Fin(3)&Fin(2)&Inf(1))
+    Acceptance: 6 Inf(5) | (Fin(4)&Inf(3)) | (Fin(4)&Fin(2)&Inf(1))
 
 Combinations `min odd` or `max even` are also possible.
 
