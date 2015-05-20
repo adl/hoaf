@@ -17,7 +17,7 @@ This is version 1 of the format.  The document may evolve slightly to clarify so
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Change log:
-- 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for "min odd" and "max even". ([#42](https://github.com/adl/hoaf/issues/42))
+- 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
 - 2015-04-17: Some clarification in case `States:` is missing. ([#39](https://github.com/adl/hoaf/issues/39))
 - 2015-04-17: Fix transition-based semantics to deal with duplicate transitions. ([#38](https://github.com/adl/hoaf/issues/38))
 - 2015-02-24: Clarify that `HEADERNAME` may not start with `-`. ([#37](https://github.com/adl/hoaf/issues/37))
@@ -369,24 +369,27 @@ For parity automata `acc-name: parity` has three parameters to support combinati
 If the automaton should accept when the least identifier of acceptance sets visited infinitely often is even, we write:
 
     acc-name: parity min even 5
-    Acceptance: 5 Inf(0) | (Fin(1)&Inf(2)) | (Fin(1)&Fin(3)&Inf(4))
-
-or more compactly
-
-    Acceptance: 5 Inf(0) | Fin(1)&(Inf(2) | Fin(3)&Inf(4))
+    Acceptance: 5 Inf(0) | (Fin(1) & (Inf(2) | (Fin(3) & Inf(4))))
 
 If the greatest identifier has to be odd, we write:
 
     acc-name: parity max odd 6
-    Acceptance: 6 Inf(5) | (Fin(4)&Inf(3)) | (Fin(4)&Fin(2)&Inf(1))
+    Acceptance: 6 Inf(5) | (Fin(4) & (Inf(3) | (Fin(2) & Inf(1))))
 
-Combinations `min odd` or `max even` are also possible:
+The dual combinations `min odd` or `max even` are also possible:
 
-    acc-name: parity min odd 6
-    Acceptance: 6 (Fin(0)&Inf(1)) | (Fin(0)&Fin(2)&Inf(3)) | (Fin(0)&Fin(2)&Fin(4)&Inf(5))
+    acc-name: parity min odd 5
+    Acceptance: 5 Fin(0) & (Inf(1) | (Fin(2) & Inf(3)))
 
-    acc-name: parity max even 5
-    Acceptance: 5 Inf(4) | (Fin(3)&Inf(2)) | (Fin(3)&Fin(1)&Inf(0))
+    acc-name: parity max even 6
+    Acceptance: 6 Fin(5) & (Inf(4) | (Fin(3) & (Inf(2) | (Fin(1) & Inf(0)))))
+
+
+Note that what people call *parity automata* are automata with one of the above parity acceptance, *plus* the additional property that a state (or a transition if the acceptance is transition-based) can belong to exactly one set.  With this additional property, the complement of `parity min even 5`, which would be
+
+    Acceptance: Fin(0) & (Inf(1) | (Fin(2) & (Inf(3) | Fin(4))))
+
+is actually equivalent to the dual acceptance condition `parity min odd 5` presented above, because a run that satisfies `Fin(0)&Fin(2)&Fin(4)` would necessarily satisfy `Inf(1)|Inf(3)`.
 
 
 ### Trivial acceptance conditions: `all` and `none`
