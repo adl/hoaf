@@ -380,7 +380,13 @@ If the greatest identifier has to be odd, we write:
     acc-name: parity max odd 6
     Acceptance: 6 Inf(5) | (Fin(4)&Inf(3)) | (Fin(4)&Fin(2)&Inf(1))
 
-Combinations `min odd` or `max even` are also possible.
+Combinations `min odd` or `max even` are also possible:
+
+    acc-name: parity min odd 6
+    Acceptance: 6 (Fin(0)&Inf(1)) | (Fin(0)&Fin(2)&Inf(3)) | (Fin(0)&Fin(2)&Fin(4)&Inf(5))
+
+    acc-name: parity max even 5
+    Acceptance: 5 Inf(4) | (Fin(3)&Inf(2)) | (Fin(3)&Fin(1)&Inf(0))
 
 
 ### Trivial acceptance conditions: `all` and `none`
