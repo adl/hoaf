@@ -17,7 +17,7 @@ This is version 1 of the format.  The document may evolve slightly to clarify so
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Change log:
-- 2015-05-20: More compact canonical encoding for parity acceptance, add canonical encoding for "min odd" and "max even". ([#42](https://github.com/adl/hoaf/issues/42))
+- 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for "min odd" and "max even". ([#42](https://github.com/adl/hoaf/issues/42))
 - 2015-04-17: Some clarification in case `States:` is missing. ([#39](https://github.com/adl/hoaf/issues/39))
 - 2015-04-17: Fix transition-based semantics to deal with duplicate transitions. ([#38](https://github.com/adl/hoaf/issues/38))
 - 2015-02-24: Clarify that `HEADERNAME` may not start with `-`. ([#37](https://github.com/adl/hoaf/issues/37))
