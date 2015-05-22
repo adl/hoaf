@@ -387,7 +387,7 @@ The dual combinations `min odd` or `max even` are also possible:
 
 Note that what people call *parity automata* are automata with one of the above parity acceptance, *plus* the additional property that a state (or a transition if the acceptance is transition-based) can belong to exactly one set.  With this additional property, the complement of `parity min even 5`, which would be
 
-    Acceptance: Fin(0) & (Inf(1) | (Fin(2) & (Inf(3) | Fin(4))))
+    Acceptance: 5 Fin(0) & (Inf(1) | (Fin(2) & (Inf(3) | Fin(4))))
 
 is actually equivalent to the dual acceptance condition `parity min odd 5` presented above, because a run that satisfies `Fin(0)&Fin(2)&Fin(4)` would necessarily satisfy `Inf(1)|Inf(3)`.
 
