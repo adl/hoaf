@@ -358,31 +358,93 @@ The first parameter of `generalized-Rabin` gives the number of generalized pairs
 
 ### Parity automata
 
-For parity automata `acc-name: parity` has three parameters to support combinations of `min`/`max` and `even`/`odd`, and to specify the range of acceptance sets used.
+For parity acceptance, `acc-name: parity` has three parameters to support combinations of `min`/`max` and `even`/`odd`, and to specify the range of acceptance sets used.  In an automaton with `max odd` parity acceptance, for instance, a run is accepting if the maximum set number visited infinitely often along the run is odd.
 
-If the automaton should accept when the least identifier of acceptance sets visited infinitely often is even, we write:
+A typical parity automaton should have `property: colored`, ensuring that each transition (or state) belongs to exactly one accepting set.  In this context the maximum or minimum set number seen infinitely often along a run always exists.
 
-    acc-name: parity min even 5
-    Acceptance: 5 Inf(0) | (Fin(1) & (Inf(2) | (Fin(3) & Inf(4))))
+The canonical encodings for parity acceptance have been chosen so they behave nicely even in automata where `property: colored` does not hold, i.e., where some transitions (or states) may belong to multiple sets or none.  In particular if $F$ is the set of numbers of the acceptance sets visited infinitely often by a run of an automaton with n acceptance sets, we assume that $\min(\emptyset$)=n$ and $\max(\emptyset)=-1$ for the purpose of deciding the parity of $\min(F)$ or $\max(F)$.
 
-If the greatest identifier has to be odd, we write:
+Here are the first instances of the `min odd` condition for different numbers of sets:
 
-    acc-name: parity max odd 6
-    Acceptance: 6 Inf(5) | (Fin(4) & (Inf(3) | (Fin(2) & Inf(1))))
+    acc-name: parity min odd 0
+    Acceptance: 0 f
 
-The dual combinations `min odd` or `max even` are also possible:
+    acc-name: parity min odd 1
+    Acceptance: 1 Fin(0)
+
+    acc-name: parity min odd 2
+    Acceptance: 2 Fin(0) & Inf(1)
+
+    acc-name: parity min odd 3
+    Acceptance: 3 Fin(0) & (Inf(1) | Fin(2))
+
+    acc-name: parity min odd 4
+    Acceptance: 4 Fin(0) & (Inf(1) | (Fin(2) & Inf(3)))
 
     acc-name: parity min odd 5
-    Acceptance: 5 Fin(0) & (Inf(1) | (Fin(2) & Inf(3)))
-
-    acc-name: parity max even 6
-    Acceptance: 6 Fin(5) & (Inf(4) | (Fin(3) & (Inf(2) | (Fin(1) & Inf(0)))))
-
-Note that what people call *parity automata* are automata with one of the above parity acceptance, *plus* the additional property that a state (or a transition if the acceptance is transition-based) can belong to exactly one set.  With this additional property, the complement of `parity min even 5`, which would be
-
     Acceptance: 5 Fin(0) & (Inf(1) | (Fin(2) & (Inf(3) | Fin(4))))
 
-is actually equivalent to the dual acceptance condition `parity min odd 5` presented above, because a run that satisfies `Fin(0)&Fin(2)&Fin(4)` would necessarily satisfy `Inf(1)|Inf(3)`.
+The `min even` cases are dual:
+
+    acc-name: parity min even 0
+    Acceptance: 0 t
+
+    acc-name: parity min even 1
+    Acceptance: 1 Inf(0)
+
+    acc-name: parity min even 2
+    Acceptance: 2 Inf(0) | Fin(1)
+
+    acc-name: parity min even 3
+    Acceptance: 3 Inf(0) | (Fin(1) & Inf(2))
+
+    acc-name: parity min even 4
+    Acceptance: 4 Inf(0) | (Fin(1) & (Inf(2) | Fin(3)))
+
+    acc-name: parity min even 5
+    Acceptance: 5 Inf(0) | (Fin(1) & (Inf(2) | (Fin(3) & Inf(4)))
+
+The `max odd` condition is similar to `min odd`, but encoded in the reverse direction:
+
+    acc-name: parity max odd 0
+    Acceptance: 0 t
+
+    acc-name: parity max odd 1
+    Acceptance: 1 Fin(0)
+
+    acc-name: parity max odd 2
+    Acceptance: 2 Inf(1) | Fin(0)
+
+    acc-name: parity max odd 3
+    Acceptance: 3 Fin(2) & (Inf(1) | Fin(0))
+
+    acc-name: parity max odd 4
+    Acceptance: 4 Inf(3) | (Fin(2) & (Inf(1) | Fin(0)))
+
+    acc-name: parity max odd 5
+    Acceptance: 5 Fin(4) & (Inf(3) | (Fin(2) & (Inf(1) | Fin(0))))
+
+And again `max even` conditions are dual to `max odd`:
+
+    acc-name: parity max even 0
+    Acceptance: 0 f
+
+    acc-name: parity max even 1
+    Acceptance: 1 Inf(0)
+
+    acc-name: parity max even 2
+    Acceptance: 2 Fin(1) & Inf(0)
+
+    acc-name: parity max even 3
+    Acceptance: 3 Inf(2) | (Fin(1) & Inf(0))
+
+    acc-name: parity max even 4
+    Acceptance: 4 Fin(3) & (Inf(2) | (Fin(1) & Inf(0)))
+
+    acc-name: parity max even 5
+    Acceptance: 5 Inf(4) | (Fin(3) & (Inf(2) | (Fin(1) & Inf(0))))
+
+Note that in all those acceptance specifications, `Inf` is always followed by `|`, `Fin` is always followed by `&`, and both are alternating.
 
 ### Trivial acceptance conditions: `all` and `none`
 
@@ -396,12 +458,20 @@ or
     acc-name: Streett 0
     Acceptance: 0 t
 
+We also have similar cases for parity acceptance:
+
+    acc-name: parity max odd 0
+    Acceptance: 0 t
+
+    acc-name: parity min even 0
+    Acceptance: 0 t
+
 Such an all-accepting condition typically occurs when translating safety formulas, or when building monitors.  In these specialized cases, it might not really make sense to name the acceptance `generalized-Buchi` or `Streett`.  For this reason, we also support the name `all` as a synonym:
 
     acc-name: all
     Acceptance: 0 t
 
-Similarly, but less interestingly, `generalized-co-Buchi` and `Rabin` all degenerate to `f` when using 0 acceptance pairs, and this acceptance condition can also be called `none`.  The following four acceptance specification are therefore equivalent and describe automata that will reject all words:
+Similarly, but less interestingly, `generalized-co-Buchi` and `Rabin` all degenerate to `f` when using 0 acceptance pairs, and this acceptance condition can also be called `none`.  The following acceptance specifications are equivalent and describe automata that will reject all words:
 
     acc-name: generalized-co-Buchi 0
     Acceptance: 0 f
@@ -410,6 +480,12 @@ Similarly, but less interestingly, `generalized-co-Buchi` and `Rabin` all degene
     Acceptance: 0 f
 
     acc-name: generalized-Rabin 0
+    Acceptance: 0 f
+
+    acc-name: parity max even 0
+    Acceptance: 0 f
+
+    acc-name: parity min odd 0
     Acceptance: 0 f
 
     acc-name: none
