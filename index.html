@@ -31,7 +31,7 @@
 <li><a href="#tool-and-name"><code>tool:</code> and <code>name:</code></a></li>
 <li><a href="#properties"><code>properties:</code></a></li>
 </ul></li>
-<li><a href="#acceptance-specifications">Acceptance Specifications</a><ul>
+<li><a href="#canonical-acceptance-specifications-for-classical-conditions">Canonical acceptance specifications for classical conditions</a><ul>
 <li><a href="#buchi-or-co-buchi">Büchi or co-Büchi</a></li>
 <li><a href="#generalized-buchi-or-generalized-co-buchi">Generalized Büchi or generalized co-Büchi</a></li>
 <li><a href="#streett-acceptance">Streett acceptance</a></li>
@@ -40,6 +40,7 @@
 <li><a href="#parity-automata">Parity automata</a></li>
 <li><a href="#trivial-acceptance-conditions-all-and-none">Trivial acceptance conditions: <code>all</code> and <code>none</code></a></li>
 </ul></li>
+<li><a href="#other-acceptance-conditions">Other acceptance conditions</a></li>
 <li><a href="#body-of-the-automaton">Body of the Automaton</a></li>
 <li><a href="#examples">Examples</a><ul>
 <li><a href="#transition-based-rabin-acceptance-and-explicit-labels">Transition-based Rabin acceptance and explicit labels</a></li>
@@ -67,7 +68,8 @@
 <p>If you see any problem, please <a href="https://github.com/adl/hoaf/issues?state=open">report it on the issue tracker</a>.</p>
 <p>Change log:</p>
 <ul>
-<li>2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for &quot;min odd&quot; and &quot;max even&quot;. (<a href="https://github.com/adl/hoaf/issues/42">#42</a>)</li>
+<li>2015-05-26: Clarify the notion of canonical encoding, better support for parity automata with <code>property: colored</code>, and cleaner definition of parity acceptance in corner cases (<a href="https://github.com/adl/hoaf/issues/46">#46</a>)</li>
+<li>2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for <code>min odd</code> and <code>max even</code>. (<a href="https://github.com/adl/hoaf/issues/42">#42</a> and <a href="https://github.com/adl/hoaf/issues/43">#43</a>)</li>
 <li>2015-04-17: Some clarification in case <code>States:</code> is missing. (<a href="https://github.com/adl/hoaf/issues/39">#39</a>)</li>
 <li>2015-04-17: Fix transition-based semantics to deal with duplicate transitions. (<a href="https://github.com/adl/hoaf/issues/38">#38</a>)</li>
 <li>2015-02-24: Clarify that <code>HEADERNAME</code> may not start with <code>-</code>. (<a href="https://github.com/adl/hoaf/issues/37">#37</a>)</li>
@@ -235,12 +237,15 @@ name: &quot;BA for GFa &amp; GFb&quot;</code></pre>
 <li><code>inherently-weak</code> hints that the automaton does not mix accepting cycles and non-accepting cycles in the same SCC</li>
 <li><code>terminal</code> hints that the automaton is weak, that no non-accepting cycle can be reached from any accepting cycle, and that each SCC containing an accepting cycle is complete, i.e., the transition function is definied for each state of the SCC and each letter</li>
 <li><code>tight</code> hints that the automaton is <a href="http://dx.doi.org/10.1007/978-3-540-31980-1_32">tight</a>, i.e. for every word <span class="math">\(w=a_0a_1\ldots\)</span> accepted by the automaton there exists an accepting run over <span class="math">\(w\)</span> such that whenever two suffixes <span class="math">\(w_i=a_ia_{i+1}\ldots\)</span> and <span class="math">\(w_j=a_ja_{j+1}\ldots\)</span> of <span class="math">\(w\)</span> are identical, the run reaches identical states (or sets of the states in the case of alternating automaton) by reading the corresponding prefixes <span class="math">\(a_0\ldots a_{i-1}\)</span> and <span class="math">\(a_0\ldots a_{j-1}\)</span></li>
+<li><code>colored</code> hints that each transition (or each state, for state-based acceptance) of the automaton belongs to exactly one acceptance set; this is typically the case in parity automata</li>
 </ul>
 <p>Note that even if some property implies another one (for instance <code>explicit-labels</code> implies <code>trans-labels</code>) it is recommended to specify both.</p>
-<h2 id="acceptance-specifications">Acceptance Specifications</h2>
-<p>Even if <code>acc-name:</code> is used, the <code>Acceptance:</code> line is mandatory and should match exactly the patterns given in the following examples. This way the tools that ignore the <code>acc-name:</code> line have no suprise. In fact, the <code>Acceptance:</code> line is what defines the acceptance semantics of the automaton and the <code>acc-name:</code> has only informative value. Some of the examples below use <code>Acceptance:</code> specifications for which there are no <code>acc-name:</code> defined.</p>
+<h2 id="canonical-acceptance-specifications-for-classical-conditions">Canonical acceptance specifications for classical conditions</h2>
+<p>The <code>Acceptance:</code> line is what defines the acceptance semantics of the automaton and the <code>acc-name:</code> has only informative value. However, tools that do not want to implement a parser for the <code>Acceptance:</code> line may decide to only support input HOA file that carry an <code>acc-name:</code> they support. To avoid surprises, when the <code>acc-name:</code> line is used, the mandatory <code>Acceptance:</code> line should match exactly the canonical acceptance formulas given in the following examples.</p>
+<p>Note that the order of the terms in the canonical acceptance formulas matters even though the Boolean operators are commutative and associative (e.g., <code>acc-name: Rabin 1</code> corresponds to <code>Fin(0)&amp;Inf(1)</code> but not <code>Inf(1)&amp;Fin(0)</code>). This restriction makes it easier to detect potential mismatches between <code>acc-name:</code> and <code>Acceptance:</code>.</p>
+<p>Some of the examples below use <code>Acceptance:</code> specifications for which there are no <code>acc-name:</code> defined.</p>
 <h3 id="buchi-or-co-buchi">Büchi or co-Büchi</h3>
-<p>Simply:</p>
+<p>Those acceptance conditions are specified with</p>
 <pre><code>acc-name: Buchi
 Acceptance: 1 Inf(0)</code></pre>
 <p>or</p>
@@ -253,16 +258,11 @@ Acceptance: 3 Inf(0)&amp;Inf(1)&amp;Inf(2)</code></pre>
 <p>A deterministic automaton with such an acceptance condition could be complemented without changing its transition structure by simply complementing the acceptance, giving a generalized co-Büchi automaton:</p>
 <pre><code>acc-name: generalized-co-Buchi 3
 Acceptance: 3 Fin(0)|Fin(1)|Fin(2)</code></pre>
-<p>A promise automaton generated by the tableau construction of <a href="http://spot.lip6.fr/userdoc/ltl2tgba.html"><code>ltl2tgba</code></a> could be output with:</p>
-<pre><code>Acceptance: 3 Inf(!0) &amp; Inf(!1) &amp; Inf(!2)</code></pre>
-<p>(Spot actually makes an extra pass at the end of the translation to complement the acceptance sets in order to obtain the more usual generalized Büchi <code>Inf(0)&amp;Inf(1)&amp;Inf(2)</code> acceptance).</p>
 <h3 id="streett-acceptance">Streett acceptance</h3>
 <p>Pairs of acceptance sets <span class="math">\(\{(L_1,U_1),\ldots,(L_k,U_k)\}\)</span>. A run is accepting for a pair <span class="math">\((L_i,U_i)\)</span> iff the run visiting <span class="math">\(L_i\)</span> infinitely often implies that the run also visits <span class="math">\(U_i\)</span> infinitely often. A run is accepting iff it is accepting for all pairs. Assuming <span class="math">\(k=3\)</span> and numbering these 6 sets from left (<span class="math">\(L_1\)</span>) to right (<span class="math">\(U_3\)</span>), this corresponds to:</p>
 <pre><code>acc-name: Streett 3
 Acceptance: 6 (Fin(0)|Inf(1))&amp;(Fin(2)|Inf(3))&amp;(Fin(4)|Inf(5))</code></pre>
 <p>The parameter <code>3</code> in <code>acc-name: Streett 3</code> refers to the number of Streett pairs.</p>
-<p>Note that an acceptance set may be used more than once. For instance when translating <code>(GF(a) -&gt; GF(b)) &amp; (GF(b) -&gt; GF(c))</code> into a Streett automaton, it would make sense to use:</p>
-<pre><code>Acceptance: 3 (Fin(0)|Inf(1))&amp;(Fin(1)|Inf(2))</code></pre>
 <h3 id="rabin-acceptance">Rabin acceptance</h3>
 <p>There are several equivalent presentations of Rabin acceptance, and working with tools that use different definitions is often a source of confusion. Our notations of the acceptance condition accommodate all styles, while giving clear and unambiguous semantics.</p>
 <p>J. Klein, in <a href="http://www.ltl2dstar.de/docs/ltl2dstar.html#dra_dsa"><code>ltl2dstar</code></a>, uses pairs <span class="math">\(\{(L_1,U_1),\ldots,(L_k,U_k)\}\)</span> where there should be some pair <span class="math">\((L_i,U_i)\)</span> such that states in <span class="math">\(L_i\)</span> are visited infinitely often, but states in <span class="math">\(U_i\)</span> are visited finitely often. This is simply the complement of the Streett acceptance above:</p>
@@ -279,32 +279,99 @@ Acceptance: 6 (Fin(0)&amp;Inf(1))|(Fin(2)&amp;Inf(3))|(Fin(4)&amp;Inf(5))</code>
 Acceptance: 7 (Fin(0)&amp;Inf(1)&amp;Inf(2)&amp;Inf(3))|(Fin(4)&amp;Inf(5)&amp;Inf(6))</code></pre>
 <p>The first parameter of <code>generalized-Rabin</code> gives the number of generalized pairs and the following parameters give the number of <span class="math">\(F_{ij}\)</span> sets in the corresponding pairs.</p>
 <h3 id="parity-automata">Parity automata</h3>
-<p>For parity automata <code>acc-name: parity</code> has three parameters to support combinations of <code>min</code>/<code>max</code> and <code>even</code>/<code>odd</code>, and to specify the range of acceptance sets used.</p>
-<p>If the automaton should accept when the least identifier of acceptance sets visited infinitely often is even, we write:</p>
-<pre><code>acc-name: parity min even 5
-Acceptance: 5 Inf(0) | (Fin(1)&amp;Inf(2)) | (Fin(1)&amp;Fin(3)&amp;Inf(4))</code></pre>
-<p>or more compactly</p>
-<pre><code>Acceptance: 5 Inf(0) | Fin(1)&amp;(Inf(2) | Fin(3)&amp;Inf(4))</code></pre>
-<p>If the greatest identifier has to be odd, we write:</p>
-<pre><code>acc-name: parity max odd 6
-Acceptance: 6 Inf(5) | (Fin(4)&amp;Inf(3)) | (Fin(4)&amp;Fin(2)&amp;Inf(1))</code></pre>
-<p>Combinations <code>min odd</code> or <code>max even</code> are also possible:</p>
-<pre><code>acc-name: parity min odd 6
-Acceptance: 6 (Fin(0)&amp;Inf(1)) | (Fin(0)&amp;Fin(2)&amp;Inf(3)) | (Fin(0)&amp;Fin(2)&amp;Fin(4)&amp;Inf(5))
+<p>For parity acceptance, <code>acc-name: parity</code> has three parameters to support combinations of <code>min</code>/<code>max</code> and <code>even</code>/<code>odd</code>, and to specify the range of acceptance sets used. In an automaton with <code>max odd</code> parity acceptance, for instance, a run is accepting if the maximum set number visited infinitely often along the run is odd.</p>
+<p>A typical parity automaton should have <code>property: colored</code>, ensuring that each transition (or state) belongs to exactly one acceptance set. In this context the maximum or minimum set number seen infinitely often along a run always exists.</p>
+<p>The canonical encodings for parity acceptance have been chosen so they behave nicely even in automata where <code>property: colored</code> does not hold, i.e., where some transitions (or states) may belong to multiple acceptance sets or none. In particular if <span class="math">\(F\)</span> is the set of numbers of the acceptance sets visited infinitely often by a run of an automaton with <span class="math">\(n\)</span> acceptance sets, we assume that <span class="math">\(\min(\emptyset\)</span>)=n$ and <span class="math">\(\max(\emptyset)=-1\)</span> for the purpose of deciding the parity of <span class="math">\(\min(F)\)</span> or <span class="math">\(\max(F)\)</span>.</p>
+<p>Here are the first instances of the <code>min odd</code> condition for different numbers of sets:</p>
+<pre><code>acc-name: parity min odd 0
+Acceptance: 0 f
+
+acc-name: parity min odd 1
+Acceptance: 1 Fin(0)
+
+acc-name: parity min odd 2
+Acceptance: 2 Fin(0) &amp; Inf(1)
+
+acc-name: parity min odd 3
+Acceptance: 3 Fin(0) &amp; (Inf(1) | Fin(2))
+
+acc-name: parity min odd 4
+Acceptance: 4 Fin(0) &amp; (Inf(1) | (Fin(2) &amp; Inf(3)))
+
+acc-name: parity min odd 5
+Acceptance: 5 Fin(0) &amp; (Inf(1) | (Fin(2) &amp; (Inf(3) | Fin(4))))</code></pre>
+<p>The <code>min even</code> cases are dual:</p>
+<pre><code>acc-name: parity min even 0
+Acceptance: 0 t
+
+acc-name: parity min even 1
+Acceptance: 1 Inf(0)
+
+acc-name: parity min even 2
+Acceptance: 2 Inf(0) | Fin(1)
+
+acc-name: parity min even 3
+Acceptance: 3 Inf(0) | (Fin(1) &amp; Inf(2))
+
+acc-name: parity min even 4
+Acceptance: 4 Inf(0) | (Fin(1) &amp; (Inf(2) | Fin(3)))
+
+acc-name: parity min even 5
+Acceptance: 5 Inf(0) | (Fin(1) &amp; (Inf(2) | (Fin(3) &amp; Inf(4)))</code></pre>
+<p>The <code>max odd</code> condition is similar to <code>min odd</code>, but encoded in the reverse direction:</p>
+<pre><code>acc-name: parity max odd 0
+Acceptance: 0 t
+
+acc-name: parity max odd 1
+Acceptance: 1 Fin(0)
+
+acc-name: parity max odd 2
+Acceptance: 2 Inf(1) | Fin(0)
+
+acc-name: parity max odd 3
+Acceptance: 3 Fin(2) &amp; (Inf(1) | Fin(0))
+
+acc-name: parity max odd 4
+Acceptance: 4 Inf(3) | (Fin(2) &amp; (Inf(1) | Fin(0)))
+
+acc-name: parity max odd 5
+Acceptance: 5 Fin(4) &amp; (Inf(3) | (Fin(2) &amp; (Inf(1) | Fin(0))))</code></pre>
+<p>And again <code>max even</code> conditions are dual to <code>max odd</code>:</p>
+<pre><code>acc-name: parity max even 0
+Acceptance: 0 f
+
+acc-name: parity max even 1
+Acceptance: 1 Inf(0)
+
+acc-name: parity max even 2
+Acceptance: 2 Fin(1) &amp; Inf(0)
+
+acc-name: parity max even 3
+Acceptance: 3 Inf(2) | (Fin(1) &amp; Inf(0))
+
+acc-name: parity max even 4
+Acceptance: 4 Fin(3) &amp; (Inf(2) | (Fin(1) &amp; Inf(0)))
 
 acc-name: parity max even 5
-Acceptance: 5 Inf(4) | (Fin(3)&amp;Inf(2)) | (Fin(3)&amp;Fin(1)&amp;Inf(0))</code></pre>
+Acceptance: 5 Inf(4) | (Fin(3) &amp; (Inf(2) | (Fin(1) &amp; Inf(0))))</code></pre>
+<p>Note that in all those acceptance specifications, <code>Inf</code> is always followed by <code>|</code>, <code>Fin</code> is always followed by <code>&amp;</code>, and both are alternating.</p>
 <h3 id="trivial-acceptance-conditions-all-and-none">Trivial acceptance conditions: <code>all</code> and <code>none</code></h3>
-<p>When <code>generalized-Büchi</code> or <code>Streett</code> are used with <code>0</code> acceptance sets, it degenerates to an automaton that accepts all recognized words:</p>
+<p>When <code>generalized-Büchi</code> or <code>Streett</code> are used with <code>0</code> acceptance sets, they degenerate to conditions that accept all recognized words:</p>
 <pre><code>acc-name: generalized-Buchi 0
 Acceptance: 0 t</code></pre>
 <p>or</p>
 <pre><code>acc-name: Streett 0
 Acceptance: 0 t</code></pre>
-<p>Such an all-accepting condition typically occurs when translating safety formula, or when building monitors. In these specialized cases, it might not really make sense to name the acceptance <code>generalized-Buchi</code> or <code>Streett</code>. For this reason, we also support the name <code>all</code> as a synonym:</p>
+<p>We also have similar cases for parity acceptance:</p>
+<pre><code>acc-name: parity max odd 0
+Acceptance: 0 t
+
+acc-name: parity min even 0
+Acceptance: 0 t</code></pre>
+<p>Such an all-accepting condition typically occurs when translating safety formulas, or when building monitors. In these specialized cases, it might not really make sense to name the acceptance <code>generalized-Buchi</code> or <code>Streett</code>. For this reason, we also support the name <code>all</code> as a synonym:</p>
 <pre><code>acc-name: all
 Acceptance: 0 t</code></pre>
-<p>Similarly, but less interestingly, <code>generalized-co-Buchi</code> and <code>Rabin</code> all degenerate to <code>f</code> when using 0 acceptance pairs, and this acceptance condition can also be called <code>none</code>. The following four acceptance specification are therefore equivalent and describe automata that will reject all words:</p>
+<p>Similarly, but less interestingly, <code>generalized-co-Buchi</code> and <code>Rabin</code> all degenerate to <code>f</code> when using 0 acceptance pairs, and this acceptance condition can also be called <code>none</code>. The following acceptance specifications are equivalent and describe automata that will reject all words:</p>
 <pre><code>acc-name: generalized-co-Buchi 0
 Acceptance: 0 f
 
@@ -314,8 +381,27 @@ Acceptance: 0 f
 acc-name: generalized-Rabin 0
 Acceptance: 0 f
 
+acc-name: parity max even 0
+Acceptance: 0 f
+
+acc-name: parity min odd 0
+Acceptance: 0 f
+
 acc-name: none
 Acceptance: 0 f</code></pre>
+<h2 id="other-acceptance-conditions">Other acceptance conditions</h2>
+<p>The HOA format is not restricted to the above classical acceptance conditions. Below are some examples of acceptance conditions for which we define no name for use in <code>acc-name:</code>. Tools should however feel free to introduce new names, should they need them.</p>
+<p>A promise automaton generated by the tableau construction of <a href="http://spot.lip6.fr/userdoc/ltl2tgba.html"><code>ltl2tgba</code></a> could be output with:</p>
+<pre><code>Acceptance: 3 Inf(!0) &amp; Inf(!1) &amp; Inf(!2)</code></pre>
+<p>(Spot actually makes an extra pass at the end of the translation to complement the acceptance sets in order to obtain the more usual generalized Büchi <code>Inf(0)&amp;Inf(1)&amp;Inf(2)</code> acceptance).</p>
+<p>The product of a <code>Rabin 2</code> automaton with a <code>Streett 2</code> automaton, performed in a very straightforward way, will have an acceptance condition such as the following, where sets 1-4 are used as Rabin pairs, while sets 4-7 are used as Streett pairs.</p>
+<p>Acceptance: 8 ((Inf(0)&amp;Fin(1))|(Inf(2)&amp;Fin(3)))&amp;((Fin(4)|Inf(5))&amp;(Fin(6)|Inf(7)))</p>
+<p>Although it is not the case in the classical acceptance conditions, acceptance sets can be used multiple times in the same acceptance formula, possibly even with both <code>Fin</code> and <code>Inf</code> primitives. For instance when translating the LTL formula <code>(GF(a) -&gt; GF(b)) &amp; (GF(b) -&gt; GF(c))</code> into an automaton with Streett-like acceptance, it would make sense to use:</p>
+<pre><code>Acceptance: 3 (Fin(0)|Inf(1))&amp;(Fin(1)|Inf(2))</code></pre>
+<p>this however does not fit our strict definition of <code>acc-name: Streett 2</code> (which would be <code>Acceptance 4: (Fin(0)|Inf(1))&amp;(Fin(2)|Inf(3))</code>).</p>
+<p>Similarly, translating the LTL formulas <code>GF(a) xor GF(b)</code> could easily be done using an automaton with the following acceptance:</p>
+<pre><code>Acceptance: 2 (Fin(0)&amp;Inf(1))|(Inf(0)&amp;Fin(1))</code></pre>
+<p>Tool authors implementing support for generic acceptance conditions are encouraged to verify that they correctly deal with such cases, in which the same acceptance sets are used both in <code>Fin</code> and <code>Inf</code> primitives.</p>
 <h2 id="body-of-the-automaton">Body of the Automaton</h2>
 <p>The header is separated from the rest of the structure with <code>--BODY--</code>.</p>
 <p>States are specified with the following grammar:</p>
