@@ -363,7 +363,7 @@ For parity acceptance, `acc-name: parity` has three parameters to support combin
 
 A typical parity automaton should have `property: colored`, ensuring that each transition (or state) belongs to exactly one acceptance set.  In this context the maximum or minimum set number seen infinitely often along a run always exists.
 
-The canonical encodings for parity acceptance have been chosen so they behave nicely even in automata where `property: colored` does not hold, i.e., where some transitions (or states) may belong to multiple acceptance sets or none.  In particular if $F$ is the set of numbers of the acceptance sets visited infinitely often by a run of an automaton with $n$ acceptance sets, we assume that $\min(\emptyset$)=n$ and $\max(\emptyset)=-1$ for the purpose of deciding the parity of $\min(F)$ or $\max(F)$.
+The canonical encodings for parity acceptance have been chosen so they behave nicely even in automata where `property: colored` does not hold, i.e., where some transitions (or states) may belong to multiple acceptance sets or none.  In particular if $F$ is the set of numbers of the acceptance sets visited infinitely often by a run of an automaton with $n$ acceptance sets, we assume that $\min(\emptyset)=n$ and $\max(\emptyset)=-1$ for the purpose of deciding the parity of $\min(F)$ or $\max(F)$.
 
 Here are the first instances of the `min odd` condition for different numbers of sets:
 
