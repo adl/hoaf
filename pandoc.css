@@ -65,8 +65,14 @@ table.examples tr:nth-child(even) {
 }
 table.examples td {
     padding: 1em;
-    text-align: center;
 }
+table.examples pre {
+    background-color: inherit;
+}
+table.examples a:link {
+    text-decoration: none;
+}
+
 
 img[alt="automaton"]{ float: right; }
 
