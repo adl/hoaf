@@ -23,7 +23,7 @@ while (m{!\[automaton\]\(figures/(?<filename>[^)]*)\.svg\)\s*\n    (?<body>HOA:.
   }
   $seenfiles{$name} = 1;
   $name = "examples/$name.hoa";
-  push @{$svg2hoa{$svg}}, $name;
+  push @{$svg2hoa{$svg}}, [$name, $body];
 
   print "writing $name\n";
   open(OUT, '>', $name) or die("cannot open $name: $!");
@@ -41,7 +41,7 @@ print(OUT <<'EOF');
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HOA Format Examples</title>
-  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">table pre{background-color: inherit;}</style>
   <link rel="stylesheet" href="pandoc.css" type="text/css" />
 </head>
 <body>
@@ -55,9 +55,13 @@ EOF
 foreach my $svg (@order)
 {
     print OUT " <tr>\n  <td>";
-    foreach my $hoa (@{$svg2hoa{$svg}})
+    my @ex = @{$svg2hoa{$svg}};
+    print OUT "  These @{[$#ex+1]} examples encode the same automaton.<br/><br/>\n"
+	if ($#ex > 0);
+    foreach my $t (@ex)
     {
-	print OUT "    <a href='$hoa'><code>$hoa</code></a><br/>\n";
+	my ($hoa, $body) = @$t;
+	print OUT "    <a href='$hoa'><code>$hoa</code><pre>$body</pre></a>\n";
     }
     print OUT "  </td>\n  <td><img src='$svg'></td>\n </tr>\n";
 }
