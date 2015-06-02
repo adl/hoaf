@@ -17,6 +17,7 @@ This is version 1 of the format.  The document may evolve slightly to clarify so
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Change log:
+- 2015-06-02: More rigourous definition of $F$ in the semantics ([#48](https://github.com/adl/hoaf/issues/48))
 - 2015-05-26: Clarify the notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases ([#46](https://github.com/adl/hoaf/issues/46))
 - 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
 - 2015-04-17: Some clarification in case `States:` is missing. ([#39](https://github.com/adl/hoaf/issues/39))
@@ -813,10 +814,10 @@ Each omega-automaton described in this format can be seen as an automaton $\lang
 
 - $\AP$ is a finite set of atomic propositions. We use $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
 - $Q$ is a finite set of states.
-- $R\subseteq Q\times\B(\AP)\times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A quadruplet $(s,\ell,M,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in\B(\AP)$, and belonging to the acceptance sets listed in $M\subseteq \{0,1,\ldots,m-1\}$, where $m$ is the declared number of acceptance sets.
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states.
-- $F=\{S_0,S_1,\ldots,S_{m-1}\}$ is a finite set of acceptance sets.  Each acceptance set $S_i = \{ (s,\ell,M,D)\in R \mid i\in M \}$ is a subset of **transitions**.
+- $F=(S_0,S_1,\ldots,S_{m-1})$ is an ordered list of $m$ acceptance sets.  Each acceptance set $S_i = \{ (s,\ell,M,D)\in R \mid i\in M \}$ is a subset of **transitions**.
 - $\mathit{Acc}$ is a Boolean formula over $\{\Fin(i),\Fin(\lnot i),\Inf(i),\Inf(\lnot i)\mid i\in \{0,1,\ldots,m-1\}\}$.
+- $R\subseteq Q\times\B(\AP)\times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A quadruplet $(s,\ell,M,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in\B(\AP)$, and belonging to the acceptance sets listed in $M\subseteq \{0,1,\ldots,m-1\}$, where $m$ is the number of acceptance sets.
 
 The automaton is interpreted over infinite words, where letters are subsets of $\AP$. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
 
@@ -851,7 +852,7 @@ The omega-automata are represented by a tuple $\langle\AP,Q,R,I,F,\mathit{Acc}\r
 - $Q$ is a finite set of states.
 - $R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})$ is a transition relation,
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states,
-- $F=\{S_0,S_1,\ldots,S_{m-1}\}$ is a finite set of acceptance sets.  Each acceptance set $S_i\subseteq Q$ is a subset of **states**.
+- $F=(S_0,S_1,\ldots,S_{m-1})$ is list of $m$ acceptance sets.  Each acceptance set $S_i\subseteq Q$ is a subset of **states**.
 - $\mathit{Acc}$ is an acceptance condition.
 
 The only difference with the transition-based definition is that $S_i\subseteq Q$ instead of $S_i\subseteq R$.  The acceptance condition is still a formula defined over $\Fin(i)$, $\Fin(\lnot i)$, $\Inf(i)$, or $\Inf(\lnot i)$, but this time each $i$ refers to the set $S_i$ of **states** that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation $\lnot$ should be done with respect to $Q$ instead of $R$.
