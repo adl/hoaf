@@ -819,10 +819,12 @@ Each omega-automaton described in this format can be seen as an automaton $\lang
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states.
 - $\mathit{Acc}$ is a Boolean formula over $\{\Fin(i),\Fin(\lnot i),\Inf(i),\Inf(\lnot i)\mid i\in \{0,1,\ldots,m-1\}\}$.
 
-The indizes of the acceptance sets appearing in the transitions induce a list of acceptance sets $F=(S_0, ..., S_{m-1})$ where $S_i \subseteq R$ contains those **transitions** $t$ with $i \in M(t)$, i.e., $S_i = \{ t\in R \mid i\in M(t) \}$.  The automaton is interpreted over infinite words, where letters are subsets of $\AP$. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
+The indizes of the acceptance sets appearing in the transitions induce a list of acceptance sets $F=(S_0, ..., S_{m-1})$ where $S_i \subseteq R$ contains those **transitions** $t$ with $i \in M(t)$, i.e., $S_i = \{ t\in R \mid i\in M(t) \}$.  
+
+The automaton is interpreted over infinite words, where letters are subsets of $\AP$. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
 - $V$ is partitioned into $V_0\cup V_₁\cup V_2\ldots$ where the sets $V_i$ are disjoint,
 - for each edge $e\in E$ there exists $i\ge 0$ such that $e\in V_i\times V_{i+1}$,
-- $\lambda:V\to R$ is a labeling function such that $\{s(\lambda(x))\mid x\in V_0\}\in I$ and, for each $x\in V_i$, $\ell_i(\lambda(x))$ evaluates to True in the valuation assigning True to atomic propositions in $a_i$ and False to all other atomic propositions, and successors of $x$ correspond to the target conjunction of states of the transition $\lambda(x)$, i.e., $D(\lambda(x))=\{s(\lamba(y))\mid (x,y)\in E\}$.  We say that the transition $\lambda(x)$ is applied to $x$.
+- $\lambda:V\to R$ is a labeling function such that $\{s(\lambda(x))\mid x\in V_0\}\in I$ and, for each $x\in V_i$, $\ell_i(\lambda(x))$ evaluates to True in the valuation assigning True to atomic propositions in $a_i$ and False to all other atomic propositions, and successors of $x$ correspond to the target conjunction of states of the transition $\lambda(x)$, i.e., $D(\lambda(x))=\{s(\lamba(y))\mid (x,y)\in E\}$.  We say that the transition $\lambda(x)$ is **applied to** $x$.
 
 Runs of automata without universal branching are simply infinite linear sequences of nodes.
 
