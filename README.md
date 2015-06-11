@@ -17,7 +17,8 @@ This is version 1 of the format.  The document may evolve slightly to clarify so
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Change log:
-- 2015-05-26: Clarify the notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases ([#46](https://github.com/adl/hoaf/issues/46))
+- 2015-06-11: Improved definition of accepting sets in the semantics ([#48](https://github.com/adl/hoaf/issues/48))
+- 2015-05-26: Clarified notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases ([#46](https://github.com/adl/hoaf/issues/46))
 - 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
 - 2015-04-17: Some clarification in case `States:` is missing. ([#39](https://github.com/adl/hoaf/issues/39))
 - 2015-04-17: Fix transition-based semantics to deal with duplicate transitions. ([#38](https://github.com/adl/hoaf/issues/38))
@@ -809,20 +810,21 @@ Formal Semantics of Omega-Automata
 
 The following definition specifies alternating automata with transition-based acceptance.  Because of universal branching, the initial states and destination states of transitions are non-empty sets of states (i.e., elements of $2^Q\setminus\{\emptyset\}$) interpreted as conjunctions.  Automata without universal branching use just elements of Q as initial or destination states.
 
-Each omega-automaton described in this format can be seen as an automaton $\langle\AP,Q,R,I,F,\mathit{Acc}\rangle$ with labels on transitions and transition-based acceptance, where:
+Each omega-automaton described in this format can be seen as an automaton $\langle\AP,Q,m,R,I,\mathit{Acc}\rangle$ with labels on transitions and transition-based acceptance, where:
 
 - $\AP$ is a finite set of atomic propositions. We use $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
 - $Q$ is a finite set of states.
-- $R\subseteq Q\times\B(\AP)\times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A quadruplet $(s,\ell,M,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in\B(\AP)$, and belonging to the acceptance sets listed in $M\subseteq \{0,1,\ldots,m-1\}$, where $m$ is the declared number of acceptance sets.
+- $m$ is the number of acceptance sets.
+- $R\subseteq Q\times\B(\AP)\times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A quadruplet $(s,\ell,M,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in\B(\AP)$, and belonging to the acceptance sets listed in $M\subseteq \{0,1,\ldots,m-1\}$, where $m$ is the declared number of acceptance sets. Let $s(t)$, $\ell(t)$, $M(t)$, and $D(t)$ denote the corresponding components of a transition $t$. 
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states.
-- $F=\{S_0,S_1,\ldots,S_{m-1}\}$ is a finite set of acceptance sets.  Each acceptance set $S_i = \{ (s,\ell,M,D)\in R \mid i\in M \}$ is a subset of **transitions**.
 - $\mathit{Acc}$ is a Boolean formula over $\{\Fin(i),\Fin(\lnot i),\Inf(i),\Inf(\lnot i)\mid i\in \{0,1,\ldots,m-1\}\}$.
 
-The automaton is interpreted over infinite words, where letters are subsets of $\AP$. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
+The indizes of the acceptance sets appearing in the transitions induce a list of acceptance sets $F=(S_0, ..., S_{m-1})$ where $S_i \subseteq R$ contains those **transitions** $t$ with $i \in M(t)$, i.e., $S_i = \{ t\in R \mid i\in M(t) \}$.  
 
+The automaton is interpreted over infinite words, where letters are subsets of $\AP$. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
 - $V$ is partitioned into $V_0\cup V_₁\cup V_2\ldots$ where the sets $V_i$ are disjoint,
 - for each edge $e\in E$ there exists $i\ge 0$ such that $e\in V_i\times V_{i+1}$,
-- $\lambda:V\to Q$ is a labeling function such that $\{\lambda(x)\mid x\in V_0\}\in I$ and for each $x\in V_i$ there exists a transition $(\lambda(x),\ell_i,\{\lambda(y)\mid (x,y)\in E\})\in R$ such that $\ell_i$ evaluates to True in the valuation assigning True to atomic propositions in $a_i$ and False to all other atomic propositions. We say that the transition $(\lambda(x),\ell_i,\{\lambda(y)\mid(x,y)\in E\})$ is **applied to** $x$.
+- $\lambda:V\to R$ is a labeling function such that $\{s(\lambda(x))\mid x\in V_0\}\in I$ and, for each $x\in V_i$, $\ell_i(\lambda(x))$ evaluates to True in the valuation assigning True to atomic propositions in $a_i$ and False to all other atomic propositions, and successors of $x$ correspond to the target conjunction of states of the transition $\lambda(x)$, i.e., $D(\lambda(x))=\{s(\lamba(y))\mid (x,y)\in E\}$.  We say that the transition $\lambda(x)$ is **applied to** $x$.
 
 Runs of automata without universal branching are simply infinite linear sequences of nodes.
 
@@ -854,7 +856,7 @@ The omega-automata are represented by a tuple $\langle\AP,Q,R,I,F,\mathit{Acc}\r
 - $F=\{S_0,S_1,\ldots,S_{m-1}\}$ is a finite set of acceptance sets.  Each acceptance set $S_i\subseteq Q$ is a subset of **states**.
 - $\mathit{Acc}$ is an acceptance condition.
 
-The only difference with the transition-based definition is that $S_i\subseteq Q$ instead of $S_i\subseteq R$.  The acceptance condition is still a formula defined over $\Fin(i)$, $\Fin(\lnot i)$, $\Inf(i)$, or $\Inf(\lnot i)$, but this time each $i$ refers to the set $S_i$ of **states** that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation $\lnot$ should be done with respect to $Q$ instead of $R$.
+In contrast to the automaton with transition-based acceptance, the acceptance sets $S_0, ..., S_{m-1}$ appear directly in the definition, with each $S_i$ being a subset of states.  The acceptance condition is still a formula defined over $\Fin(i)$, $\Fin(\lnot i)$, $\Inf(i)$, or $\Inf(\lnot i)$, but this time each $i$ refers to the set $S_i$ of **states** that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation $\lnot$ should be done with respect to $Q$ instead of $R$.
 
 An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptance set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language.  If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.
 
