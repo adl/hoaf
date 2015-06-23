@@ -71,21 +71,14 @@
 </ul>
 <p><em>The web page and source code of Rabinizer does not state any license.</em></p>
 <h2 id="spot"><code>Spot</code></h2>
-<p><a href="http://spot.lip6.fr/wiki/GetSpot">Spot 1.2.6</a> contains <code>ltl2tgba</code>, a tool that translates LTL or PSL formulas, and <code>dstar2tgba</code> a tool that convert <code>ltl2dstar</code>'s Rabin or Streett output (expressed in the original DSTAR format, not yet in the HOA format). Both tools can output the following types of automata in the HOA format:</p>
+<p><a href="https://spot.lrde.epita.fr">Spot 1.99.1</a> has several tools that can output or input these automata, and that support the generic acceptance condition. In addition to <code>ltl2tgba</code> and <code>dstar2tgba</code> (that can output generalized Büchi automata in HOA), there are the following tools:</p>
 <ul>
-<li>transition-based generalized Büchi automata,</li>
-<li>Büchi automata,</li>
-<li>monitors.</li>
-</ul>
-<p>The development version of what will become Spot 2.0 has several tools that can output or input these automata, and that support the generic acceptance condition. In addition to <code>ltl2tgba</code> and <code>dstar2tgba</code>, there are the following tools:</p>
-<ul>
-<li><code>randaut</code>: generates random generalized Büchi automata</li>
+<li><code>randaut</code>: generates random automata with any acceptance condition,</li>
 <li><code>autfilt</code>: reads automata (in the HOA format, the LBT's format or never claims), transform them, filter them, and output them (in the HOA format, the LBT's format, as never claims, or dot output for graphical display)</li>
 <li><code>ltlcross</code>: compares and checks LTL/PSL translators (can read HOA, LBT, never claims, or ltl2dstar's output)</li>
 <li><code>ltldo</code>: Wrap existing LTL to Büchi translator tools, providing them all the range of input and output Spot supports. For instance running <code>ltldo spin -f GFa -H</code> will use <a href="http://spinroot.com/">spin</a> to translate <code>[]&lt;&gt;a</code> and convert the result to the HOA format.</li>
 </ul>
-<p>In these tools HOA support is currently limited to non-alternating automata. The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.</p>
-<p>Until a release is done, <a href="https://www.lrde.epita.fr/~adl/dl/spot-1.99b.tar.gz">a fully functionnal development version can be downloaded here</a>, and the documentation of the tools offered can be read <a href="https://www.lrde.epita.fr/~adl/dl/spot-1.99-userdoc/tools.html">there</a>. The tarball and web pages pointed by these two links are updated regularly.</p>
+<p>In these tools, HOA support is currently <a href="https://spot.lrde.epita.fr/hoa.html">limited to non-alternating automata</a>. The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.</p>
 <p>Spot's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>.</p>
 <h2 id="live-cd"><a name="live-cd">Live CD</a></h2>
 <p>You can obtain an <a href="http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso">ISO image</a> (740MB, SHASUM: a23c47374b5a2ae7e31f9c9cb2d6908384c7cf29), containing a Debian Live CD with all the various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it.</p>
