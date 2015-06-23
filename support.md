@@ -69,21 +69,13 @@ PRISM's source code is distributed under the [GNU General Public License, versio
 `Spot`
 ------
 
-[Spot 1.2.6](http://spot.lip6.fr/wiki/GetSpot) contains `ltl2tgba`, a tool that translates LTL or PSL formulas, and `dstar2tgba` a tool that convert `ltl2dstar`'s Rabin or Streett output (expressed in the original DSTAR format, not yet in the HOA format).  Both tools can output the following types of automata in the HOA format:
-
-- transition-based generalized Büchi automata,
-- Büchi automata,
-- monitors.
-
-The development version of what will become Spot 2.0 has several tools that can output or input these automata, and that support the generic acceptance condition.  In addition to `ltl2tgba` and `dstar2tgba`, there are the following tools:
-- `randaut`: generates random generalized Büchi automata
+[Spot 1.99.1](https://spot.lrde.epita.fr) has several tools that can output or input these automata, and that support the generic acceptance condition.  In addition to `ltl2tgba` and `dstar2tgba` (that can output generalized Büchi automata in HOA), there are the following tools:
+- `randaut`: generates random automata with any acceptance condition,
 - `autfilt`: reads automata (in the HOA format, the LBT's format or never claims), transform them, filter them, and output them (in the HOA format, the LBT's format, as never claims, or dot output for graphical display)
 - `ltlcross`: compares and checks LTL/PSL translators (can read HOA, LBT, never claims, or ltl2dstar's output)
 - `ltldo`: Wrap existing LTL to Büchi translator tools, providing them all the range of input and output Spot supports.  For instance running `ltldo spin -f GFa -H` will use [spin](http://spinroot.com/) to translate `[]<>a` and convert the result to the HOA format.
 
-In these tools HOA support is currently limited to non-alternating automata.  The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.
-
-Until a release is done, [a fully functionnal development version can be downloaded here](https://www.lrde.epita.fr/~adl/dl/spot-1.99b.tar.gz), and the documentation of the tools offered can be read [there](https://www.lrde.epita.fr/~adl/dl/spot-1.99-userdoc/tools.html).  The tarball and web pages pointed by these two links are updated regularly.
+In these tools, HOA support is currently [limited to non-alternating automata](https://spot.lrde.epita.fr/hoa.html).  The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.
 
 Spot's source code is distributed under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.html).
 
