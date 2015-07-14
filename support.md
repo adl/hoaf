@@ -8,7 +8,7 @@ For your convenience, we provide a [live CD](#live-cd) to play around with the t
 `jhoafparser` library
 ---------------------
 
-[`jhoafparser`](http://www.ltl2dstar.de/jhoafparser/) is a Java-based parser for the HOA format. The parser includes an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format, as well as a command-line tool that can be used for validation of HOA automata.
+[`jhoafparser`](http://automata.tools/hoa/jhoafparser/) is a Java-based parser for the HOA format. The parser includes an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format, as well as a command-line tool that can be used for validation of HOA automata.
 
 `jhoafparser` is distributed under the [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
 
