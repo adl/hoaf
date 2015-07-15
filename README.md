@@ -404,7 +404,7 @@ The `min even` cases are dual:
     Acceptance: 4 Inf(0) | (Fin(1) & (Inf(2) | Fin(3)))
 
     acc-name: parity min even 5
-    Acceptance: 5 Inf(0) | (Fin(1) & (Inf(2) | (Fin(3) & Inf(4)))
+    Acceptance: 5 Inf(0) | (Fin(1) & (Inf(2) | (Fin(3) & Inf(4))))
 
 The `max odd` condition is similar to `min odd`, but encoded in the reverse direction:
 
