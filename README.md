@@ -9,6 +9,8 @@ Current tool support is described on a [separate page](http://adl.github.io/hoaf
 
 All the examples shown here can also be [downloaded separately](http://adl.github.io/hoaf/examples.html).
 
+For a short introduction, we have a [poster introducing the format](https://www.lrde.epita.fr/~adl/dl/adl/babiak.15.cav.poster.pdf), and a [tool paper](https://www.lrde.epita.fr/~adl/dl/adl/babiak.15.cav.pdf) published at [CAV'15](http://i-cav.org/2015/).
+
 Current status
 --------------
 
