@@ -6,13 +6,9 @@ The following tools implement support for the [HOA format](index.html), either a
 For your convenience, we provide a [live CD](#live-cd) to play around with the tools.
 
 `jhoafparser` and `cpphoafparser` libraries
------------------------------------------
+-------------------------------------------
 
-[`jhoafparser`](http://automata.tools/hoa/jhoafparser/) 
-and
-[`cpphoafparser`](http://automata.tools/hoa/cpphoafparser/)
-are Java/C++-based parser libraries for the HOA format.
-The parser includes an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format, as well as a command-line tool that can be used for validation of HOA automata.
+[`jhoafparser`](http://automata.tools/hoa/jhoafparser/) and [`cpphoafparser`](http://automata.tools/hoa/cpphoafparser/) are Java/C++-based parser libraries for the HOA format. The parsers include an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format, as well as command-line tools that can be used for validation of HOA automata.
 
 `jhoafparser` and `cpphoafparser` is distributed under the [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
 
