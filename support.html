@@ -13,7 +13,7 @@
 <div id="TOCTXT">Table of Contents</div>
 <ul>
 <li><a href="#hoa-format-tool-support">HOA Format Tool Support</a><ul>
-<li><a href="#jhoafparser-library"><code>jhoafparser</code> library</a></li>
+<li><a href="#jhoafparser-and-cpphoafparser-libraries"><code>jhoafparser</code> and <code>cpphoafparser</code> libraries</a></li>
 <li><a href="#ltl2dstar"><code>ltl2dstar</code></a></li>
 <li><a href="#ltl3ba"><code>ltl3ba</code></a></li>
 <li><a href="#ltl3dra"><code>ltl3dra</code></a></li>
@@ -30,9 +30,9 @@
 <h1 id="hoa-format-tool-support">HOA Format Tool Support</h1>
 <p>The following tools implement support for the <a href="index.html">HOA format</a>, either as output or as input.</p>
 <p>For your convenience, we provide a <a href="#live-cd">live CD</a> to play around with the tools.</p>
-<h2 id="jhoafparser-library"><code>jhoafparser</code> library</h2>
-<p><a href="http://automata.tools/hoa/jhoafparser/"><code>jhoafparser</code></a> is a Java-based parser for the HOA format. The parser includes an abstraction layer (<code>HOAConsumer</code>) allowing applications to react to the different parts of the format, as well as a command-line tool that can be used for validation of HOA automata.</p>
-<p><code>jhoafparser</code> is distributed under the <a href="https://www.gnu.org/licenses/lgpl-2.1.html">GNU Lesser General Public License, version 2.1</a></p>
+<h2 id="jhoafparser-and-cpphoafparser-libraries"><code>jhoafparser</code> and <code>cpphoafparser</code> libraries</h2>
+<p><a href="http://automata.tools/hoa/jhoafparser/"><code>jhoafparser</code></a><br />and<br /><a href="http://automata.tools/hoa/cpphoafparser/"><code>cpphoafparser</code></a><br />are Java/C++-based parser libraries for the HOA format.<br />The parser includes an abstraction layer (<code>HOAConsumer</code>) allowing applications to react to the different parts of the format, as well as a command-line tool that can be used for validation of HOA automata.</p>
+<p><code>jhoafparser</code> and <code>cpphoafparser</code> is distributed under the <a href="https://www.gnu.org/licenses/lgpl-2.1.html">GNU Lesser General Public License, version 2.1</a></p>
 <h2 id="ltl2dstar"><code>ltl2dstar</code></h2>
 <p>Since version 0.5.2, <a href="http://ltl2dstar.de/"><code>ltl2dstar</code></a> can convert LTL formulas into three kinds of automata that can be output in the HOA format:</p>
 <ul>
@@ -40,6 +40,7 @@
 <li>deterministic Street automata,</li>
 <li>non-deterministic Büchi automata (after conversion from DRA or DSA).</li>
 </ul>
+<p>Since version 0.5.3, <a href="http://ltl2dstar.de/"><code>ltl2dstar</code></a> can also read non-deterministic Büchi<br />automata in HOA format, either from external LTL-to-Büchi translators or as the input automaton<br />for determinization.</p>
 <p><code>ltl2dstar</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
 <h2 id="ltl3ba"><code>ltl3ba</code></h2>
 <p>Since version 1.1.0, <a href="http://sourceforge.net/projects/ltl3ba/"><code>ltl3ba</code></a> can translate LTL formulas into three kinds of automata that can be output in the HOA format:</p>
@@ -58,8 +59,7 @@
 </ul>
 <p><code>ltl3dra</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
 <h2 id="prism"><code>PRISM</code></h2>
-<p><a href="http://www.prismmodelchecker.org/">PRISM</a> uses omega automata for probabilistic verification of LTL (and similar logics) against probabilistic models such as Markov chains and Markov decisions processes.</p>
-<p>The <a href="http://www.prismmodelchecker.org/dev/">current development version of PRISM</a>, which will form the next public release, includes support for plugging in external LTL-to-automaton generation tools using the HOA format. PRISM incorporates <code>jhoafparser</code> for the purposes of importing the generated automata and now supports verification of a variety of acceptance conditions: arbitrary generic acceptance conditions for Markov chains and Rabin or generalized Rabin conditions for Markov decision processes.</p>
+<p><a href="http://www.prismmodelchecker.org/">PRISM</a> uses omega automata for probabilistic verification of LTL (and similar logics) against probabilistic models such as Markov chains and Markov processes. Since version 4.3, it includes support for plugging in external LTL-to-automaton generation tools using the HOA format. PRISM incorporates <code>jhoafparser</code> for the purposes of importing the generated automata and now supports verification of a variety of acceptance conditions: arbitrary generic acceptance conditions for Markov chains and Rabin or generalized Rabin conditions for Markov decision processes.</p>
 <p>PRISM's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
 <h2 id="rabinizer"><code>Rabinizer</code></h2>
 <p><a href="https://www7.in.tum.de/~kretinsk/rabinizer3.html">Rabinizer 3</a> can translate can translate LTL formulas into four kinds of automata that can be output in the HOA format:</p>
@@ -81,7 +81,7 @@
 <p>In these tools, HOA support is currently <a href="https://spot.lrde.epita.fr/hoa.html">limited to non-alternating automata</a>. The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.</p>
 <p>Spot's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>.</p>
 <h2 id="live-cd"><a name="live-cd">Live CD</a></h2>
-<p>You can obtain an <a href="http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso">ISO image</a> (740MB, SHASUM: a23c47374b5a2ae7e31f9c9cb2d6908384c7cf29), containing a Debian Live CD with all the various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it.</p>
+<p>You can obtain an <a href="http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso">ISO image</a> (740MB, SHASUM: a23c47374b5a2ae7e31f9c9cb2d6908384c7cf29), containing a Debian Live CD with various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it.</p>
 <h3 id="running-in-a-virtual-machine">Running in a virtual machine</h3>
 <p>As virtual machine, we have tried <a href="http://wiki.qemu.org/Main_Page">QEMU</a> and <a href="http://www.virtualbox.org/">VirtualBox</a>.</p>
 <p>For VirtualBox, create a new virtual machine, attach the ISO image as a CD-drive and boot. For RAM, use at least 512MB, preferably 1GB.</p>
