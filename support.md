@@ -5,7 +5,7 @@ The following tools implement support for the [HOA format](index.html), either a
 
 For your convenience, we provide a [live CD](#live-cd) to play around with the tools.
 
-`jhoafparser` and `cpphoafparser` library
+`jhoafparser` and `cpphoafparser` libraries
 -----------------------------------------
 
 [`jhoafparser`](http://automata.tools/hoa/jhoafparser/) 
