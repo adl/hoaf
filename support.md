@@ -5,12 +5,16 @@ The following tools implement support for the [HOA format](index.html), either a
 
 For your convenience, we provide a [live CD](#live-cd) to play around with the tools.
 
-`jhoafparser` library
----------------------
+`jhoafparser` and `cpphoafparser` library
+-----------------------------------------
 
-[`jhoafparser`](http://automata.tools/hoa/jhoafparser/) is a Java-based parser for the HOA format. The parser includes an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format, as well as a command-line tool that can be used for validation of HOA automata.
+[`jhoafparser`](http://automata.tools/hoa/jhoafparser/) 
+and
+[`cpphoafparser`](http://automata.tools/hoa/cpphoafparser/)
+are Java/C++-based parser libraries for the HOA format.
+The parser includes an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format, as well as a command-line tool that can be used for validation of HOA automata.
 
-`jhoafparser` is distributed under the [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
+`jhoafparser` and `cpphoafparser` is distributed under the [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
 
 `ltl2dstar`
 -----------
@@ -20,6 +24,10 @@ Since version 0.5.2, [`ltl2dstar`](http://ltl2dstar.de/) can convert LTL formula
 - deterministic Rabin automata,
 - deterministic Street automata,
 - non-deterministic Büchi automata (after conversion from DRA or DSA).
+
+Since version 0.5.3, [`ltl2dstar`](http://ltl2dstar.de/) can also read non-deterministic Büchi
+automata in HOA format, either from external LTL-to-Büchi translators or as the input automaton
+for determinization.
 
 `ltl2dstar`'s source code is distributed under the [GNU General Public License, version 2](http://www.gnu.org/licenses/gpl-2.0.html).
 
