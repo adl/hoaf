@@ -46,7 +46,7 @@ h1 code, h2 code, h3 code, h4 code, h5 code {
 }
 
 h1 code, h2 code, h3 code, h4 code, h5 code {
-    background-color: #eaeaff;
+    background-color: #CCEBF4;
 }
 
 table.examples {
@@ -73,15 +73,14 @@ table.examples a:link {
     text-decoration: none;
 }
 
-
 img[alt="automaton"]{ float: right; }
 img[alt="HOA logo"]{ display: block; margin-left: auto; margin-right: auto; }
 
 h1, h2, h3, h4, h5 {
     font-weight: bold;
-    border-bottom: 2px solid #8888d0;
-    background-color: #eaeaff;
-    color: #0000d0;
+    border-bottom: 2px solid #007CA2;
+    background-color: #CCEBF4;
+    color: #007CA2;
     margin-left: -2em;
     padding-left: 2em;
     margin-right: -2em;
@@ -119,6 +118,10 @@ h1.title {
         border: none;
 }
 
+a         { color: #009bca; text-decoration: none;}
+a:hover   { text-decoration: underline; }
+a:visited { color: #73556F; }
+
 dt code {
         font-weight: bold;
 }
@@ -139,7 +142,7 @@ dd p {
 	position: fixed;
 	right: 0em;
 	top: 0em;
-	background: #eaeaff;
+	background: #CCEBF4;
 	color: #000000;
 	-webkit-box-shadow: 0 0 1em #777777;
 	-moz-box-shadow: 0 0 1em #777777;
@@ -171,6 +174,6 @@ dd p {
 
 #TOC ul code {
     font-size: 80%;
-    color: #0000d0;
-    background-color: #eaeaff;
+    color: #007CA2;
+    background-color: #CCEBF4;
 }
