@@ -1,3 +1,5 @@
+![HOA logo](hoa.png)
+
 The Hanoi Omega-Automata Format
 ===============================
 

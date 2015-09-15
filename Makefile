@@ -24,9 +24,9 @@ examples/examples.zip: scripts/extract.pl README.md
 	zip -9 $@ examples/*.hoa
 
 .PHONY: webpack gh-pages
-webpack: index.html support.html hoaf.pdf examples/examples.zip
+webpack: index.html support.html hoaf.pdf hoa.png hoa-icon-small.png examples/examples.zip
 	$(MAKE) $(MAKEFLAGS) -C figures
-	tar zcvf www.tgz index.html hoaf.pdf examples.html support.html pandoc.css figures/*.svg examples/examples.zip examples/*.hoa
+	tar zcvf www.tgz index.html hoaf.pdf hoa.png hoa-icon-small.png examples.html support.html pandoc.css figures/*.svg examples/examples.zip examples/*.hoa
 
 gh-pages: webpack
 	v=`git describe --always --abbrev=8 --dirty`; \
