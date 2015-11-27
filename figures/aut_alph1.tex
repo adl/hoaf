@@ -10,8 +10,8 @@
   \path[->] (0) edge[loop above] node{$a\lor c$} (0)
                 edge node[above]{$b$} (1)
             (1) edge[loop above] node{$b \lor c$} (1)
-                edge[bend left] node[above]{$a$} (2)
+                edge[bend left=15] node[above]{$a$} (2)
             (2) edge[loop above] node{$a$} (2)
-                edge[bend left] node[below]{$b \lor c$} (1);
+                edge[bend left=15] node[below]{$b \lor c$} (1);
 \end{automaton}
 \end{document}
