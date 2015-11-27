@@ -641,6 +641,28 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
       2 2 2 2
     --END--
 
+### Alphabet given by letters, state-based Rabin acceptance, and explicit labels
+
+![automaton](figures/aut_alph1.svg)
+
+    HOA: v1_1
+    States: 3
+    Start: 0
+    Alphabet: 3 "a" "b" "c"
+    Acceptance: 2 Fin(0) & Inf(1)
+    acc-name: Rabin 1
+    --BODY--
+    State: 0
+    [0 | 2] 0
+    [1] 1
+    State: 1 {1}
+    [0] 2
+    [1 | 2] 1
+    State: 2 {0}
+    [0] 2
+    [1 | 2] 1
+    --END--
+
 ### TGBA with implicit labels
 
 ![automaton](figures/aut3.svg)
