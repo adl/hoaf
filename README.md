@@ -53,11 +53,31 @@ The HOA format supports many types of finite automata over infinite words: autom
 Preliminary Notes
 -----------------
 
-$\def\AP{\mathit{AP}}\def\B{\mathbb{B}}\def\Fin{\mathsf{Fin}}\def\Inf{\mathsf{Inf}}$Input alphabets of all considered automata types consist of letters that are subsets of atomic propositions ($\AP$).  To make the automata description more concise, we label states or transitions of automata with Boolean formulas over $\AP$ representing choices between multiple letters.  A Boolean formula represents the set of letters satisfying the formula: a letter satisfies a formula if the valuation assigning True to all atomic propositions in the letter and False to all other atomic propositions is a model of the formula.  We use $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
+### Input alphabet ###
+
+
+$\def\AP{\mathit{AP}}\def\B{\mathbb{B}}\def\Fin{\mathsf{Fin}}\def\Inf{\mathsf{Inf}}\def\true{\mathsf{true}}\def\false{\mathsf{false}}$
+The input alphabets $\Sigma$ of all considered automata types consist of a finite set of letters. There are two variants for specifying the alphabet, either by directly providing the set of letters, i.e., $\Sigma = \{\sigma_1, \ldots, \sigma_n\}$, or via a set of atomic propositions ($\AP = \{p_1, \ldots, p_n\}$), where the letters of the automaton consist of subsets of $\AP$, i.e., $\Sigma = 2^\AP$. Alphabets derived from atomic propositions are often used when the automaton was constructed from a temporal logic formula.
+
+To make the automata description more concise, we label states or transitions of automata with Boolean formulas for referencing the letters of the alphabet. In case that the alphabet is provided directly, these are Boolean formulas over the letters in $\Sigma$. In case that the alphabet is derived from atomic propositions $\AP$, these are Boolean formulas over the atomic propositions in $\AP$. We use $\B(\Sigma)$ to denote the set of Boolean formulas over $\Sigma$ and $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
+
+We denote by $\|\psi\| \subseteq \Sigma$, for a given Boolean formula $\psi \in \B(\Sigma)$ or $\psi \in \B(\AP)$, the set of letters in the alphabet that satisfy $\psi$, i.e., with the Boolean operators handled as usual via
+
+$\|\true\| = \Sigma$
+$\|\false\| = \varnothing$
+$\|\neg \psi\| = \Sigma \setminus \|\psi\|$
+$\|\psi_1 \land \psi_2 \| = \|\psi_1\| \cap \|\psi_2\|$
+$\|\psi_1 \lor \psi_2 \| = \|\psi_1\| \cup \|\psi_2\|$
+
+and with $\|a\| = \{ a \}$ for $a \in \Sigma$ (in case that $\Sigma$ is provided directly) and $\|\mathit{p}\| = \{ a \in \Sigma = 2^\AP \mid p \in a \}$ for $p \in \AP$ (in case that the alphabet is derived from atomic propositions). 
+
+### Acceptance conditions ###
 
 The format considers acceptance conditions built on a finite set $\{S_0,S_1,\ldots,S_k\}$ of acceptance sets.  Each acceptance set $S_i$ is a subset of automata states and transitions.  Loosely speaking, an acceptance condition says which acceptance sets should be visited infinitely often and which only finitely often by a run to be accepting.  More precisely, an acceptance condition is a positive Boolean formula over atoms of the form $\Fin(S_i)$, $\Fin(\lnot S_i)$, $\Inf(S_i)$, or $\Inf(\lnot S_i)$.  The atom $\Fin(S_i)$ indicates that all states and transitions in $S_i$ should occur at most finitely often in the run, while $\Inf(S_i)$ denotes that some state or transition of $S_i$ should be visited infinitely often.  A state in an acceptance set is formally seen as an abbreviation for inclusion of all transitions leaving the state.  The negation symbol $\lnot$ represents the complement of the set with respect to all transitions.  Many examples of classical acceptance conditions (Büchi, Rabin, Streett, parity) will be given later.
 
-The format has a common approach to atomic propositions, states, and acceptance sets: the number of propositions/states/sets, say $n$, is first declared and all propositions/states/sets are then referenced as $0,1,\ldots,n-1$.
+### References to elements of a set by index ###
+
+The format has a common approach for referencing the elements of the various sets, i.e., the letters of the alphabet, atomic propositions, states, and acceptance sets: the number of letters/propositions/states/sets, say $n$, is first declared and all letters/propositions/states/sets are then referenced as $0,1,\ldots,n-1$.
 
 
 Common Tokens
@@ -105,6 +125,7 @@ Header
     format-version ::= "HOA:" IDENTIFIER
     header-item ::= "States:" INT
                  | "Start:" state-conj
+                 | "Alphabet:" INT STRING*
                  | "AP:" INT STRING*
                  | "Alias:" ANAME label-expr
                  | "Acceptance:" INT acceptance-cond
@@ -151,8 +172,26 @@ Alternating automata can start in a conjunction of states specified using the `&
 
 If the `Start:` header item is omitted, then the automaton has no initial state and denotes an empty language.
 
+### `Alphabet:`
+
+The `Alphabet:` header is used to directly specify the alphabet $\Sigma$ of the automaton. This header is mutually exclusive with the `AP:` header.
+
+`Alphabet:` gives the number of letters in the alphabet, followed by unique names for each of these letters (using double-quoted C-strings). Letters are implicitly numbered from left to right, starting at 0.
+
+For instance
+
+    Alphabet: 2 "a" "something_happens"
+
+specifies a two letter alphabet, where
+
+- letter 0 is `"a"`
+- letter 1 is `"something_happens"`
+
+The number of double-quoted strings must match exactly the number given, and should all be different.  This number has to be at least 1, i.e., an empty alphabet is not allowed.
 
 ### `AP:`
+
+The `AP:` header is used to specify a set of atomic propositions $\AP$, resulting in the alphabet $\Sigma = 2^\AP$. This header is mutually exclusive with the `AP:` header. The case that neither `Alphabet:` nor `AP:` are specified is equivalent to the case `AP: 0`.
 
 `AP:` gives the number of atomic propositions, followed by unique names for each of these atomic propositions (using double-quoted C-strings).  Atomic propositions are implicitly numbered from left to right, starting at 0.
 
@@ -166,11 +205,11 @@ specifies three atomic propositions:
 - atomic proposition 1 is `"proc@state"`
 - atomic proposition 2 is `"a[x] >= 2"`
 
-The number of double-quoted strings must match exactly the number given, and should all be different.  This number may be 0, in which case it is not followed by any string, and this is equivalent to not using `AP:`.
+The number of double-quoted strings must match exactly the number given, and should all be different.  This number may be 0, i.e., an empty set of atomic propositions, in which case it is not followed by any string.
 
 ### `Alias:`
 
-Aliases are used to name atomic propositions or common subformulas that will be used later as labels in the automaton.  This format can be used without any aliases, refering to atomic propositions by their numbers.  Naming atomic propositions using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.
+Aliases are used to name letters, atomic propositions or common subformulas that will be used later as labels in the automaton.  This format can be used without any aliases, refering to letters or atomic propositions by their numbers.  Naming them using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.
 
     headeritem ::= … | "Alias:" ANAME label-expr
     label-expr ::= BOOLEAN | INT | ANAME | "!" label-expr
@@ -178,7 +217,7 @@ Aliases are used to name atomic propositions or common subformulas that will be 
                  | label-expr "&" label-expr
                  | label-expr "|" label-expr
 
-The `label-expr` will also be used to label transitions in automata.  `INT` refers to an atomic proposition number (as specified on the `AP:` line), `ANAME` refers to a previously defined alias, and `BOOLEAN` are the Boolean values (`t` or `f`).  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.  The `!` operator has priority over `&` which in turn has priority over `|`.  Parentheses may be used for grouping.
+The `label-expr` will also be used to label transitions in automata.  `INT` refers to an atomic proposition number (if the alphabet is specified via the `AP:` header), a letter number (if the alphabet is specified via the `Alphabet:` header), `ANAME` refers to a previously defined alias, and `BOOLEAN` are the Boolean values (`t` or `f`).  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.  The `!` operator has priority over `&` which in turn has priority over `|`.  Parentheses may be used for grouping.
 
 
 Here are some examples of aliases:
@@ -814,21 +853,21 @@ Formal Semantics of Omega-Automata
 
 The following definition specifies alternating automata with transition-based acceptance.  Because of universal branching, the initial states and destination states of transitions are non-empty sets of states (i.e., elements of $2^Q\setminus\{\emptyset\}$) interpreted as conjunctions.  Automata without universal branching use just elements of Q as initial or destination states.
 
-Each omega-automaton described in this format can be seen as an automaton $\langle\AP,Q,m,R,I,\mathit{Acc}\rangle$ with labels on transitions and transition-based acceptance, where:
+Each omega-automaton described in this format can be seen as an automaton $\langle\Sigma,Q,m,R,I,\mathit{Acc}\rangle$ with labels on transitions and transition-based acceptance, where:
 
-- $\AP$ is a finite set of atomic propositions. We use $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
+- $\Sigma$ is a finite alphabet, i.e., a set of letters. If the alphabet arises from a set of atomic propositions, i.e., $\Sigma = 2^\AP$, we use $B = \B(\AP)$ to denote the set of Boolean formulas over $\AP$. Otherwise, if $\Sigma$ is specified directly, we use $B = \B(\Sigma)$ to denote the set of Boolean formulas over $\Sigma$.
 - $Q$ is a finite set of states.
 - $m$ is the number of acceptance sets.
-- $R\subseteq Q\times\B(\AP)\times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A quadruplet $(s,\ell,M,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in\B(\AP)$, and belonging to the acceptance sets listed in $M\subseteq \{0,1,\ldots,m-1\}$, where $m$ is the declared number of acceptance sets. Let $s(t)$, $\ell(t)$, $M(t)$, and $D(t)$ denote the corresponding components of a transition $t$.
+- $R\subseteq Q\times B \times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})$ is a transition relation.  A quadruplet $(s,\ell,M,D)\in R$ represents a transition from $s$ to the conjunction of states in $D$, labeled by a Boolean formula $\ell\in B$, and belonging to the acceptance sets listed in $M\subseteq \{0,1,\ldots,m-1\}$, where $m$ is the declared number of acceptance sets. Let $s(t)$, $\ell(t)$, $M(t)$, and $D(t)$ denote the corresponding components of a transition $t$.
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states.
 - $\mathit{Acc}$ is a Boolean formula over $\{\Fin(i),\Fin(\lnot i),\Inf(i),\Inf(\lnot i)\mid i\in \{0,1,\ldots,m-1\}\}$.
 
 The indices of the acceptance sets appearing in the transitions induce a list of acceptance sets $F=(S_0, ..., S_{m-1})$ where $S_i \subseteq R$ contains those **transitions** $t$ with $i \in M(t)$, i.e., $S_i = \{ t\in R \mid i\in M(t) \}$.
 
-The automaton is interpreted over infinite words, where letters are subsets of $\AP$. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
+The automaton is interpreted over infinite words over the alphabet $\Sigma$. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
 - $V$ is partitioned into $V_0\cup V_₁\cup V_2\ldots$ where the sets $V_i$ are disjoint,
 - for each edge $e\in E$ there exists $i\ge 0$ such that $e\in V_i\times V_{i+1}$,
-- $\lambda:V\to R$ is a labeling function such that $\{s(\lambda(x))\mid x\in V_0\}\in I$ and, for each $x\in V_i$, $\ell_i(\lambda(x))$ evaluates to True in the valuation assigning True to atomic propositions in $a_i$ and False to all other atomic propositions, and successors of $x$ correspond to the target conjunction of states of the transition $\lambda(x)$, i.e., $D(\lambda(x))=\{s(\lambda(y))\mid (x,y)\in E\}$.  We say that the transition $\lambda(x)$ is **applied to** $x$.
+- $\lambda:V\to R$ is a labeling function such that $\{s(\lambda(x))\mid x\in V_0\}\in I$ and, for each $x\in V_i$, $a_i \in \| \ell(\lambda(x)) \|$ and the successors of $x$ correspond to the target conjunction of states of the transition $\lambda(x)$, i.e., $D(\lambda(x))=\{s(\lambda(y))\mid (x,y)\in E\}$.  We say that the transition $\lambda(x)$ is **applied to** $x$.
 
 Runs of automata without universal branching are simply infinite linear sequences of nodes.
 
@@ -851,11 +890,10 @@ Semantics for Pure State-Based Acceptance
 
 In tools that manipulate only state-based acceptance, acceptance will only be used for states, and therefore the transition-based semantics are inconvenient.   For these tools, one can consider the following semantics.
 
-The omega-automata are represented by a tuple $\langle\AP,Q,R,I,F,\mathit{Acc}\rangle$, where:
+The omega-automata are represented by a tuple $\langle\Sigma,Q,R,I,F,\mathit{Acc}\rangle$, where:
 
-- $\AP$ is a finite set of atomic propositions.
-- $Q$ is a finite set of states.
-- $R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})$ is a transition relation,
+- $\Sigma$ is a finite alphabet. For $\Sigma = 2^\AP$, let $B = \B(\AP)$, otherwise let $B = \B(\Sigma)$.
+- $R\subseteq Q\times B \times(2^Q\setminus\{\emptyset\})$ is a transition relation,
 - $I\subseteq(2^Q\setminus\{\emptyset\})$ is a set of initial conjunctions of states,
 - $F=\{S_0,S_1,\ldots,S_{m-1}\}$ is a finite set of acceptance sets.  Each acceptance set $S_i\subseteq Q$ is a subset of **states**.
 - $\mathit{Acc}$ is an acceptance condition.
