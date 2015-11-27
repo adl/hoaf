@@ -56,8 +56,7 @@ Preliminary Notes
 ### Input alphabet ###
 
 
-$\def\AP{\mathit{AP}}\def\B{\mathbb{B}}\def\Fin{\mathsf{Fin}}\def\Inf{\mathsf{Inf}}\def\true{\mathsf{true}}\def\false{\mathsf{false}}$
-The input alphabets $\Sigma$ of all considered automata types consist of a finite set of letters. There are two variants for specifying the alphabet, either by directly providing the set of letters, i.e., $\Sigma = \{\sigma_1, \ldots, \sigma_n\}$, or via a set of atomic propositions ($\AP = \{p_1, \ldots, p_n\}$), where the letters of the automaton consist of subsets of $\AP$, i.e., $\Sigma = 2^\AP$. Alphabets derived from atomic propositions are often used when the automaton was constructed from a temporal logic formula.
+$\def\AP{\mathit{AP}}\def\B{\mathbb{B}}\def\Fin{\mathsf{Fin}}\def\Inf{\mathsf{Inf}}\def\true{\mathsf{true}}\def\false{\mathsf{false}}$The input alphabets $\Sigma$ of all considered automata types consist of a finite set of letters. There are two variants for specifying the alphabet, either by directly providing the set of letters, i.e., $\Sigma = \{\sigma_1, \ldots, \sigma_n\}$, or via a set of atomic propositions ($\AP = \{p_1, \ldots, p_n\}$), where the letters of the automaton consist of subsets of $\AP$, i.e., $\Sigma = 2^\AP$. Alphabets derived from atomic propositions are often used when the automaton was constructed from a temporal logic formula.
 
 To make the automata description more concise, we label states or transitions of automata with Boolean formulas for referencing the letters of the alphabet. In case that the alphabet is provided directly, these are Boolean formulas over the letters in $\Sigma$. In case that the alphabet is derived from atomic propositions $\AP$, these are Boolean formulas over the atomic propositions in $\AP$. We use $\B(\Sigma)$ to denote the set of Boolean formulas over $\Sigma$ and $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
 
@@ -69,7 +68,7 @@ $\|\neg \psi\| = \Sigma \setminus \|\psi\|$
 $\|\psi_1 \land \psi_2 \| = \|\psi_1\| \cap \|\psi_2\|$
 $\|\psi_1 \lor \psi_2 \| = \|\psi_1\| \cup \|\psi_2\|$
 
-and with $\|a\| = \{ a \}$ for $a \in \Sigma$ (in case that $\Sigma$ is provided directly) and $\|\mathit{p}\| = \{ a \in \Sigma = 2^\AP \mid p \in a \}$ for $p \in \AP$ (in case that the alphabet is derived from atomic propositions). 
+and with $\|a\| = \{ a \}$ for $a \in \Sigma$ (in case that $\Sigma$ is provided directly) and $\|\mathit{p}\| = \{ a \in \Sigma = 2^\AP \mid p \in a \}$ for $p \in \AP$ (in case that the alphabet is derived from atomic propositions).
 
 ### Acceptance conditions ###
 
