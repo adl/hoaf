@@ -11,8 +11,7 @@ support.html: support.md pandoc.css template.html
 	 $(PANDOC) -T 'HOA Format Tool Support' support.md -c pandoc.css --toc --template template.html -o $@
 
 hoaf.tex: README.md header.tex
-	sed 's/^[:space:]*-[^-]/\n&/' README.md > README.tmp.md
-	$(PANDOC) README.tmp.md -t latex -H header.tex -o - |\
+	$(PANDOC) README.md -t latex -H header.tex -o - |\
 	sed 's/\\(\(\\def[^$$]*\)\\)/\1\n/;s/^\\includegraphics{\(.*\)\.svg}/\\input{\1.tex}/;' |\
 	perl -0777 -pe 's:\\input{figures/.*?\\end{verbatim}:\\begin{samepage}$$&\\end{samepage}:somg' > $@
 
