@@ -1,0 +1,17 @@
+\documentclass{standalone}
+\input{common.tex}
+\begin{document}
+\begin{automaton}
+  \node[state,initial] (0) {$0$};
+  \node[state,right of=0] (1) {$1$};
+    \node[accset] at (1.130) {1};
+  \node[state,right of=1] (2) {$2$};
+    \node[accset] at (2.130) {0};
+  \path[->] (0) edge[loop above] node{$a\lor c$} (0)
+                edge node[above]{$b$} (1)
+            (1) edge[loop above] node{$b \lor c$} (1)
+                edge[bend left] node[above]{$a$} (2)
+            (2) edge[loop above] node{$a$} (2)
+                edge[bend left] node[below]{$b \lor c$} (1);
+\end{automaton}
+\end{document}
