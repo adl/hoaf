@@ -16,11 +16,14 @@ For a short introduction we have a [**tool paper**](https://www.lrde.epita.fr/~a
 Current status
 --------------
 
-This is version 1 of the format.  The document may evolve slightly to clarify some parts and fix typos, but you should expect no major semantic change.
+This is version 1.1 of the format.  The document may evolve slightly to clarify some parts and fix typos, but you should expect no major semantic change.
 
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Change log:
+- YYYY-MM-DD: Version 1.1 published, with the following changes:
+    - Support for `.` in identifiers, and semantic of version numbers ([#56](https://github.com/adl/hoaf/issues/56))
+    - Support for letter-based alphabets using `Alphabet:` ([#54](https://github.com/adl/hoaf/issues/54))
 - 2015-06-21: Improve definition of accepting sets in the semantics ([#48](https://github.com/adl/hoaf/issues/48))
 - 2015-05-26: Clarify notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases ([#46](https://github.com/adl/hoaf/issues/46))
 - 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
@@ -96,14 +99,17 @@ Common Tokens
 - `BOOLEAN`: `[tf]`
   The true and false Boolean constants.
 
-- `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_-]*`
-  An identifier made of letters, digits, `-` and `_`.  Digits and `-` may not by used as first character, and `t` or `f` are not valid identifiers.
+- `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_.-]*`
+  An identifier made of letters, digits, `_`, `.` and `-`.  Digits, `.`, and `-` may not by used as first character, and `t` or `f` are not valid identifiers.
 
-- `ANAME`: `@[0-9a-zA-Z_-]+`
-  An alias name, i.e., "@" followed by some alphanumeric characters, `-` or `_`.  These are used to identify atomic propositions or subformulas.
+- `ANAME`: `@[0-9a-zA-Z_.-]+`
+  An alias name, i.e., "@" followed by some alphanumeric characters, `_`, `.` or `-`.  These are used to identify atomic propositions or subformulas.
 
-- `HEADERNAME`: `[a-zA-Z_][0-9a-zA-Z_-]*:`
+- `HEADERNAME`: `[a-zA-Z_][0-9a-zA-Z_.-]*:`
   Header names are similar to identifiers, except that they are immediately followed by a colon (i.e. no comment or space allowed).  If an `IDENTIFIER` or a `BOOLEAN` is immediately followed by a colon, it should be considered as a `HEADERNAME`.
+
+
+The character `.` is allowed in `IDENTIFIER`, `ANAME`, and `HEADERNAME` since version 1.1 of the format.
 
 General Layout
 --------------
@@ -142,9 +148,20 @@ Headers items `HOA:`, and `Acceptance:` must always be present.
 
 ### `HOA:`
 
-`HOA:` should always be the first token of the file.  It is followed by an identifier that represents the version of the format.  This document specifies the first version of this format so this header should appear as
+`HOA:` should always be the first token of the file.  It is followed by an identifier that represents the version of the format.  This document specifies version 1.1 of this format, so this header item should appear as
+
+    HOA: v1.1
+
+However version 1.1 is actually a superset of version 1 that can be declared as
 
     HOA: v1
+
+The identifier specifying the version number should always starts with `v`, followed by a number in base 10 representing the major version number (`1` is the above two examples).  To name minor versions of the format, the major number may be optionally followed by other characters as long as the entire token is valid identifier.
+
+Two version numbers can be ordered by using the same semantic as [strverscmp()](http://man7.org/linux/man-pages/man3/strverscmp.3.html).  Given two versions $X\le Y$ that share the same major version number, then the format specified by version $Y$ should be a superset of the format specified for version $X$.  This means that a parser for version $Y$ should be able to read any file written using version $X$.   Conversely, a parser for version $X$, might still try to parse a file written in version $Y$ in case the file uses a subset of the format compatible with $X$.
+
+The major version number should be updated in case of changes that invalidate the syntax or semantic of earlier versions.  Parsers should always reject files written in an unsupported major number.
+
 
 ### `States:`
 
@@ -187,6 +204,8 @@ specifies a two letter alphabet, where
 - letter 1 is `"something_happens"`
 
 The number of double-quoted strings must match exactly the number given, and should all be different.  This number has to be at least 1, i.e., an empty alphabet is not allowed.
+
+Support for `Alphabet:` was added to version 1.1 of the format.
 
 ### `AP:`
 
@@ -598,6 +617,8 @@ If one state has no `label`, and no labeled edges, then there should be exactly 
 Examples
 --------
 
+Most of the following examples specify `HOA: v1` because that is the minimum version number required to parse them, but the examples are also correct if the first line is changed to `HOA: v1.1`.
+
 ### Transition-based Rabin acceptance and explicit labels
 
 ![automaton](figures/aut1.svg)
@@ -644,7 +665,7 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
 ![automaton](figures/aut_alph1.svg)
 
-    HOA: v1_1
+    HOA: v1.1   /* Alphabet: was introduced in v1.1 */
     States: 3
     Start: 0
     Alphabet: 3 "a" "b" "c"
