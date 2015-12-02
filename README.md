@@ -66,7 +66,7 @@ To make the automata description more concise, we label states or transitions of
 We denote by $\|\psi\| \subseteq \Sigma$, for a given Boolean formula $\psi \in \B(\Sigma)$ or $\psi \in \B(\AP)$, the set of letters in the alphabet that satisfy $\psi$, i.e., with the Boolean operators handled as usual via
 
 $\|\true\| = \Sigma$
-$\|\false\| = \varnothing$
+$\|\false\| = \emptyset$
 $\|\neg \psi\| = \Sigma \setminus \|\psi\|$
 $\|\psi_1 \land \psi_2 \| = \|\psi_1\| \cap \|\psi_2\|$
 $\|\psi_1 \lor \psi_2 \| = \|\psi_1\| \cup \|\psi_2\|$
@@ -190,7 +190,7 @@ If the `Start:` header item is omitted, then the automaton has no initial state 
 
 ### `Alphabet:`
 
-The `Alphabet:` header is used to directly specify the alphabet $\Sigma$ of the automaton. This header is mutually exclusive with the `AP:` header.
+The `Alphabet:` header item is used to directly specify the alphabet $\Sigma$ of the automaton.  This header is mutually exclusive with the `AP:` header item.
 
 `Alphabet:` gives the number of letters in the alphabet, followed by unique names for each of these letters (using double-quoted C-strings). Letters are implicitly numbered from left to right, starting at 0.
 
