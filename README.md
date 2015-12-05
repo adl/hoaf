@@ -130,7 +130,7 @@ Header
     format-version ::= "HOA:" IDENTIFIER
     header-item ::= "States:" INT
                  | "Start:" state-conj
-                 | "Alphabet:" INT STRING*
+                 | "Alphabet:" INT STRING+
                  | "AP:" INT STRING*
                  | "Alias:" ANAME label-expr
                  | "Acceptance:" INT acceptance-cond
