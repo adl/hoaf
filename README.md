@@ -22,10 +22,10 @@ If you see any problem, please [report it on the issue tracker](https://github.c
 
 Change log:
 - YYYY-MM-DD: Version 1.1 published, with the following changes:
-    - Support for `.` in identifiers, and semantic of version numbers ([#56](https://github.com/adl/hoaf/issues/56))
-    - Support for letter-based alphabets using `Alphabet:` ([#54](https://github.com/adl/hoaf/issues/54))
-- 2015-06-21: Improve definition of accepting sets in the semantics ([#48](https://github.com/adl/hoaf/issues/48))
-- 2015-05-26: Clarify notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases ([#46](https://github.com/adl/hoaf/issues/46))
+    - Support for `.` in identifiers, and semantic of version numbers. ([#56](https://github.com/adl/hoaf/issues/56))
+    - Support for letter-based alphabets using `Alphabet:`. ([#54](https://github.com/adl/hoaf/issues/54))
+- 2015-06-21: Improve definition of accepting sets in the semantics. ([#48](https://github.com/adl/hoaf/issues/48))
+- 2015-05-26: Clarify notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases. ([#46](https://github.com/adl/hoaf/issues/46))
 - 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
 - 2015-04-17: Some clarification in case `States:` is missing. ([#39](https://github.com/adl/hoaf/issues/39))
 - 2015-04-17: Fix transition-based semantics to deal with duplicate transitions. ([#38](https://github.com/adl/hoaf/issues/38))
@@ -36,7 +36,7 @@ Change log:
 Goals
 -----
 
-Design a format, inspired from [`ltl2dstar`'s format](http://www.ltl2dstar.de/docs/ltl2dstar.html#output-format-dstar), but which:
+Design a format, inspired by [`ltl2dstar`'s format](http://www.ltl2dstar.de/docs/ltl2dstar.html#output-format-dstar), but which:
 
 - is more compact when a lot of atomic propositions are used, or when the automaton is not complete.
 - supports non-deterministic and alternating omega-automata.
@@ -59,11 +59,11 @@ Preliminary Notes
 ### Input alphabet ###
 
 
-$\def\AP{\mathit{AP}}\def\B{\mathbb{B}}\def\Fin{\mathsf{Fin}}\def\Inf{\mathsf{Inf}}\def\true{\mathsf{true}}\def\false{\mathsf{false}}$The input alphabets $\Sigma$ of all considered automata types consist of a finite set of letters. There are two variants for specifying the alphabet, either by directly providing the set of letters, i.e., $\Sigma = \{\sigma_1, \ldots, \sigma_n\}$, or via a set of atomic propositions ($\AP = \{p_1, \ldots, p_n\}$), where the letters of the automaton consist of subsets of $\AP$, i.e., $\Sigma = 2^\AP$. Alphabets derived from atomic propositions are often used when the automaton was constructed from a temporal logic formula.
+$\def\AP{\mathit{AP}}\def\B{\mathbb{B}}\def\Fin{\mathsf{Fin}}\def\Inf{\mathsf{Inf}}\def\true{\mathsf{true}}\def\false{\mathsf{false}}$The input alphabets $\Sigma$ of all considered automata types consist of a finite set of letters.  The alphabet can be specified in two ways: either directly by providing the set of letters $\Sigma = \{\sigma_1, \ldots, \sigma_n\}$, or via a set of atomic propositions $\AP = \{p_1, \ldots, p_n\}$, where the letters of the alphabet are subsets of $\AP$, i.e., $\Sigma = 2^\AP$.  Alphabets derived from atomic propositions are often used when the automaton was constructed from a temporal logic formula.
 
-To make the automata description more concise, we label states or transitions of automata with Boolean formulas for referencing the letters of the alphabet. In case that the alphabet is provided directly, these are Boolean formulas over the letters in $\Sigma$. In case that the alphabet is derived from atomic propositions $\AP$, these are Boolean formulas over the atomic propositions in $\AP$. We use $\B(\Sigma)$ to denote the set of Boolean formulas over $\Sigma$ and $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
+To make the automata description more concise, we label states or transitions of automata with Boolean formulas referencing the letters of the alphabet. In case that the alphabet is provided directly, these are Boolean formulas over the letters in $\Sigma$. In case that the alphabet is derived from atomic propositions $\AP$, these are Boolean formulas over the atomic propositions in $\AP$. We use $\B(\Sigma)$ to denote the set of Boolean formulas over $\Sigma$ and $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
 
-We denote by $\|\psi\| \subseteq \Sigma$, for a given Boolean formula $\psi \in \B(\Sigma)$ or $\psi \in \B(\AP)$, the set of letters in the alphabet that satisfy $\psi$, i.e., with the Boolean operators handled as usual via
+We denote by $\|\psi\| \subseteq \Sigma$, for a given Boolean formula $\psi \in \B(\Sigma)$ or $\psi \in \B(\AP)$, the set of letters that satisfy $\psi$, i.e., with the Boolean operators handled as usual 
 
 $\|\true\| = \Sigma$
 $\|\false\| = \emptyset$
@@ -71,7 +71,7 @@ $\|\neg \psi\| = \Sigma \setminus \|\psi\|$
 $\|\psi_1 \land \psi_2 \| = \|\psi_1\| \cap \|\psi_2\|$
 $\|\psi_1 \lor \psi_2 \| = \|\psi_1\| \cup \|\psi_2\|$
 
-and with $\|a\| = \{ a \}$ for $a \in \Sigma$ (in case that $\Sigma$ is provided directly) and $\|\mathit{p}\| = \{ a \in \Sigma = 2^\AP \mid p \in a \}$ for $p \in \AP$ (in case that the alphabet is derived from atomic propositions).
+and with $\|a\| = \{ a \}$ for $a \in \Sigma$ (if $\Sigma$ is provided directly) and $\|\mathit{p}\| = \{ a \in \Sigma = 2^\AP \mid p \in a \}$ for $p \in \AP$ (if $\Sigma$ is defined via atomic propositions).
 
 ### Acceptance conditions ###
 
@@ -79,7 +79,7 @@ The format considers acceptance conditions built on a finite set $\{S_0,S_1,\ldo
 
 ### References to elements of a set by index ###
 
-The format has a common approach for referencing the elements of the various sets, i.e., the letters of the alphabet, atomic propositions, states, and acceptance sets: the number of letters/propositions/states/sets, say $n$, is first declared and all letters/propositions/states/sets are then referenced as $0,1,\ldots,n-1$.
+The format has a common approach for referencing the elements of various sets, namely the letters of the alphabet, atomic propositions, states, and acceptance sets: the number of letters/propositions/states/sets, say $n$, is first declared and all letters/propositions/states/sets are then referenced as $0,1,\ldots,n-1$.
 
 
 Common Tokens
@@ -91,7 +91,7 @@ Common Tokens
   A non-negative integer less than $2^{31}$ written in base 10 (with no useless `0` at the beginning).
 
 - comments: `/* … */`
-  Comments may be introduced between any token by enclosing them with `/*` and `*/` (with proper nesting, i.e.  `/*a/*b*/c*/`  is one comment).  C++-style comments are not considered because they require newlines.  Tools can use comments to output additional information (e.g. debugging data) that should be discarded upon reading.
+  Comments may be introduced between any token by enclosing them with `/*` and `*/` (with proper nesting, i.e., `/*a/*b*/c*/`  is one comment).  C++-style comments are not considered because they require newlines.  Tools can use comments to output additional information (e.g. debugging data) that should be discarded upon reading.
 
 - whitespace: `[ \t\n\r]`
   Except in double-quoted strings and comments, whitespace is used only for tokenization and can be discarded afterwards.
@@ -100,13 +100,13 @@ Common Tokens
   The true and false Boolean constants.
 
 - `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_.-]*`
-  An identifier made of letters, digits, `_`, `.` and `-`.  Digits, `.`, and `-` may not by used as first character, and `t` or `f` are not valid identifiers.
+  An identifier made of letters, digits, `_`, `.`, and `-`.  Digits, `.`, and `-` may not be used as the first character, and `t` or `f` are not valid identifiers.
 
 - `ANAME`: `@[0-9a-zA-Z_.-]+`
-  An alias name, i.e., "@" followed by some alphanumeric characters, `_`, `.` or `-`.  These are used to identify atomic propositions or subformulas.
+  An alias name, i.e., "@" followed by some alphanumeric characters, `_`, `.`, or `-`.  These are used to identify letters, atomic propositions, or Boolean formulas over letters or propositions.
 
 - `HEADERNAME`: `[a-zA-Z_][0-9a-zA-Z_.-]*:`
-  Header names are similar to identifiers, except that they are immediately followed by a colon (i.e. no comment or space allowed).  If an `IDENTIFIER` or a `BOOLEAN` is immediately followed by a colon, it should be considered as a `HEADERNAME`.
+  Header names are similar to identifiers, except that they are immediately followed by a colon (i.e., no comment or space allowed).  If an `IDENTIFIER` or a `BOOLEAN` is immediately followed by a colon, it should be considered as a `HEADERNAME`.
 
 
 The character `.` is allowed in `IDENTIFIER`, `ANAME`, and `HEADERNAME` since version 1.1 of the format.
@@ -116,12 +116,12 @@ General Layout
 
 This format is designed so that we can write tools that can process automata in batch.  A tool could for instance get a stream of automata descriptions concatenated together as input and process these to output another stream of automata.
 
-Every automaton is described in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph.
+Every automaton is described in two parts: a header with meta-data about the automaton (such as the number of states and acceptance condition), and a body encoding the automaton as a labeled graph.
 The two parts are separated by `--BODY--`.  The token `--END--` marks the end of the automaton.
 
     automaton ::= header "--BODY--" body "--END--"
 
-Additionally, the `--ABORT--` token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output.  In a streaming scenario, a new automaton can start immediately after such an `--ABORT--` token.  Note that `foo--ABORT--` is a valid identifier and shall not abort streaming: to ensure proper tokenization always add a space or newline before `--ABORT--` to abort the output.
+Additionally, the `--ABORT--` token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output.  In a streaming scenario, a new automaton can start immediately after such an `--ABORT--` token.  Note that `foo--ABORT--` is a valid identifier and shall not abort streaming: to ensure proper tokenization, always add a space or a newline before `--ABORT--` to abort the output.
 
 Header
 ------
@@ -140,34 +140,34 @@ Header
                  | "properties:" IDENTIFIER*
                  | HEADERNAME (BOOLEAN|INT|STRING|IDENTIFIER)*
 
-The header is a list of `header-item`s (a `HEADERNAME` followed by some data).  Except for the "HOA:" item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified below.   This format also makes provision of additional (unspecified) header names to be used.
+The header is a list of `header-item`s (a `HEADERNAME` followed by some data).  Except for the `HOA:` item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified below.  This format also makes provision of additional (unspecified) header names to be used.
 
-Any given `HEADERNAME` should occur at most once, except for `Start:`, `Alias:`, and `properties:`.  The case of the `HEADERNAME`'s initial is used to specify whether tools may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such `HEADERNAME` they do not understand.  A `HEADERNAME` whose initial is lowercase may be safely ignored without affecting the semantics.
+Any given `HEADERNAME` should occur at most once, except for `Start:`, `Alias:`, and `properties:`.  The case of the `HEADERNAME`'s initial is used to specify whether tools may safely ignore a header item they do not support. Header items whose name starts with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such `HEADERNAME` they do not understand.  A `HEADERNAME` whose initial is lowercase may be safely ignored without affecting the semantics.
 
 Headers items `HOA:`, and `Acceptance:` must always be present.
 
 ### `HOA:`
 
-`HOA:` should always be the first token of the file.  It is followed by an identifier that represents the version of the format.  This document specifies version 1.1 of this format, so this header item should appear as
+`HOA:` should always be the first token of the file.  It is followed by an identifier that represents the version of the format.  This document specifies version 1.1 of this format, so this header item should appear as:
 
     HOA: v1.1
 
-However version 1.1 is actually a superset of version 1 that can be declared as
+However, version 1.1 is actually a superset of version 1 that can be declared as:
 
     HOA: v1
 
-The identifier specifying the version number should always starts with `v`, followed by a number in base 10 representing the major version number (`1` is the above two examples).  To name minor versions of the format, the major number may be optionally followed by other characters as long as the entire token is valid identifier.
+The identifier specifying the version number should always start with `v`, followed by a number in base 10 representing the major version number (`1` in the above two examples).  To name minor versions of the format, the major number may be optionally followed by other characters as long as the entire token is a valid identifier.
 
-Two version numbers can be ordered by using the same semantic as [strverscmp()](http://man7.org/linux/man-pages/man3/strverscmp.3.html).  Given two versions $X\le Y$ that share the same major version number, then the format specified by version $Y$ should be a superset of the format specified for version $X$.  This means that a parser for version $Y$ should be able to read any file written using version $X$.   Conversely, a parser for version $X$, might still try to parse a file written in version $Y$ in case the file uses a subset of the format compatible with $X$.
+Two version numbers can be ordered by using the same semantic as [strverscmp()](http://man7.org/linux/man-pages/man3/strverscmp.3.html).  Given two versions $X\le Y$ that share the same major version number, the format specified by version $Y$ should be a superset of the format specified for version $X$.  This means that a parser for version $Y$ should be able to read any file written using version $X$.  Conversely, a parser for version $X$ might still try to parse a file written in version $Y$ in case the file uses a subset of the format compatible with $X$.
 
 The major version number should be updated in case of changes that invalidate the syntax or semantic of earlier versions.  Parsers should always reject files written in an unsupported major number.
 
 
 ### `States:`
 
-This optionnal header item specifies the number of states in the automaton.
+This optional header item specifies the number of states in the automaton.
 
-The states are assumed to be numbered consecutively from 0.   For instance:
+The states are assumed to be numbered consecutively from 0.  For instance,
 
     States: 10
 
@@ -179,7 +179,7 @@ It is recommended to specify the number of states whenever possible, so that rea
 
 ### `Start:`
 
-This optional header item specifies the initial states.    Multiple initial states can be specified by using several `Start:` headers with a different state number.
+This optional header item specifies the initial states.    Multiple initial states can be specified by using several `Start:` header items with different state numbers.
 
 Alternating automata can start in a conjunction of states specified using the `&` operator.
 
@@ -194,26 +194,26 @@ The `Alphabet:` header item is used to directly specify the alphabet $\Sigma$ of
 
 `Alphabet:` gives the number of letters in the alphabet, followed by unique names for each of these letters (using double-quoted C-strings). Letters are implicitly numbered from left to right, starting at 0.
 
-For instance
+For instance,
 
     Alphabet: 2 "a" "something_happens"
 
-specifies a two letter alphabet, where
+specifies a two letter alphabet:
 
 - letter 0 is `"a"`
 - letter 1 is `"something_happens"`
 
-The number of double-quoted strings must match exactly the number given, and should all be different.  This number has to be at least 1, i.e., an empty alphabet is not allowed.
+The number of double-quoted strings must exactly match the given number, and the strings should all be different.  This number has to be at least 1, i.e., an empty alphabet is not allowed.
 
-Support for `Alphabet:` was added to version 1.1 of the format.
+Support for `Alphabet:` was added in version 1.1 of the format.
 
 ### `AP:`
 
-The `AP:` header is used to specify a set of atomic propositions $\AP$, resulting in the alphabet $\Sigma = 2^\AP$. This header is mutually exclusive with the `AP:` header. The case that neither `Alphabet:` nor `AP:` are specified is equivalent to the case `AP: 0`.
+The `AP:` headeritem is used to specify the set of atomic propositions $\AP$, resulting in the alphabet $\Sigma = 2^\AP$. This header item is mutually exclusive with the `AP:` header item. The case that neither `Alphabet:` nor `AP:` are specified is equivalent to the case `AP: 0`.
 
 `AP:` gives the number of atomic propositions, followed by unique names for each of these atomic propositions (using double-quoted C-strings).  Atomic propositions are implicitly numbered from left to right, starting at 0.
 
-For instance
+For instance,
 
     AP: 3 "a" "proc@state" "a[x] >= 2"
 
@@ -223,11 +223,11 @@ specifies three atomic propositions:
 - atomic proposition 1 is `"proc@state"`
 - atomic proposition 2 is `"a[x] >= 2"`
 
-The number of double-quoted strings must match exactly the number given, and should all be different.  This number may be 0, i.e., an empty set of atomic propositions, in which case it is not followed by any string.
+The number of double-quoted strings must exactly match the given number, and the strings should all be different.  This number may be 0, i.e., an empty set of atomic propositions, in which case it is not followed by any string.
 
 ### `Alias:`
 
-Aliases are used to name letters, atomic propositions or common subformulas that will be used later as labels in the automaton.  This format can be used without any aliases, refering to letters or atomic propositions by their numbers.  Naming them using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.
+Aliases are used to name letters, atomic propositions, or Boolean formulas that will be used later as labels (or their parts) in the automaton.  This format can be used without any aliases, refering to letters or atomic propositions by their numbers.  Naming them using aliases can make the automaton more readable to humans, and naming subformulas that are used repeatedly can make the output more concise.
 
     headeritem ::= … | "Alias:" ANAME label-expr
     label-expr ::= BOOLEAN | INT | ANAME | "!" label-expr
@@ -235,8 +235,7 @@ Aliases are used to name letters, atomic propositions or common subformulas that
                  | label-expr "&" label-expr
                  | label-expr "|" label-expr
 
-The `label-expr` will also be used to label transitions in automata.  `INT` refers to an atomic proposition number (if the alphabet is specified via the `AP:` header), a letter number (if the alphabet is specified via the `Alphabet:` header), `ANAME` refers to a previously defined alias, and `BOOLEAN` are the Boolean values (`t` or `f`).  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.  The `!` operator has priority over `&` which in turn has priority over `|`.  Parentheses may be used for grouping.
-
+The `label-expr` will also be used to label transitions in automata.  `INT` refers to a letter number (if the alphabet is specified via the `Alphabet:` header item) or an atomic proposition number (if the alphabet is specified via the `AP:` header item), `ANAME` refers to a previously defined alias, and `BOOLEAN` are the Boolean values (`t` or `f`).  The `Alias:` line may appear multiple times, but it is forbidden to redefine an alias.  The `!` operator has priority over `&` which in turn has priority over `|`.  Parentheses may be used for grouping.
 
 Here are some examples of aliases:
 
@@ -262,7 +261,7 @@ The mandatory `Acceptance:` header item is used to specify the number of accepta
 
 The acceptance condition is specified as a positive Boolean combination of expressions of the form `Fin(x)`, `Fin(!x)`, `Inf(x)`, and `Inf(!x)` where:
 
-- `x` is an integer in $[0,m)$ representing an accepting set,
+- `x` is an integer in $[0,m)$ representing an acceptance set,
 - `!x` represents the complement of that set,
 - `Fin(x)` and `Inf(x)` specify whether that set should be visited finitely or infinitely often.
 
@@ -272,7 +271,7 @@ Additionally the `t` and `f` Boolean constants can be used with their obvious me
 
 As explained previously, our semantics for acceptance are transition-based, so if an automaton uses both accepting states and accepting transitions, the acceptance of the states should be transferred to their outgoing transitions so that complementation of acceptance sets can be performed with respect to all transitions.
 
-For instance
+For instance,
 
     Acceptance: 2 Fin(!0) & Inf(1)
 
@@ -343,7 +342,7 @@ The following properties have specified meanings, but additional may be added, a
 - `very-weak` hints that the automaton is weak and every SCC has exactly one state
 - `inherently-weak` hints that the automaton does not mix accepting cycles and non-accepting cycles in the same SCC
 - `terminal` hints that the automaton is weak, that no non-accepting cycle can be reached from any accepting cycle, and that each SCC containing an accepting cycle is complete, i.e., the transition function is definied for each state of the SCC and each letter
-- `tight` hints that the automaton is [tight](http://dx.doi.org/10.1007/978-3-540-31980-1_32), i.e. for every word $w=a_0a_1\ldots$ accepted by the automaton there exists an accepting run over $w$ such that whenever two suffixes $w_i=a_ia_{i+1}\ldots$ and $w_j=a_ja_{j+1}\ldots$ of $w$ are identical, the run reaches identical states (or sets of the states in the case of alternating automaton) by reading the corresponding prefixes $a_0\ldots a_{i-1}$ and $a_0\ldots a_{j-1}$
+- `tight` hints that the automaton is [tight](http://dx.doi.org/10.1007/978-3-540-31980-1_32), i.e., for every word $w=a_0a_1\ldots$ accepted by the automaton there exists an accepting run over $w$ such that whenever two suffixes $w_i=a_ia_{i+1}\ldots$ and $w_j=a_ja_{j+1}\ldots$ of $w$ are identical, the run reaches identical states (or sets of the states in the case of alternating automaton) by reading the corresponding prefixes $a_0\ldots a_{i-1}$ and $a_0\ldots a_{j-1}$
 - `colored` hints that each transition (or each state, for state-based acceptance) of the automaton belongs to exactly one acceptance set; this is typically the case in parity automata
 
 Note that even if some property implies another one (for instance `explicit-labels` implies `trans-labels`) it is recommended to specify both.
