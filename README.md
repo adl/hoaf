@@ -334,55 +334,55 @@ The following properties have specified meanings, but additional may be added, a
 - `trans-acc` hints that the automaton uses only transition-based acceptance specifications
 - `univ-branch` hints that the automaton uses universal branching for at least one transition or for the initial state
 - `no-univ-branch` hints that the automaton does not uses universal branching
-- `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state, and the outgoing transitions of each state have disjoint labels (note that this also applies in the presence of universal branching)
-- `complete` hints that the automaton is complete, i.e., it has at least one state, and the transition function is total
+- `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state and the outgoing transitions of each state have disjoint labels (this also applies in the presence of universal branching)
+- `complete` hints that the automaton is complete, i.e., it has at least one state and the transition function is total
 - `unambiguous` hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton (this also applies in the presence of universal branching)
-- `stutter-invariant` hints that the automaton describes a [stutter-invariant](http://dx.doi.org/10.1007/3-540-48683-6_22) property
-- `weak` hints that in each strongly connected component (in alternating automata, SCC can be defined in standard way if we see each universal branching transition as a set of non-branching transitions), all transitions (or all states) belong to the same accepting sets
+- `stutter-invariant` hints that the automaton describes a [stutter-invariant](http://dx.doi.org/10.1007/3-540-48683-6_22) language
+- `weak` hints that in each strongly connected component (in alternating automata, SCC can be defined in the standard way if we see each universal branching transition as a set of non-branching transitions), all transitions (or all states) belong to the same accepting sets
 - `very-weak` hints that the automaton is weak and every SCC has exactly one state
 - `inherently-weak` hints that the automaton does not mix accepting cycles and non-accepting cycles in the same SCC
 - `terminal` hints that the automaton is weak, that no non-accepting cycle can be reached from any accepting cycle, and that each SCC containing an accepting cycle is complete, i.e., the transition function is definied for each state of the SCC and each letter
-- `tight` hints that the automaton is [tight](http://dx.doi.org/10.1007/978-3-540-31980-1_32), i.e., for every word $w=a_0a_1\ldots$ accepted by the automaton there exists an accepting run over $w$ such that whenever two suffixes $w_i=a_ia_{i+1}\ldots$ and $w_j=a_ja_{j+1}\ldots$ of $w$ are identical, the run reaches identical states (or sets of the states in the case of alternating automaton) by reading the corresponding prefixes $a_0\ldots a_{i-1}$ and $a_0\ldots a_{j-1}$
+- `tight` hints that the automaton is [tight](http://dx.doi.org/10.1007/978-3-540-31980-1_32), i.e., for every word $w=a_0a_1\ldots$ accepted by the automaton there exists an accepting run over $w$ such that whenever two suffixes $w_i=a_ia_{i+1}\ldots$ and $w_j=a_ja_{j+1}\ldots$ of $w$ are identical, the run reaches identical states (or sets of the states in the case of alternating automata) by reading the corresponding prefixes $a_0\ldots a_{i-1}$ and $a_0\ldots a_{j-1}$
 - `colored` hints that each transition (or each state, for state-based acceptance) of the automaton belongs to exactly one acceptance set; this is typically the case in parity automata
 
-Note that even if some property implies another one (for instance `explicit-labels` implies `trans-labels`) it is recommended to specify both.
+Note that even if some property implies another one (for instance `explicit-labels` implies `trans-labels`), it is recommended to specify both.
 
 Canonical acceptance specifications for classical conditions
 ------------------------------------------------------------
 
 The `Acceptance:` line is what defines the acceptance semantics of the automaton and the `acc-name:` has only informative value.  However, tools that do not want to implement a parser for the `Acceptance:` line may decide to only support input HOA file that carry an `acc-name:` they support.   To avoid surprises, when the `acc-name:` line is used, the mandatory `Acceptance:` line should match exactly the canonical acceptance formulas given in the following examples.
 
-Note that the order of the terms in the canonical acceptance formulas matters even though the Boolean operators are commutative and associative (e.g., `acc-name: Rabin 1` corresponds to `Fin(0)&Inf(1)` but not `Inf(1)&Fin(0)`).  This restriction makes it easier to detect potential mismatches between `acc-name:` and `Acceptance:`.
+Note that the order of the terms in the canonical acceptance formulas matters even though the Boolean operators are commutative and associative (for instance, `acc-name: Rabin 1` corresponds to `Acceptance: 2 Fin(0)&Inf(1)` but not to `Acceptance: 2 Inf(1)&Fin(0)`).  This restriction makes it easier to detect potential mismatches between `acc-name:` and `Acceptance:`.
 
 Some of the examples below use `Acceptance:` specifications for which there are no `acc-name:` defined.
 
-### Büchi or co-Büchi
+### Büchi and co-Büchi
 
 Those acceptance conditions are specified with
 
     acc-name: Buchi
     Acceptance: 1 Inf(0)
 
-or
+and
 
     acc-name: co-Buchi
     Acceptance: 1 Fin(0)
 
-### Generalized Büchi or generalized co-Büchi
+### Generalized Büchi and generalized co-Büchi
 
 A generalized Büchi automaton with three acceptance sets can be defined with:
 
     acc-name: generalized-Buchi 3
     Acceptance: 3 Inf(0)&Inf(1)&Inf(2)
 
-A deterministic automaton with such an acceptance condition could be complemented without changing its transition structure by simply complementing the acceptance, giving a generalized co-Büchi automaton:
+A complete deterministic automaton with this acceptance condition could be complemented without changing its transition structure by simply complementing the acceptance, giving a generalized co-Büchi automaton:
 
     acc-name: generalized-co-Buchi 3
     Acceptance: 3 Fin(0)|Fin(1)|Fin(2)
 
 ### Streett acceptance
 
-Pairs of acceptance sets $\{(L_1,U_1),\ldots,(L_k,U_k)\}$.  A run is accepting for a pair $(L_i,U_i)$ iff the run visiting $L_i$ infinitely often implies that the run also visits $U_i$ infinitely often. A run is accepting iff it is accepting for all pairs. Assuming $k=3$ and numbering these 6 sets from left ($L_1$) to right ($U_3$), this corresponds to:
+Streett acceptance is formalized by pairs of acceptance sets $\{(L_1,U_1),\ldots,(L_k,U_k)\}$.  A run is accepting for a pair $(L_i,U_i)$ iff it visits $L_i$ only finitely often or it visits $U_i$ infinitely often. A run is accepting iff it is accepting for all pairs. Assuming $k=3$ and numbering these 6 sets from left ($L_1$) to right ($U_3$), this corresponds to:
 
     acc-name: Streett 3
     Acceptance: 6 (Fin(0)|Inf(1))&(Fin(2)|Inf(3))&(Fin(4)|Inf(5))
@@ -403,7 +403,7 @@ C. Löding, in [his diploma thesis](http://automata.rwth-aachen.de/~loeding/dipl
     Acceptance: 6 (Fin(0)&Inf(1))|(Fin(2)&Inf(3))|(Fin(4)&Inf(5))
 
 The parameter `3` in `acc-name: Rabin 3` refers to the number of Rabin pairs.
-The reason this definition was choosen for `acc-name: Rabin` is that is seems to be the most commonly used.
+The reason to choose this definition for `acc-name: Rabin` is that it seems to be the most commonly used.
 
 S. Krishnan, in [his ISAAC'94 paper](http://dx.doi.org/10.1007/3-540-58325-4_202), uses pairs $\{(L_1,U_1),\ldots,(L_k,U_k)\}$ such that the set of recurring states of a an accepting run should intersect $L_i$ and be included in $U_i$, for some pair $(L_i,U_i)$.  A similar definition is used by Manna and Pnueli in their "Hierarchy of Temporal Properties" paper.  This corresponds to:
 
@@ -411,7 +411,7 @@ S. Krishnan, in [his ISAAC'94 paper](http://dx.doi.org/10.1007/3-540-58325-4_202
 
 ### Generalized Rabin acceptance
 
-Rabin acceptance has been generalized in works by [Křetínský & Esparza](http://arxiv.org/abs/1204.5057) or [Babiak et al.](http://dx.doi.org/10.1007/978-3-319-02444-8_4).  They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like $\{(E_1,\{F_{11},F_{12},F_{13}\}), (E_2,\{F_{21},F_{22}\})\}$, and where a run is accepting if there exists some i such that the run visits finitely often the set $E_i$ and infinitely often all the sets $F_{ij}$.  Such an acceptance condition can be specified with:
+Rabin acceptance has been generalized in works by [Křetínský & Esparza](http://arxiv.org/abs/1204.5057) or [Babiak et al.](http://dx.doi.org/10.1007/978-3-319-02444-8_4).  They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like $\{(E_1,\{F_{11},F_{12},F_{13}\}), (E_2,\{F_{21},F_{22}\})\}$, and where a run is accepting if there exists some $i$ such that the run visits finitely often the set $E_i$ and infinitely often all the sets $F_{ij}$.  Such an acceptance condition can be specified with:
 
     acc-name: generalized-Rabin 2 3 2
     Acceptance: 7 (Fin(0)&Inf(1)&Inf(2)&Inf(3))|(Fin(4)&Inf(5)&Inf(6))
@@ -422,9 +422,9 @@ The first parameter of `generalized-Rabin` gives the number of generalized pairs
 
 For parity acceptance, `acc-name: parity` has three parameters to support combinations of `min`/`max` and `even`/`odd`, and to specify the range of acceptance sets used.  In an automaton with `max odd` parity acceptance, for instance, a run is accepting if the maximum set number visited infinitely often along the run is odd.
 
-A typical parity automaton should have `property: colored`, ensuring that each transition (or state) belongs to exactly one acceptance set.  In this context the maximum or minimum set number seen infinitely often along a run always exists.
+A typical parity automaton should have `property: colored`, ensuring that each transition (or state) belongs to exactly one acceptance set.  With this property, the maximum or minimum set number seen infinitely often along a run always exists.
 
-The canonical encodings for parity acceptance have been chosen so they behave nicely even in automata where `property: colored` does not hold, i.e., where some transitions (or states) may belong to multiple acceptance sets or none.  In particular if $F$ is the set of numbers of the acceptance sets visited infinitely often by a run of an automaton with $n$ acceptance sets, we assume that $\min(\emptyset)=n$ and $\max(\emptyset)=-1$ for the purpose of deciding the parity of $\min(F)$ or $\max(F)$.
+The canonical encodings for parity acceptance have been chosen so they behave nicely even in automata where `property: colored` does not hold, i.e., where some transitions (or states) may belong to multiple acceptance sets or none.  In particular, if $F$ is the set of numbers of the acceptance sets visited infinitely often by a run of an automaton with $n$ acceptance sets, we assume that $\min(\emptyset)=n$ and $\max(\emptyset)=-1$ for the purpose of deciding the parity of $\min(F)$ or $\max(F)$.
 
 Here are the first instances of the `min odd` condition for different numbers of sets:
 
@@ -510,7 +510,7 @@ Note that in all those acceptance specifications, `Inf` is always followed by `|
 
 ### Trivial acceptance conditions: `all` and `none`
 
-When `generalized-Büchi` or `Streett` are used with `0` acceptance sets, they degenerate to conditions that accept all recognized words:
+When `generalized-Buchi` or `Streett` are used with `0` acceptance sets, they degenerate to conditions that accept all infinite runs:
 
     acc-name: generalized-Buchi 0
     Acceptance: 0 t
@@ -563,17 +563,17 @@ A promise automaton generated by the tableau construction of [`ltl2tgba`](http:/
 
     Acceptance: 3 Inf(!0) & Inf(!1) & Inf(!2)
 
-(Spot actually makes an extra pass at the end of the translation to complement the acceptance sets in order to obtain the more usual generalized Büchi `Inf(0)&Inf(1)&Inf(2)` acceptance).
+(Spot actually makes an extra pass at the end of the translation to complement the acceptance sets in order to obtain the more usual generalized Büchi acceptance `Inf(0)&Inf(1)&Inf(2)`.)
 
-The product of a `Rabin 2` automaton with a `Streett 2` automaton, performed in a very straightforward way, will have an acceptance condition such as the following, where sets 1-4 are used as Rabin pairs, while sets 4-7 are used as Streett pairs.
+The product of a `Rabin 2` automaton with a `Streett 2` automaton, performed in a very straightforward way and representing the intersection of the two languages, will have an acceptance condition such as the following, where sets 0-3 are used as Rabin pairs, while sets 4-7 are used as Streett pairs.
 
-   Acceptance: 8 ((Inf(0)&Fin(1))|(Inf(2)&Fin(3)))&((Fin(4)|Inf(5))&(Fin(6)|Inf(7)))
+    Acceptance: 8 ((Inf(0)&Fin(1))|(Inf(2)&Fin(3)))&((Fin(4)|Inf(5))&(Fin(6)|Inf(7)))
 
 Although it is not the case in the classical acceptance conditions, acceptance sets can be used multiple times in the same acceptance formula, possibly even with both `Fin` and `Inf` primitives.  For instance when translating the LTL formula `(GF(a) -> GF(b)) & (GF(b) -> GF(c))` into an automaton with Streett-like acceptance, it would make sense to use:
 
     Acceptance: 3 (Fin(0)|Inf(1))&(Fin(1)|Inf(2))
 
-this however does not fit our strict definition of `acc-name: Streett 2` (which would be `Acceptance 4: (Fin(0)|Inf(1))&(Fin(2)|Inf(3))`).
+This however does not fit our strict definition of `acc-name: Streett 2` (which would be `Acceptance 4: (Fin(0)|Inf(1))&(Fin(2)|Inf(3))`).
 
 Similarly, translating the LTL formulas `GF(a) xor GF(b)` could easily be done using an automaton with the following acceptance:
 
