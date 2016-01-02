@@ -591,7 +591,7 @@ The header is separated from the rest of the structure with `--BODY--`.
 States are specified with the following grammar:
 
     body             ::= (state-name edge*)*
-    // the optional dstring can be used to name the state for
+    // the optional STRING can be used to name the state for
     // cosmetic or debugging purposes, as in ltl2dstar's format
     state-name       ::= "State:" label? INT STRING? acc-sig?
     acc-sig          ::= "{" INT* "}"
@@ -600,17 +600,17 @@ States are specified with the following grammar:
 
 The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from $0$ to $n-1$, where $n$ is the value given by the `States:` header item if it is present.  If the `States:` header item is missing, $n-1$ should be assumed to be the highest state number listed either in the automaton body (either when defining a state, or when used as a destination of a transition) or as some initial state.
 
-States may be listed in any order, but should all be listed (i.e., if the header has `States: 10` then the body should have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
+States may be listed in any order, but should all be listed (i.e., if the header contains `States: 10`, then the body should have ten `State: INT` statements, with all numbers from 0 to 9).  In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
 
-The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.  Since we use transition-based acceptance, when `acc-sig` is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to this set.  For instance `State: 0 {1 3}` would states that all transitions leaving state 0 are in acceptance sets 1 and 3.
+The `INT*` used in `acc-sig` represents the acceptance sets the state or edge belongs to.  Since we use transition-based acceptance, when `acc-sig` is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to these sets.  For instance `State: 0 {1 3}` would states that all transitions leaving state 0 are in acceptance sets 1 and 3.
 
-The `state-conj` encodes the destination of an edge as a conjunction of state numbers.  Non-alternating automata always use a single state number as destination.  These conjunctions makes it possible to encode the universal branching of alternating automata, while disjunction is simply encoded as multiple transitions.
+The `state-conj` encodes the destination of an edge as a conjunction of state numbers.  Non-alternating automata always use a single state number as destination.  These conjunctions makes it possible to encode the universal branching of alternating automata, while disjunction is simply encoded as multiple edges.
 
 If a state has a `label`, no outgoing edge of this state should have a `label`: this should be used to represent state-labeled automata.  In our semantics, we have to view this as syntactic sugar for all outgoing transitions being labeled by this very same `label`.
 
-If an edge has a `label`, all edges of this state should have a `label`.
+If an edge has a `label`, all edges leading from the same state should have a `label`.
 
-If one state has no `label`, and no labeled edges, then there should be exactly $2^a$ edges listed, where $a$ is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition $t$ is the $i$-th transition of a state (starting with 0), then the label of $t$ can be deduced by interpreting $i$ as a bitset. The label is a set of atomic propositions such that the atomic proposition $j$ is in the set if the $j$-th least significant bit of $i$ is set to 1.
+If a state has no `label` and no labeled edges, then there should be exactly $|\Sigma|$ edges listed, where $\Sigma$ is the input alphabet.  The edges are labeled implicitly like in the `ltl2dstar`'s format.  If the alphabet is given directly as the set of letters, then the $i$-th edge of the state is labeled by the $i$-th letter. If the alphabet is given via atomic propositions, then the $i$-th edge is labeled by the set of atomic propositions such that the atomic proposition $j$ is in the set iff the $j$-th least significant bit of $i$ (written as a binary number) is 1.
 
 
 Examples
@@ -672,7 +672,7 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     acc-name: Rabin 1
     --BODY--
     State: 0
-    [0 | 2] 0
+    [0 | 2] 0   /* label {a,c} could be also denoted by [!1] */
     [1] 1
     State: 1 {1}
     [0] 2
@@ -682,7 +682,7 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     [1 | 2] 1
     --END--
 
-### TGBA with implicit labels
+### Transition-based generalized Büchi automaton (TGBA) with implicit labels
 
 ![automaton](figures/aut3.svg)
 
@@ -906,7 +906,7 @@ Each omega-automaton described in this format can be seen as an automaton $\lang
 The indices of the acceptance sets appearing in the transitions induce a list of acceptance sets $F=(S_0, ..., S_{m-1})$ where $S_i \subseteq R$ contains those **transitions** $t$ with $i \in M(t)$, i.e., $S_i = \{ t\in R \mid i\in M(t) \}$.
 
 The automaton is interpreted over infinite words over the alphabet $\Sigma$. A **run** over a word $w=a_0 a_1\ldots$ is an infinite labeled directed acyclic graph $(V,E,\lambda)$ such that:
-- $V$ is partitioned into $V_0\cup V_₁\cup V_2\ldots$ where the sets $V_i$ are disjoint,
+- $V$ is partitioned into $V_0\cup V_1\cup V_2\ldots$ where the sets $V_i$ are pairwise disjoint,
 - for each edge $e\in E$ there exists $i\ge 0$ such that $e\in V_i\times V_{i+1}$,
 - $\lambda:V\to R$ is a labeling function such that $\{s(\lambda(x))\mid x\in V_0\}\in I$ and, for each $x\in V_i$, $a_i \in \| \ell(\lambda(x)) \|$ and the successors of $x$ correspond to the target conjunction of states of the transition $\lambda(x)$, i.e., $D(\lambda(x))=\{s(\lambda(y))\mid (x,y)\in E\}$.  We say that the transition $\lambda(x)$ is **applied to** $x$.
 
@@ -943,7 +943,7 @@ In contrast to the automaton with transition-based acceptance, the acceptance se
 
 An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptance set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language.  If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.
 
-The two semantics disagree slightly on the handling of dead states. The state-based semantics allow dead states to appear in acceptance sets, while there is no way to do that with transition-based acceptance.  This difference is inconsequential: a dead state is never going to contribute anything useful the recognized language.
+The two semantics disagree slightly on the handling of dead states. The state-based semantics allow dead states to appear in acceptance sets, while there is no way to do that with transition-based acceptance.  This difference is inconsequential: a dead state is never going to contribute anything useful to the recognized language.
 
 
 Authors
