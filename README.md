@@ -137,7 +137,7 @@ Header
                  | "acc-name:" IDENTIFIER (BOOLEAN|INT|IDENTIFIER)*
                  | "tool:" STRING STRING?
                  | "name:" STRING
-                 | "properties:" IDENTIFIER*
+                 | "properties:" ("!"? IDENTIFIER)*
                  | HEADERNAME (BOOLEAN|INT|STRING|IDENTIFIER)*
 
 The header is a list of `header-item`s (a `HEADERNAME` followed by some data).  Except for the `HOA:` item, which should always come first, the items may occur in any order.  Some `HEADERNAME`s have predefined semantics (and might be mandatory) as specified below.  This format also makes provision of additional (unspecified) header names to be used.
@@ -316,9 +316,9 @@ For instance:
 
 ### `properties:`
 
-    header-item ::= … | "properties:" IDENTIFIER*
+    header-item ::= … | "properties:" ("!"? IDENTIFIER)*
 
-The optional `properties:` header name can be followed by a list of identifiers that gives additional information about the automaton.  Multiple `properties:` lines can be used, it has the same effect as listing all properties on one line.  This information should be redundant in the sense that ignoring them should not impact the behavior of the automaton.  For instance stating that an automaton is deterministic with
+The optional `properties:` header name can be followed by a list of identifiers (each potentially preceded by `!`) that gives additional information about the automaton.  Identifiers correspond to automata properties.  Indetifiers preceded by `!` mean that the automaton does not have the corresponding properties.  Multiple `properties:` lines can be used, it has the same effect as listing all properties on one line.  This information should be redundant in the sense that ignoring them should not impact the behavior of the automaton.  For instance stating that an automaton is deterministic with
 
     properties: deterministic
 
@@ -333,7 +333,7 @@ The following properties have specified meanings, but additional may be added, a
 - `state-acc` hints that the automaton uses only state-based acceptance specifications
 - `trans-acc` hints that the automaton uses only transition-based acceptance specifications
 - `univ-branch` hints that the automaton uses universal branching for at least one transition or for the initial state
-- `no-univ-branch` hints that the automaton does not uses universal branching
+- `no-univ-branch` hints that the automaton does not uses universal branching (this property is obsolete: since version 1.1, it is replaced by `!univ-branch`) 
 - `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state and the outgoing transitions of each state have disjoint labels (this also applies in the presence of universal branching)
 - `complete` hints that the automaton is complete, i.e., it has at least one state and the transition function is total
 - `unambiguous` hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton (this also applies in the presence of universal branching)
@@ -664,12 +664,13 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
 ![automaton](figures/aut_alph1.svg)
 
-    HOA: v1.1   /* Alphabet: was introduced in v1.1 */
+    HOA: v1.1   /* Alphabet: and negated properties were introduced in v1.1 */
     States: 3
     Start: 0
     Alphabet: 3 "a" "b" "c"
     Acceptance: 2 Fin(0) & Inf(1)
     acc-name: Rabin 1
+    properties: deterministic !univ-branch
     --BODY--
     State: 0
     [0 | 2] 0   /* label {a,c} could be also denoted by [!1] */
@@ -876,6 +877,7 @@ Here is an example of alternating transition-based co-Büchi automaton encoding 
     acc-name: co-Buchi
     Acceptance: 1 Fin(0)
     AP: 3 "a" "b" "c"
+    properties: univ-branch
     --BODY--
     State: 0 "Fa"
     [t] 0 {0}
