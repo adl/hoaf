@@ -24,7 +24,8 @@ Change log:
 - YYYY-MM-DD: Version 1.1 published, with the following changes:
     - Support for `.` in identifiers, and semantic of version numbers. ([#56](https://github.com/adl/hoaf/issues/56))
     - Support for letter-based alphabets using `Alphabet:`. ([#54](https://github.com/adl/hoaf/issues/54))
-	- `complete` automata must have at least one *initial* state ([#58](https://github.com/adl/hoaf/issues/57))
+    - Support for negated properties. ([#55](https://github.com/adl/hoaf/issues/55))
+    - `complete` automata must have at least one *initial* state ([#58](https://github.com/adl/hoaf/issues/57))
 - 2015-06-21: Improve definition of accepting sets in the semantics. ([#48](https://github.com/adl/hoaf/issues/48))
 - 2015-05-26: Clarify notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases. ([#46](https://github.com/adl/hoaf/issues/46))
 - 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
@@ -319,7 +320,7 @@ For instance:
 
     header-item ::= … | "properties:" ("!"? IDENTIFIER)*
 
-The optional `properties:` header name can be followed by a list of identifiers (each potentially preceded by `!`) that gives additional information about the automaton.  Identifiers correspond to automata properties.  Indetifiers preceded by `!` mean that the automaton does not have the corresponding properties.  Multiple `properties:` lines can be used, it has the same effect as listing all properties on one line.  This information should be redundant in the sense that ignoring them should not impact the behavior of the automaton.  For instance stating that an automaton is deterministic with
+The optional `properties:` header name can be followed by a list of identifiers (each potentially preceded by `!`) that gives additional information about the automaton.  Identifiers correspond to automata properties.  An identifier preceded by `!` indicates that the automaton satisfies the negation of the corresponding property.  Multiple `properties:` lines can be used, it has the same effect as listing all properties on one line.  This information should be redundant in the sense that ignoring them should not impact the behavior of the automaton.  For instance stating that an automaton is deterministic with
 
     properties: deterministic
 
@@ -335,7 +336,7 @@ The following properties have specified meanings, but additional may be added, a
 - `trans-acc` hints that the automaton uses only transition-based acceptance specifications
 - `univ-branch` hints that the automaton uses universal branching for at least one transition or for the initial state
 - `no-univ-branch` hints that the automaton does not uses universal branching (this property is obsolete: since version 1.1, it is replaced by `!univ-branch`)
-- `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state and the outgoing transitions of each state have disjoint labels (this also applies in the presence of universal branching)
+- `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state and the outgoing transitions of each state have disjoint labels (this also applies in the presence of universal branching); therefore `!deterministic` hints that the automaton has at least 2 initial states or a state with at least two outgoing transitions that can be taken under the same letter
 - `complete` hints that the automaton is complete, i.e., it has at least one initial state and the transition function is total
 - `unambiguous` hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton (this also applies in the presence of universal branching)
 - `stutter-invariant` hints that the automaton describes a [stutter-invariant](http://dx.doi.org/10.1007/3-540-48683-6_22) language
@@ -346,7 +347,9 @@ The following properties have specified meanings, but additional may be added, a
 - `tight` hints that the automaton is [tight](http://dx.doi.org/10.1007/978-3-540-31980-1_32), i.e., for every word $w=a_0a_1\ldots$ accepted by the automaton there exists an accepting run over $w$ such that whenever two suffixes $w_i=a_ia_{i+1}\ldots$ and $w_j=a_ja_{j+1}\ldots$ of $w$ are identical, the run reaches identical states (or sets of the states in the case of alternating automata) by reading the corresponding prefixes $a_0\ldots a_{i-1}$ and $a_0\ldots a_{j-1}$
 - `colored` hints that each transition (or each state, for state-based acceptance) of the automaton belongs to exactly one acceptance set; this is typically the case in parity automata
 
-Note that even if some property implies another one (for instance `explicit-labels` implies `trans-labels`), it is recommended to specify both.
+Note that an automaton mixing state labels and transition labels satisfies both `!trans-labels` and `!state-labels`.  Similarly, an automaton mixing state-based and transition-based acceptance satisfies both `!trans-acc` and `!state-acc`.
+
+Even if some property implies another one (for instance `explicit-labels` implies `trans-labels`), it is recommended to specify both.
 
 Canonical acceptance specifications for classical conditions
 ------------------------------------------------------------
