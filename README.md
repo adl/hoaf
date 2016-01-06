@@ -24,6 +24,7 @@ Change log:
 - YYYY-MM-DD: Version 1.1 published, with the following changes:
     - Support for `.` in identifiers, and semantic of version numbers. ([#56](https://github.com/adl/hoaf/issues/56))
     - Support for letter-based alphabets using `Alphabet:`. ([#54](https://github.com/adl/hoaf/issues/54))
+	- `complete` automata must have at least one *initial* state ([#58](https://github.com/adl/hoaf/issues/57))
 - 2015-06-21: Improve definition of accepting sets in the semantics. ([#48](https://github.com/adl/hoaf/issues/48))
 - 2015-05-26: Clarify notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases. ([#46](https://github.com/adl/hoaf/issues/46))
 - 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
@@ -333,9 +334,9 @@ The following properties have specified meanings, but additional may be added, a
 - `state-acc` hints that the automaton uses only state-based acceptance specifications
 - `trans-acc` hints that the automaton uses only transition-based acceptance specifications
 - `univ-branch` hints that the automaton uses universal branching for at least one transition or for the initial state
-- `no-univ-branch` hints that the automaton does not uses universal branching (this property is obsolete: since version 1.1, it is replaced by `!univ-branch`) 
+- `no-univ-branch` hints that the automaton does not uses universal branching (this property is obsolete: since version 1.1, it is replaced by `!univ-branch`)
 - `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state and the outgoing transitions of each state have disjoint labels (this also applies in the presence of universal branching)
-- `complete` hints that the automaton is complete, i.e., it has at least one state and the transition function is total
+- `complete` hints that the automaton is complete, i.e., it has at least one initial state and the transition function is total
 - `unambiguous` hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton (this also applies in the presence of universal branching)
 - `stutter-invariant` hints that the automaton describes a [stutter-invariant](http://dx.doi.org/10.1007/3-540-48683-6_22) language
 - `weak` hints that in each strongly connected component (in alternating automata, SCC can be defined in the standard way if we see each universal branching transition as a set of non-branching transitions), all transitions (or all states) belong to the same accepting sets
