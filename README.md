@@ -65,7 +65,7 @@ $\def\AP{\mathit{AP}}\def\B{\mathbb{B}}\def\Fin{\mathsf{Fin}}\def\Inf{\mathsf{In
 
 To make the automata description more concise, we label states or transitions of automata with Boolean formulas referencing the letters of the alphabet. In case that the alphabet is provided directly, these are Boolean formulas over the letters in $\Sigma$. In case that the alphabet is derived from atomic propositions $\AP$, these are Boolean formulas over the atomic propositions in $\AP$. We use $\B(\Sigma)$ to denote the set of Boolean formulas over $\Sigma$ and $\B(\AP)$ to denote the set of Boolean formulas over $\AP$.
 
-We denote by $\|\psi\| \subseteq \Sigma$, for a given Boolean formula $\psi \in \B(\Sigma)$ or $\psi \in \B(\AP)$, the set of letters that satisfy $\psi$, i.e., with the Boolean operators handled as usual 
+We denote by $\|\psi\| \subseteq \Sigma$, for a given Boolean formula $\psi \in \B(\Sigma)$ or $\psi \in \B(\AP)$, the set of letters that satisfy $\psi$, i.e., with the Boolean operators handled as usual
 
 $\|\true\| = \Sigma$
 $\|\false\| = \emptyset$
@@ -599,7 +599,7 @@ States are specified with the following grammar:
     // cosmetic or debugging purposes, as in ltl2dstar's format
     state-name       ::= "State:" label? INT STRING? acc-sig?
     acc-sig          ::= "{" INT* "}"
-    trans             ::= label? state-conj acc-sig?
+    trans            ::= label? state-conj acc-sig?
     label            ::= "[" label-expr "]"
 
 The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from $0$ to $n-1$, where $n$ is the value given by the `States:` header item if it is present.  If the `States:` header item is missing, $n-1$ should be assumed to be the highest state number listed either in the automaton body (either when defining a state, or when used as a destination of a transition) or as some initial state.
