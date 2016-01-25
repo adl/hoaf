@@ -594,27 +594,27 @@ The header is separated from the rest of the structure with `--BODY--`.
 
 States are specified with the following grammar:
 
-    body             ::= (state-name edge*)*
+    body             ::= (state-name trans*)*
     // the optional STRING can be used to name the state for
     // cosmetic or debugging purposes, as in ltl2dstar's format
     state-name       ::= "State:" label? INT STRING? acc-sig?
     acc-sig          ::= "{" INT* "}"
-    edge             ::= label? state-conj acc-sig?
+    trans             ::= label? state-conj acc-sig?
     label            ::= "[" label-expr "]"
 
 The `INT` occurring in the `state-name` rule is the number of this state.  States should be numbered from $0$ to $n-1$, where $n$ is the value given by the `States:` header item if it is present.  If the `States:` header item is missing, $n-1$ should be assumed to be the highest state number listed either in the automaton body (either when defining a state, or when used as a destination of a transition) or as some initial state.
 
 States may be listed in any order, but should all be listed (i.e., if the header contains `States: 10`, then the body should have ten `State: INT` statements, with all numbers from 0 to 9).  In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
 
-The `INT*` used in `acc-sig` represents the acceptance sets the state or edge belongs to.  Since we use transition-based acceptance, when `acc-sig` is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to these sets.  For instance `State: 0 {1 3}` would states that all transitions leaving state 0 are in acceptance sets 1 and 3.
+The `INT*` used in `acc-sig` represents the acceptance sets the state or transition belongs to.  Since we use transition-based acceptance, when `acc-sig` is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to these sets.  For instance `State: 0 {1 3}` would states that all transitions leaving state 0 are in acceptance sets 1 and 3.
 
-The `state-conj` encodes the destination of an edge as a conjunction of state numbers.  Non-alternating automata always use a single state number as destination.  These conjunctions makes it possible to encode the universal branching of alternating automata, while disjunction is simply encoded as multiple edges.
+The `state-conj` encodes the destination of a transition as a conjunction of state numbers.  Non-alternating automata always use a single state number as destination.  These conjunctions makes it possible to encode the universal branching of alternating automata, while disjunction is simply encoded as multiple transitions.
 
-If a state has a `label`, no outgoing edge of this state should have a `label`: this should be used to represent state-labeled automata.  In our semantics, we have to view this as syntactic sugar for all outgoing transitions being labeled by this very same `label`.
+If a state has a `label`, no outgoing transition of this state should have a `label`: this should be used to represent state-labeled automata.  In our semantics, we have to view this as syntactic sugar for all outgoing transitions being labeled by this very same `label`.
 
-If an edge has a `label`, all edges leading from the same state should have a `label`.
+If a transition has a `label`, all transitions leading from the same state should have a `label`.
 
-If a state has no `label` and no labeled edges, then there should be exactly $|\Sigma|$ edges listed, where $\Sigma$ is the input alphabet.  The edges are labeled implicitly like in the `ltl2dstar`'s format.  If the alphabet is given directly as the set of letters, then the $i$-th edge of the state is labeled by the $i$-th letter. If the alphabet is given via atomic propositions, then the $i$-th edge is labeled by the set of atomic propositions such that the atomic proposition $j$ is in the set iff the $j$-th least significant bit of $i$ (written as a binary number) is 1.
+If a state has no `label` and no labeled transitions, then there should be exactly $|\Sigma|$ transitions listed, where $\Sigma$ is the input alphabet.  The transitions are labeled implicitly like in the `ltl2dstar`'s format.  If the alphabet is given directly as the set of letters, then the $i$-th transition of the state is labeled by the $i$-th letter. If the alphabet is given via atomic propositions, then the $i$-th transition is labeled by the set of atomic propositions such that the atomic proposition $j$ is in the set iff the $j$-th least significant bit of $i$ (written as a binary number) is 1.
 
 
 Examples
@@ -769,7 +769,7 @@ Encoding `GFa` using state labels requires multiple initial states.
       0 1
     --END--
 
-In this case, the acceptance and labels are carried by the states, so the only information given by the `edges` lists are the destinations states `0 1`.
+In this case, the acceptance and labels are carried by the states, so the only information given by the transition lists are the destination states `0 1`.
 
 Note that even if a tool has no support for state labels or multiple initial states, the above automaton could easily be transformed into a transition-based one upon reading.  It suffices to add a new initial state connected to all the original initial states, and then to move all labels onto incoming transitions.  Acceptance sets can be moved to incoming or (more naturally) to outgoing transitions.  For instance the following transition-based Büchi automaton is equivalent to the previous example:
 
