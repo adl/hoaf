@@ -9,4 +9,5 @@ autfmt.tex
 *.fdb_latexmk
 auto/
 *.tgz
-
+*.dvi
+*.out
