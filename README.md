@@ -26,6 +26,7 @@ Change log:
     - Support for letter-based alphabets using `Alphabet:`. ([#54](https://github.com/adl/hoaf/issues/54))
     - Support for negated properties. ([#55](https://github.com/adl/hoaf/issues/55))
     - `complete` automata must have at least one *initial* state ([#58](https://github.com/adl/hoaf/issues/57))
+    - `deterministic` was restricted to existential (a.k.a. nondeterministic) automata, and the `exist-branch` property was introduced ([#63](https://github.com/adl/hoaf/issues/63))
 - 2015-06-21: Improve definition of accepting sets in the semantics. ([#48](https://github.com/adl/hoaf/issues/48))
 - 2015-05-26: Clarify notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases. ([#46](https://github.com/adl/hoaf/issues/46))
 - 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
@@ -333,9 +334,10 @@ The following properties have specified meanings, but additional may be added, a
 - `explicit-labels` hints that the automaton uses only explicit transitions labels
 - `state-acc` hints that the automaton uses only state-based acceptance specifications
 - `trans-acc` hints that the automaton uses only transition-based acceptance specifications
-- `univ-branch` hints that the automaton uses universal branching for at least one transition or for the initial state
+- `univ-branch` hints that the automaton uses universal branching for at least one transition or that it may start with an initial conjunction of states
 - `no-univ-branch` hints that the automaton does not uses universal branching (this property is obsolete: since version 1.1, it is replaced by `!univ-branch`)
-- `deterministic` hints that the automaton is deterministic, i.e., it has at most one initial state and the outgoing transitions of each state have disjoint labels (this also applies in the presence of universal branching); therefore `!deterministic` hints that the automaton has at least 2 initial states or a state with at least two outgoing transitions that can be taken under the same letter
+- `exist-branch` hints that the automaton uses existential branching: the automaton has at least two initial (conjunctions of) states or a state with at least two outgoing transitions that can be taken under the same letter
+- `deterministic` hints that the automaton has no existantial branching and no universal branching (i.e., `deterministic` is a synonym for `!univ-branch` and `!exist-branch`); note that in version 1 of the HOA format `deterministic` only had the semantics of `!exist-branch` (the `!univ-branch` constraint has been added in version 1.1 to be more in line with the literature)
 - `complete` hints that the automaton is complete, i.e., it has at least one initial state and the transition function is total
 - `unambiguous` hints that the automaton is unambiguous, i.e., for each word there is at most one accepting run of the automaton (this also applies in the presence of universal branching)
 - `stutter-invariant` hints that the automaton describes a [stutter-invariant](http://dx.doi.org/10.1007/3-540-48683-6_22) language
@@ -673,7 +675,7 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     Alphabet: 3 "a" "b" "c"
     Acceptance: 2 Fin(0) & Inf(1)
     acc-name: Rabin 1
-    properties: deterministic !univ-branch
+    properties: deterministic
     --BODY--
     State: 0
     [0 | 2] 0   /* label {a,c} could be also denoted by [!1] */
@@ -880,7 +882,7 @@ Here is an example of alternating transition-based co-Büchi automaton encoding 
     acc-name: co-Buchi
     Acceptance: 1 Fin(0)
     AP: 3 "a" "b" "c"
-    properties: univ-branch
+    properties: univ-branch exist-branch
     --BODY--
     State: 0 "Fa"
     [t] 0 {0}
