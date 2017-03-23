@@ -158,12 +158,11 @@ However, version 1.1 is actually a superset of version 1 that can be declared as
 
     HOA: v1
 
-The identifier specifying the version number should always start with `v`, followed by a number in base 10 representing the major version number (`1` in the above two examples).  To name minor versions of the format, the major number may be optionally followed by other characters as long as the entire token is a valid identifier.
-
-Two version numbers can be ordered by using the same semantic as [strverscmp()](http://man7.org/linux/man-pages/man3/strverscmp.3.html).  Given two versions $X\le Y$ that share the same major version number, the format specified by version $Y$ should be a superset of the format specified for version $X$.  This means that a parser for version $Y$ should be able to read any file written using version $X$.  Conversely, a parser for version $X$ might still try to parse a file written in version $Y$ in case the file uses a subset of the format compatible with $X$.
+The identifier specifying the version number should always start with `v`.  Official version numbers, i.e., formats corresponding to one version of this document, will have the form `vX` or `vX.Y` where the major version `X` and minor versions `Y` are non-negative integers in base 10.
 
 The major version number should be updated in case of changes that invalidate the syntax or semantic of earlier versions.  Parsers should always reject files written in an unsupported major number.
 
+The semantics of version numbers that do not have the form `vX` or `vX.Y` is unspecified.
 
 ### `States:`
 
