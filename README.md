@@ -564,6 +564,7 @@ Examples
 
 ![automaton](figures/aut1.svg)
 
+<!--- HOA-START(aut1.hoa) -->
     HOA: v1
     States: 2
     Start: 0
@@ -577,6 +578,7 @@ Examples
     State: 1
       [t] 1 {1}
     --END--
+<!--- HOA-END -->
 
 ### State-based Rabin acceptance and implicit labels
 
@@ -584,6 +586,7 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
 
 ![automaton](figures/aut2.svg)
 
+<!--- HOA-START(aut2.hoa) -->
     HOA: v1
     States: 3
     Start: 0
@@ -601,11 +604,13 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     State: 2 "sink state" { 0 }
       2 2 2 2
     --END--
+<!--- HOA-END -->
 
 ### TGBA with implicit labels
 
 ![automaton](figures/aut3.svg)
 
+<!--- HOA-START(aut3-a.hoa) -->
     HOA: v1
     name: "GFa & GFb"
     States: 1
@@ -620,11 +625,13 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
       0 {1}   /* !a  &  b */
       0 {0 1} /*  a  &  b */
     --END--
+<!--- HOA-END -->
 
 ### TGBA with explicit labels
 
 ![automaton](figures/aut3.svg)
 
+<!--- HOA-START(aut3-b.hoa) -->
     HOA: v1
     name: "GFa & GFb"
     States: 1
@@ -639,6 +646,7 @@ Because of implicit labels, the automaton necessarily has to be deterministic an
     [!0 & 1]  0 {1}
     [0 & 1]   0 {0 1}
     --END--
+<!--- HOA-END -->
 
 ### TGBA with explicit labels using aliases
 
@@ -646,6 +654,7 @@ The following demonstrates the use of aliases to make the output slightly more r
 
 ![automaton](figures/aut4.svg)
 
+<!--- HOA-START(aut4.hoa) -->
     HOA: v1
     name: "GFa & GF(b & c)"
     States: 1
@@ -662,6 +671,7 @@ The following demonstrates the use of aliases to make the output slightly more r
     [!@a & @bc]  0 {1}
     [@a & @bc]   0 {0 1}
     --END--
+<!--- HOA-END -->
 
 ### Non-deterministic State-based Büchi automaton (à la Wring)
 
@@ -669,6 +679,7 @@ Encoding `GFa` using state labels requires multiple initial states.
 
 ![automaton](figures/aut5.svg)
 
+<!--- HOA-START(aut5.hoa) -->
     HOA: v1
     name: "GFa"
     States: 2
@@ -683,6 +694,7 @@ Encoding `GFa` using state labels requires multiple initial states.
     State: [!0] 1
       0 1
     --END--
+<!--- HOA-END -->
 
 In this case, the acceptance and labels are carried by the states, so the only information given by the `edges` lists are the destinations states `0 1`.
 
@@ -690,6 +702,7 @@ Note that even if a tool has no support for state labels or multiple initial sta
 
 ![automaton](figures/aut6.svg)
 
+<!--- HOA-START(aut6.hoa) -->
     HOA: v1
     States: 3
     Start: 0
@@ -707,6 +720,7 @@ Note that even if a tool has no support for state labels or multiple initial sta
      [0] 1
      [!0] 2
     --END--
+<!--- HOA-END -->
 
 ### Mixing state-based and transition-based acceptance
 
@@ -714,6 +728,7 @@ Here is a Büchi automaton for `GFa | G(b <-> Xa)`.
 
 ![automaton](figures/aut7.svg)
 
+<!--- HOA-START(aut7.hoa) -->
     HOA: v1
     name: "GFa | G(b <-> Xa)"
     Start: 0
@@ -736,12 +751,14 @@ Here is a Büchi automaton for `GFa | G(b <-> Xa)`.
      [!0&1] 2
      [!0&!1] 3
     --END--
+<!--- HOA-END -->
 
 In this automaton, marking states 2 and 3 as belonging to set 0
 is equivalent to marking all their outgoing transitions as such:
 
 ![automaton](figures/aut8.svg)
 
+<!--- HOA-START(aut8.hoa) -->
     HOA: v1
     name: "GFa | G(b <-> Xa)"
     Start: 0
@@ -764,6 +781,7 @@ is equivalent to marking all their outgoing transitions as such:
      [!0&1] 2 {0}
      [!0&!1] 3 {0}
     --END--
+<!--- HOA-END -->
 
 Mixing state-based and transition-based acceptance can also be done in the same state.  For instance a state like:
 
@@ -788,6 +806,7 @@ Here is an example of alternating transition-based co-Büchi automaton encoding 
 
 ![automaton](figures/aut11.svg)
 
+<!--- HOA-START(aut11.hoa) -->
     HOA: v1
     name: "(Fa & G(b&Xc)) | c"
     States: 4
@@ -807,7 +826,7 @@ Here is an example of alternating transition-based co-Büchi automaton encoding 
     State: 3 "c"
     [2] 1
     --END--
-
+<!--- HOA-END -->
 
 Formal Semantics of Omega-Automata
 ----------------------------------

@@ -1,0 +1,55 @@
+#! /usr/bin/perl -w
+
+use strict;
+
+$|=1;  # force flush after every print to STDOUT
+
+my $md_file = shift;
+my $target_dir = shift;
+
+if (!defined $md_file ||
+    !defined $target_dir) {
+    print "Usage:\n\n";
+    print "extract-hoa README.md examples\n\n";
+    print "Extracts the automata from README.md and stores them as individual files in examples/\n\n";
+    exit(1);
+}
+
+open(IN, "<", $md_file) or die "Can not open $md_file: $!\n";
+
+my $in_automaton = 0;
+my $lines;
+my $hoa_file;
+while (<IN>) {
+    if (!$in_automaton) {
+	# no / in reg-exp to avoid path traversal
+	if (/^\s*<!---\s*HOA-START\(([a-zA-Z0-9_.-]+)\)\s*-->\s*$/) {
+	    $in_automaton = 1;
+	    $lines = 0;
+	    $hoa_file = $1;
+	    my $hoa_path = "$target_dir/$hoa_file";
+	    die "Can not extract to $hoa_path, file already exists!\n"  if (-e $hoa_path);
+	    open(OUT, ">", $hoa_path) or die "Can not open $hoa_path: $!\n";
+	    print "Extracting to $hoa_path... ";
+	}
+	next;  	# ignore line otherwise
+    } else {
+	# in automaton description
+	if (/^\s*<!---\s*HOA-END\s*-->\s*$/) {
+	    $in_automaton = 0;
+	    print "$lines lines.\n";
+	    close(OUT);
+	} else {
+	    # print line
+	    print OUT $_;
+	    $lines++;
+	}
+    }
+}
+
+if ($in_automaton) {
+    print "\n\nWARNING: Missing <!--- HOA-END -->\n";
+    exit(1);
+}
+
+exit(0);
