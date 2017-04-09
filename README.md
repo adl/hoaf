@@ -418,7 +418,7 @@ The first parameter of `generalized-Rabin` gives the number of generalized pairs
 
 ### Streett acceptance
 
-Streett acceptance is formalized by pairs of acceptance sets $\{(I_1,F_1),\ldots,(I_k,F_k,)\}$.  A run is accepting for a pair $(I_i,F_i)$ iff it visits $I_i$ infinitely often or it visits $L_i$ only finitely often. A run is accepting iff it is accepting for all pairs. Assuming $k=3$ and numbering these 6 sets from left ($I_1$) to right ($F_3$), this corresponds to:
+Streett acceptance is formalized by pairs of acceptance sets $\{(I_1,F_1),\ldots,(I_k,F_k,)\}$.  A run is accepting for a pair $(I_i,F_i)$ iff it visits $I_i$ infinitely often or it visits $F_i$ only finitely often. A run is accepting iff it is accepting for all pairs. Assuming $k=3$ and numbering these 6 sets from left ($I_1$) to right ($F_3$), this corresponds to:
 
     acc-name: Streett 3
     Acceptance: 6 (Inf(0)|Fin(1))&(Inf(2)|Fin(3))&(Inf(4)|Fin(5))
@@ -427,7 +427,7 @@ The parameter `3` in `acc-name: Streett 3` refers to the number of Streett pairs
 
 Note: in HOA version 1, the acceptance condition associated to `acc-name: Strett n` had each pair reversed (e.g., `(Fin(0)|Inf(1))&(Fin(2)|Inf(3))` instead of `(Inf(0)|Fin(1))&(Inf(2)|Fin(3))`).  It was changed in version 1.1 so that dualizing (generalized) Rabin acceptance would actually lead to (generalized) Streett acceptance and vice-versa, and also so that Streett acceptance would be a special case of generalized Streett acceptance.
 
-### generic Streett acceptance
+### Generalized Streett acceptance
 
 Generic Streett acceptance is simply the dual of generalized Rabin acceptance, it generalize Streett by allowing multiple `Fin(.)` terms in disjunctive clauses (called generalized pairs):
 
