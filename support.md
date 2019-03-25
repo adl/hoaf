@@ -49,6 +49,19 @@ Since version 0.2, [`ltl3dra`](http://sourceforge.net/projects/ltl3dra/) can tra
 
 `ltl3dra`'s source code is distributed under the [GNU General Public License, version 2](http://www.gnu.org/licenses/gpl-2.0.html).
 
+`ltl3tela`
+----------
+[`ltl3tela`](https://github.com/jurajmajor/ltl3tela) translates LTL formulae into self-loop alternating and nondeterministic Emerson-Lei automata (automata with generic acceptance) and outputs them in HOA format.
+
+`ltl3tela`'s source code is distributed under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.html).
+
+`Owl`
+-----
+
+[Owl](https://owl.model.in.tum.de/) is a Java 10+ tool collection and library for ω-words, ω-automata and linear temporal logic. It can input HOA format relying on `jhoafparser` and output nondeterministic and deterministic automata with various acceptance conditions.
+
+Owl's source code is distributed under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.html).
+
 `PRISM`
 -------
 
@@ -68,19 +81,31 @@ PRISM's source code is distributed under the [GNU General Public License, versio
 
 *The web page and source code of Rabinizer does not state any license.*
 
+[Rabinizer 4](https://rabinizer.model.in.tum.de/) is a part of the Owl library and on top of `Rabinizer 3` can output:
+
+- deterministic parity automata,
+- limit-deterministic generalized Büchi automata.
+
+`Seminator`
+-----------
+
+[Seminator](https://github.com/mklokocka/seminator) converts nondeterministic transition-based generalized Büchi automata into semi-deterministic (limit-deterministic) Büchi automata. It relies on the Spot library to input and output automata in HOA format.
+
+Seminator's source code is distributed under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.html).
+
 `Spot`
 ------
 
-[Spot 1.99.1](https://spot.lrde.epita.fr) has several tools that can output or input these automata, and that support the generic acceptance condition.  In addition to `ltl2tgba` and `dstar2tgba` (that can output generalized Büchi automata in HOA), there are the following tools:
+[Spot 1.99.1](https://spot.lrde.epita.fr) has several tools that can output or input these automata, and that support the generic acceptance condition for non-alternating. Since version 2.3 Spot supports also alternating automata. In addition to `ltl2tgba` and `dstar2tgba` (that can output generalized Büchi automata in HOA), there are the following tools:
 - `randaut`: generates random automata with any acceptance condition,
 - `autfilt`: reads automata (in the HOA format, the LBT's format or never claims), transform them, filter them, and output them (in the HOA format, the LBT's format, as never claims, or dot output for graphical display)
 - `ltlcross`: compares and checks LTL/PSL translators (can read HOA, LBT, never claims, or ltl2dstar's output)
+- `autcross`: compares and checks tools that process automata (can read HOA, LBT, never claims, or ltl2dstar's output)
 - `ltldo`: Wrap existing LTL to Büchi translator tools, providing them all the range of input and output Spot supports.  For instance running `ltldo spin -f GFa -H` will use [spin](http://spinroot.com/) to translate `[]<>a` and convert the result to the HOA format.
 
-In these tools, HOA support is currently [limited to non-alternating automata](https://spot.lrde.epita.fr/hoa.html).  The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.
+See the [HOA format support](https://spot.lrde.epita.fr/hoa.html) page to consult details of HOA support.  The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.
 
 Spot's source code is distributed under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.html).
-
 
 ## <a name="live-cd">Live CD</a>
 
