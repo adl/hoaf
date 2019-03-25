@@ -12,6 +12,14 @@ For your convenience, we provide a [live CD](#live-cd) to play around with the t
 
 `jhoafparser` and `cpphoafparser` is distributed under the [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
 
+`GOAL`
+------
+
+Since version 2015-10-18, [`GOAL`](http://goal.im.ntu.edu.tw/wiki/) offers a limited support for the HOA format for both reading and output automata.  `GOAL` is a graphical interactive tool for defining and manipulating Büchi automata and temporal logic formulae. It also partially supports other variants of omega-automata and is sitable for educational purposes.
+
+`GOAL`'s source code is distributed under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.html).
+
+
 `ltl2dstar`
 -----------
 
