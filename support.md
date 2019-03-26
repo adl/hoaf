@@ -3,7 +3,7 @@ HOA Format Tool Support
 
 The following tools implement support for the [HOA format](index.html), either as output or as input.
 
-For your convenience, we provide a [live CD](#live-cd) to play around with the tools.
+In 2015, when the format was introduced, we built a [live CD](#live-cd) to play around with the tools.  It's probably better to install newer versions of the tools today.  Several of those tools can also be used online using a terminal on [Spot's sandbox](http://spot-sandbox.lrde.epita.fr/).
 
 `jhoafparser` and `cpphoafparser` libraries
 -------------------------------------------
@@ -115,9 +115,9 @@ See the [HOA format support](https://spot.lrde.epita.fr/hoa.html) page to consul
 
 Spot's source code is distributed under the [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.html).
 
-## <a name="live-cd">Live CD</a>
+## <a name="live-cd">Live CD</a> (from 2015)
 
-You can obtain an [ISO image](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso) (740MB, SHASUM: a23c47374b5a2ae7e31f9c9cb2d6908384c7cf29), containing a Debian Live CD with various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it.
+You can obtain an [ISO image](http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso) (740MB, SHASUM: a23c47374b5a2ae7e31f9c9cb2d6908384c7cf29), containing a Debian Live CD with various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it.  This is the artifact that accompanied our CAV'15 paper.
 
 ### Running in a virtual machine
 
