@@ -6,67 +6,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="pandoc" />
   <link rel="icon" type="image/png" href="http://adl.github.com/hoaf/hoa-icon-small.png">
-  <title>The Hanoi Omega-Automata Format - </title>
-  <link rel="stylesheet" href="pandoc.css" type="text/css" />
-  <script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <title>The Hanoi Omega-Automata Format</title>
+  <link rel="stylesheet" href="pandoc.css" />
+  <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
 </head>
 <body>
+<div id="header">
+<h1 class="title">The Hanoi Omega-Automata Format</h1>
+</div>
 <div id="TOC">
 <div id="TOCTXT">Table of Contents</div>
 <ul>
-<li><a href="#the-hanoi-omega-automata-format">The Hanoi Omega-Automata Format</a><ul>
-<li><a href="#current-status">Current status</a></li>
-<li><a href="#goals">Goals</a></li>
-<li><a href="#supported-types-of-omega-automata">Supported Types of Omega-Automata</a></li>
-<li><a href="#preliminary-notes">Preliminary Notes</a></li>
-<li><a href="#common-tokens">Common Tokens</a></li>
-<li><a href="#general-layout">General Layout</a></li>
-<li><a href="#header">Header</a><ul>
-<li><a href="#hoa"><code>HOA:</code></a></li>
-<li><a href="#states"><code>States:</code></a></li>
-<li><a href="#start"><code>Start:</code></a></li>
-<li><a href="#ap"><code>AP:</code></a></li>
-<li><a href="#alias"><code>Alias:</code></a></li>
-<li><a href="#acceptance"><code>Acceptance:</code></a></li>
-<li><a href="#acc-name"><code>acc-name:</code></a></li>
-<li><a href="#tool-and-name"><code>tool:</code> and <code>name:</code></a></li>
-<li><a href="#properties"><code>properties:</code></a></li>
+<li><a>The Hanoi Omega-Automata Format</a><ul>
+<li><a>Current status</a></li>
+<li><a>Goals</a></li>
+<li><a>Supported Types of Omega-Automata</a></li>
+<li><a>Preliminary Notes</a></li>
+<li><a>Common Tokens</a></li>
+<li><a>General Layout</a></li>
+<li><a>Header</a><ul>
+<li><a><code>HOA:</code></a></li>
+<li><a><code>States:</code></a></li>
+<li><a><code>Start:</code></a></li>
+<li><a><code>AP:</code></a></li>
+<li><a><code>Alias:</code></a></li>
+<li><a><code>Acceptance:</code></a></li>
+<li><a><code>acc-name:</code></a></li>
+<li><a><code>tool:</code> and <code>name:</code></a></li>
+<li><a><code>properties:</code></a></li>
 </ul></li>
-<li><a href="#canonical-acceptance-specifications-for-classical-conditions">Canonical acceptance specifications for classical conditions</a><ul>
-<li><a href="#buchi-or-co-buchi">Büchi or co-Büchi</a></li>
-<li><a href="#generalized-buchi-or-generalized-co-buchi">Generalized Büchi or generalized co-Büchi</a></li>
-<li><a href="#streett-acceptance">Streett acceptance</a></li>
-<li><a href="#rabin-acceptance">Rabin acceptance</a></li>
-<li><a href="#generalized-rabin-acceptance">Generalized Rabin acceptance</a></li>
-<li><a href="#parity-automata">Parity automata</a></li>
-<li><a href="#trivial-acceptance-conditions-all-and-none">Trivial acceptance conditions: <code>all</code> and <code>none</code></a></li>
+<li><a>Canonical acceptance specifications for classical conditions</a><ul>
+<li><a>Büchi or co-Büchi</a></li>
+<li><a>Generalized Büchi or generalized co-Büchi</a></li>
+<li><a>Streett acceptance</a></li>
+<li><a>Rabin acceptance</a></li>
+<li><a>Generalized Rabin acceptance</a></li>
+<li><a>Parity automata</a></li>
+<li><a>Trivial acceptance conditions: <code>all</code> and <code>none</code></a></li>
 </ul></li>
-<li><a href="#other-acceptance-conditions">Other acceptance conditions</a></li>
-<li><a href="#body-of-the-automaton">Body of the Automaton</a></li>
-<li><a href="#examples">Examples</a><ul>
-<li><a href="#transition-based-rabin-acceptance-and-explicit-labels">Transition-based Rabin acceptance and explicit labels</a></li>
-<li><a href="#state-based-rabin-acceptance-and-implicit-labels">State-based Rabin acceptance and implicit labels</a></li>
-<li><a href="#tgba-with-implicit-labels">TGBA with implicit labels</a></li>
-<li><a href="#tgba-with-explicit-labels">TGBA with explicit labels</a></li>
-<li><a href="#tgba-with-explicit-labels-using-aliases">TGBA with explicit labels using aliases</a></li>
-<li><a href="#non-deterministic-state-based-buchi-automaton-a-la-wring">Non-deterministic State-based Büchi automaton (à la Wring)</a></li>
-<li><a href="#mixing-state-based-and-transition-based-acceptance">Mixing state-based and transition-based acceptance</a></li>
-<li><a href="#alternating-automata">Alternating automata</a></li>
+<li><a>Other acceptance conditions</a></li>
+<li><a>Body of the Automaton</a></li>
+<li><a>Examples</a><ul>
+<li><a>Transition-based Rabin acceptance and explicit labels</a></li>
+<li><a>State-based Rabin acceptance and implicit labels</a></li>
+<li><a>TGBA with implicit labels</a></li>
+<li><a>TGBA with explicit labels</a></li>
+<li><a>TGBA with explicit labels using aliases</a></li>
+<li><a>Non-deterministic State-based Büchi automaton (à la Wring)</a></li>
+<li><a>Mixing state-based and transition-based acceptance</a></li>
+<li><a>Alternating automata</a></li>
 </ul></li>
-<li><a href="#formal-semantics-of-omega-automata">Formal Semantics of Omega-Automata</a></li>
-<li><a href="#semantics-for-pure-state-based-acceptance">Semantics for Pure State-Based Acceptance</a></li>
-<li><a href="#authors">Authors</a></li>
+<li><a>Formal Semantics of Omega-Automata</a></li>
+<li><a>Semantics for Pure State-Based Acceptance</a></li>
+<li><a>Authors</a></li>
 </ul></li>
 </ul>
 </div>
 <p><img src="hoa.png" alt="HOA logo" /></p>
-<h1 id="the-hanoi-omega-automata-format">The Hanoi Omega-Automata Format</h1>
+<h1>The Hanoi Omega-Automata Format</h1>
 <p>This document describes the Hanoi Omega-Automata (HOA) format. The name is a reference to the ATVA'13 conference, which was organized in Hanoi, and where the foundations of this format were laid.</p>
 <p>The <a href="http://adl.github.io/hoaf/">HTML</a> and <a href="http://adl.github.io/hoaf/hoaf.pdf">PDF</a> versions of this document are updated from <a href="https://github.com/adl/hoaf/">the sources on github</a>.</p>
 <p>Current tool support is described on a <a href="http://adl.github.io/hoaf/support.html">separate page</a>.</p>
 <p>All the examples shown here can also be <a href="http://adl.github.io/hoaf/examples.html">downloaded separately</a>.</p>
 <p>For a short introduction we have a <a href="https://www.lrde.epita.fr/~adl/dl/adl/babiak.15.cav.pdf"><strong>tool paper</strong></a> published at <a href="http://i-cav.org/2015/">CAV'15</a>. <a href="https://www.lrde.epita.fr/~adl/dl/adl/babiak.15.cav.slides.pdf">The <strong>slides</strong></a> from the lightning talk are available, but <a href="https://www.lrde.epita.fr/~adl/dl/adl/babiak.15.cav.poster.pdf">the <strong>poster</strong></a> covers much more of the format.</p>
-<h2 id="current-status">Current status</h2>
+<h2>Current status</h2>
 <p>This is version 1 of the format. The document may evolve slightly to clarify some parts and fix typos, but you should expect no major semantic change.</p>
 <p>If you see any problem, please <a href="https://github.com/adl/hoaf/issues?state=open">report it on the issue tracker</a>.</p>
 <p>Change log:</p>
@@ -79,7 +82,7 @@
 <li>2015-02-24: Clarify that <code>HEADERNAME</code> may not start with <code>-</code>. (<a href="https://github.com/adl/hoaf/issues/37">#37</a>)</li>
 <li>2015-02-06: Version 1 published.</li>
 </ul>
-<h2 id="goals">Goals</h2>
+<h2>Goals</h2>
 <p>Design a format, inspired from <a href="http://www.ltl2dstar.de/docs/ltl2dstar.html#output-format-dstar"><code>ltl2dstar</code>'s format</a>, but which:</p>
 <ul>
 <li>is more compact when a lot of atomic propositions are used, or when the automaton is not complete.</li>
@@ -90,29 +93,29 @@
 <li>consider new lines as any other white-space characters, i.e., as token separators. All the examples below should work even after newlines have been removed or moved around (this typically happens if you copy/paste an automaton into a mailer that reformats paragraphs). A use case for not using any newline is when compiling results from experiments into a file, with one automaton per line (and maybe other measurments if that is a CSV file), for easier filtering with line-oriented tools such as grep/cut/sed.</li>
 <li>supports streams of omega-automata (i.e., multiple automata can be concatenated together and processed in batch).</li>
 </ul>
-<h2 id="supported-types-of-omega-automata">Supported Types of Omega-Automata</h2>
+<h2>Supported Types of Omega-Automata</h2>
 <p>The HOA format supports many types of finite automata over infinite words: automata with labels on transitions or labels on states, and with a wide range of acceptance conditions based on states or transitions appearing (in)finitely often in an automaton run. Instead of providing semantics for each supported type of omega-automata, we provide only semantics for the general case of alternating automata with labels on transitions and transition-based accepting conditions. Labels on states and state-based acceptance are formally seen as syntactic sugar (their semantics fully corresponding to the expected one). Automata in HOA format can have multiple initial states.</p>
-<h2 id="preliminary-notes">Preliminary Notes</h2>
-<p><span class="math">\(\def\AP{\mathit{AP}}\def\B{\mathbb{B}}\def\Fin{\mathsf{Fin}}\def\Inf{\mathsf{Inf}}\)</span>Input alphabets of all considered automata types consist of letters that are subsets of atomic propositions (<span class="math">\(\AP\)</span>). To make the automata description more concise, we label states or transitions of automata with Boolean formulas over <span class="math">\(\AP\)</span> representing choices between multiple letters. A Boolean formula represents the set of letters satisfying the formula: a letter satisfies a formula if the valuation assigning True to all atomic propositions in the letter and False to all other atomic propositions is a model of the formula. We use <span class="math">\(\B(\AP)\)</span> to denote the set of Boolean formulas over <span class="math">\(\AP\)</span>.</p>
-<p>The format considers acceptance conditions built on a finite set <span class="math">\(\{S_0,S_1,\ldots,S_k\}\)</span> of acceptance sets. Each acceptance set <span class="math">\(S_i\)</span> is a subset of automata states and transitions. Loosely speaking, an acceptance condition says which acceptance sets should be visited infinitely often and which only finitely often by a run to be accepting. More precisely, an acceptance condition is a positive Boolean formula over atoms of the form <span class="math">\(\Fin(S_i)\)</span>, <span class="math">\(\Fin(\lnot S_i)\)</span>, <span class="math">\(\Inf(S_i)\)</span>, or <span class="math">\(\Inf(\lnot S_i)\)</span>. The atom <span class="math">\(\Fin(S_i)\)</span> indicates that all states and transitions in <span class="math">\(S_i\)</span> should occur at most finitely often in the run, while <span class="math">\(\Inf(S_i)\)</span> denotes that some state or transition of <span class="math">\(S_i\)</span> should be visited infinitely often. A state in an acceptance set is formally seen as an abbreviation for inclusion of all transitions leaving the state. The negation symbol <span class="math">\(\lnot\)</span> represents the complement of the set with respect to all transitions. Many examples of classical acceptance conditions (Büchi, Rabin, Streett, parity) will be given later.</p>
-<p>The format has a common approach to atomic propositions, states, and acceptance sets: the number of propositions/states/sets, say <span class="math">\(n\)</span>, is first declared and all propositions/states/sets are then referenced as <span class="math">\(0,1,\ldots,n-1\)</span>.</p>
-<h2 id="common-tokens">Common Tokens</h2>
+<h2>Preliminary Notes</h2>
+<p><span class="math inline">\(\def\AP{\mathit{AP}}\def\B{\mathbb{B}}\def\Fin{\mathsf{Fin}}\def\Inf{\mathsf{Inf}}\)</span>Input alphabets of all considered automata types consist of letters that are subsets of atomic propositions (<span class="math inline">\(\AP\)</span>). To make the automata description more concise, we label states or transitions of automata with Boolean formulas over <span class="math inline">\(\AP\)</span> representing choices between multiple letters. A Boolean formula represents the set of letters satisfying the formula: a letter satisfies a formula if the valuation assigning True to all atomic propositions in the letter and False to all other atomic propositions is a model of the formula. We use <span class="math inline">\(\B(\AP)\)</span> to denote the set of Boolean formulas over <span class="math inline">\(\AP\)</span>.</p>
+<p>The format considers acceptance conditions built on a finite set <span class="math inline">\(\{S_0,S_1,\ldots,S_k\}\)</span> of acceptance sets. Each acceptance set <span class="math inline">\(S_i\)</span> is a subset of automata states and transitions. Loosely speaking, an acceptance condition says which acceptance sets should be visited infinitely often and which only finitely often by a run to be accepting. More precisely, an acceptance condition is a positive Boolean formula over atoms of the form <span class="math inline">\(\Fin(S_i)\)</span>, <span class="math inline">\(\Fin(\lnot S_i)\)</span>, <span class="math inline">\(\Inf(S_i)\)</span>, or <span class="math inline">\(\Inf(\lnot S_i)\)</span>. The atom <span class="math inline">\(\Fin(S_i)\)</span> indicates that all states and transitions in <span class="math inline">\(S_i\)</span> should occur at most finitely often in the run, while <span class="math inline">\(\Inf(S_i)\)</span> denotes that some state or transition of <span class="math inline">\(S_i\)</span> should be visited infinitely often. A state in an acceptance set is formally seen as an abbreviation for inclusion of all transitions leaving the state. The negation symbol <span class="math inline">\(\lnot\)</span> represents the complement of the set with respect to all transitions. Many examples of classical acceptance conditions (Büchi, Rabin, Streett, parity) will be given later.</p>
+<p>The format has a common approach to atomic propositions, states, and acceptance sets: the number of propositions/states/sets, say <span class="math inline">\(n\)</span>, is first declared and all propositions/states/sets are then referenced as <span class="math inline">\(0,1,\ldots,n-1\)</span>.</p>
+<h2>Common Tokens</h2>
 <ul>
 <li><p><code>STRING</code>: a C-like double-quoted string <code>&quot;(\\.|[^\\&quot;])*&quot;</code></p></li>
-<li><p><code>INT</code>: <code>0|[1-9][0-9]*</code><br /> A non-negative integer less than <span class="math">\(2^{31}\)</span> written in base 10 (with no useless <code>0</code> at the beginning).</p></li>
-<li><p>comments: <code>/* … */</code><br /> Comments may be introduced between any token by enclosing them with <code>/*</code> and <code>*/</code> (with proper nesting, i.e. <code>/*a/*b*/c*/</code> is one comment). C++-style comments are not considered because they require newlines. Tools can use comments to output additional information (e.g. debugging data) that should be discarded upon reading.</p></li>
-<li><p>whitespace: <code>[ \t\n\r]</code><br /> Except in double-quoted strings and comments, whitespace is used only for tokenization and can be discarded afterwards.</p></li>
-<li><p><code>BOOLEAN</code>: <code>[tf]</code><br /> The true and false Boolean constants.</p></li>
-<li><p><code>IDENTIFIER</code>: <code>[a-zA-Z_][0-9a-zA-Z_-]*</code><br /> An identifier made of letters, digits, <code>-</code> and <code>_</code>. Digits and <code>-</code> may not by used as first character, and <code>t</code> or <code>f</code> are not valid identifiers.</p></li>
-<li><p><code>ANAME</code>: <code>@[0-9a-zA-Z_-]+</code><br /> An alias name, i.e., &quot;@&quot; followed by some alphanumeric characters, <code>-</code> or <code>_</code>. These are used to identify atomic propositions or subformulas.</p></li>
-<li><p><code>HEADERNAME</code>: <code>[a-zA-Z_][0-9a-zA-Z_-]*:</code><br /> Header names are similar to identifiers, except that they are immediately followed by a colon (i.e. no comment or space allowed). If an <code>IDENTIFIER</code> or a <code>BOOLEAN</code> is immediately followed by a colon, it should be considered as a <code>HEADERNAME</code>.</p></li>
+<li><p><code>INT</code>: <code>0|[1-9][0-9]*</code> A non-negative integer less than <span class="math inline">\(2^{31}\)</span> written in base 10 (with no useless <code>0</code> at the beginning).</p></li>
+<li><p>comments: <code>/* … */</code> Comments may be introduced between any token by enclosing them with <code>/*</code> and <code>*/</code> (with proper nesting, i.e. <code>/*a/*b*/c*/</code> is one comment). C++-style comments are not considered because they require newlines. Tools can use comments to output additional information (e.g. debugging data) that should be discarded upon reading.</p></li>
+<li><p>whitespace: <code>[ \t\n\r]</code> Except in double-quoted strings and comments, whitespace is used only for tokenization and can be discarded afterwards.</p></li>
+<li><p><code>BOOLEAN</code>: <code>[tf]</code> The true and false Boolean constants.</p></li>
+<li><p><code>IDENTIFIER</code>: <code>[a-zA-Z_][0-9a-zA-Z_-]*</code> An identifier made of letters, digits, <code>-</code> and <code>_</code>. Digits and <code>-</code> may not by used as first character, and <code>t</code> or <code>f</code> are not valid identifiers.</p></li>
+<li><p><code>ANAME</code>: <code>@[0-9a-zA-Z_-]+</code> An alias name, i.e., &quot;@&quot; followed by some alphanumeric characters, <code>-</code> or <code>_</code>. These are used to identify atomic propositions or subformulas.</p></li>
+<li><p><code>HEADERNAME</code>: <code>[a-zA-Z_][0-9a-zA-Z_-]*:</code> Header names are similar to identifiers, except that they are immediately followed by a colon (i.e. no comment or space allowed). If an <code>IDENTIFIER</code> or a <code>BOOLEAN</code> is immediately followed by a colon, it should be considered as a <code>HEADERNAME</code>.</p></li>
 </ul>
-<h2 id="general-layout">General Layout</h2>
+<h2>General Layout</h2>
 <p>This format is designed so that we can write tools that can process automata in batch. A tool could for instance get a stream of automata descriptions concatenated together as input and process these to output another stream of automata.</p>
-<p>Every automaton is described in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph.<br />The two parts are separated by <code>--BODY--</code>. The token <code>--END--</code> marks the end of the automaton.</p>
+<p>Every automaton is described in two parts: a header, that supplies meta-data about the automaton (such as number of states and acceptance condition), and a body, encoding the automaton as a labeled graph. The two parts are separated by <code>--BODY--</code>. The token <code>--END--</code> marks the end of the automaton.</p>
 <pre><code>automaton ::= header &quot;--BODY--&quot; body &quot;--END--&quot;</code></pre>
 <p>Additionally, the <code>--ABORT--</code> token may be used after any token of this grammar (even in the header) to indicate that the produced automaton should be discarded, for instance in case an error condition is detected during output. In a streaming scenario, a new automaton can start immediately after such an <code>--ABORT--</code> token. Note that <code>foo--ABORT--</code> is a valid identifier and shall not abort streaming: to ensure proper tokenization always add a space or newline before <code>--ABORT--</code> to abort the output.</p>
-<h2 id="header">Header</h2>
+<h2>Header</h2>
 <pre><code>header ::= format-version header-item*
 format-version ::= &quot;HOA:&quot; IDENTIFIER
 header-item ::= &quot;States:&quot; INT
@@ -128,23 +131,23 @@ header-item ::= &quot;States:&quot; INT
 <p>The header is a list of <code>header-item</code>s (a <code>HEADERNAME</code> followed by some data). Except for the &quot;HOA:&quot; item, which should always come first, the items may occur in any order. Some <code>HEADERNAME</code>s have predefined semantics (and might be mandatory) as specified below. This format also makes provision of additional (unspecified) header names to be used.</p>
 <p>Any given <code>HEADERNAME</code> should occur at most once, except for <code>Start:</code>, <code>Alias:</code>, and <code>properties:</code>. The case of the <code>HEADERNAME</code>'s initial is used to specify whether tools may safely ignore a header item they do not support: header items whose name start with an upper-case letter are expected to influence the semantic of the automaton: tools should at least warn about any such <code>HEADERNAME</code> they do not understand. A <code>HEADERNAME</code> whose initial is lowercase may be safely ignored without affecting the semantics.</p>
 <p>Headers items <code>HOA:</code>, and <code>Acceptance:</code> must always be present.</p>
-<h3 id="hoa"><code>HOA:</code></h3>
+<h3><code>HOA:</code></h3>
 <p><code>HOA:</code> should always be the first token of the file. It is followed by an identifier that represents the version of the format. This document specifies the first version of this format so this header should appear as</p>
 <pre><code>HOA: v1</code></pre>
-<h3 id="states"><code>States:</code></h3>
+<h3><code>States:</code></h3>
 <p>This optionnal header item specifies the number of states in the automaton.</p>
 <p>The states are assumed to be numbered consecutively from 0. For instance:</p>
 <pre><code>States: 10</code></pre>
 <p>specifies an automaton with 10 states numbered from 0 to 9.</p>
 <p>An empty automaton, with no states, can be specified with <code>States: 0</code>.</p>
 <p>It is recommended to specify the number of states whenever possible, so that readers may preallocate data structures and perform better error checking. Cases where <code>States:</code> could be missing are typically those where an automaton is constructed on-the-fly during its output, and the actual number of states is unknown before the end of the output.</p>
-<h3 id="start"><code>Start:</code></h3>
+<h3><code>Start:</code></h3>
 <p>This optional header item specifies the initial states. Multiple initial states can be specified by using several <code>Start:</code> headers with a different state number.</p>
 <p>Alternating automata can start in a conjunction of states specified using the <code>&amp;</code> operator.</p>
 <pre><code>header-item ::= … | &quot;Start:&quot; state-conj
 state-conj ::= INT | state-conj &quot;&amp;&quot; INT</code></pre>
 <p>If the <code>Start:</code> header item is omitted, then the automaton has no initial state and denotes an empty language.</p>
-<h3 id="ap"><code>AP:</code></h3>
+<h3><code>AP:</code></h3>
 <p><code>AP:</code> gives the number of atomic propositions, followed by unique names for each of these atomic propositions (using double-quoted C-strings). Atomic propositions are implicitly numbered from left to right, starting at 0.</p>
 <p>For instance</p>
 <pre><code>AP: 3 &quot;a&quot; &quot;proc@state&quot; &quot;a[x] &gt;= 2&quot;</code></pre>
@@ -155,7 +158,7 @@ state-conj ::= INT | state-conj &quot;&amp;&quot; INT</code></pre>
 <li>atomic proposition 2 is <code>&quot;a[x] &gt;= 2&quot;</code></li>
 </ul>
 <p>The number of double-quoted strings must match exactly the number given, and should all be different. This number may be 0, in which case it is not followed by any string, and this is equivalent to not using <code>AP:</code>.</p>
-<h3 id="alias"><code>Alias:</code></h3>
+<h3><code>Alias:</code></h3>
 <p>Aliases are used to name atomic propositions or common subformulas that will be used later as labels in the automaton. This format can be used without any aliases, refering to atomic propositions by their numbers. Naming atomic propositions using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.</p>
 <pre><code>headeritem ::= … | &quot;Alias:&quot; ANAME label-expr
 label-expr ::= BOOLEAN | INT | ANAME | &quot;!&quot; label-expr
@@ -170,7 +173,7 @@ Alias: @ps 1
 Alias: @a2 2
 Alias: @c @ps|@a2</code></pre>
 <p>The first three aliases are just mnemonic names for the atomic propositions, while the last one replace some arbitrary subformula. Defining <code>@c</code> before the definition of <code>@ps</code> and <code>@a2</code> would be incorrect.</p>
-<h3 id="acceptance"><code>Acceptance:</code></h3>
+<h3><code>Acceptance:</code></h3>
 <pre><code>header-item ::= … | &quot;Acceptance:&quot; INT acceptance-cond
 
 acceptance-cond ::= IDENTIFIER &quot;(&quot; &quot;!&quot;? INT &quot;)&quot;
@@ -178,10 +181,10 @@ acceptance-cond ::= IDENTIFIER &quot;(&quot; &quot;!&quot;? INT &quot;)&quot;
                  | acceptance-cond &quot;&amp;&quot; acceptance-cond
                  | acceptance-cond &quot;|&quot; acceptance-cond
                  | BOOLEAN</code></pre>
-<p>The mandatory <code>Acceptance:</code> header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition. If <span class="math">\(m\)</span> sets are declared, these sets are numbered from <span class="math">\(0\)</span> to <span class="math">\(m-1\)</span>. In this version of the format, the <code>IDENTIFIER</code> used in <code>acceptance-cond</code> can only be <code>Fin</code> or <code>Inf</code>.</p>
+<p>The mandatory <code>Acceptance:</code> header item is used to specify the number of acceptance sets used by the automaton and how these acceptance sets are combined in the acceptance condition. If <span class="math inline">\(m\)</span> sets are declared, these sets are numbered from <span class="math inline">\(0\)</span> to <span class="math inline">\(m-1\)</span>. In this version of the format, the <code>IDENTIFIER</code> used in <code>acceptance-cond</code> can only be <code>Fin</code> or <code>Inf</code>.</p>
 <p>The acceptance condition is specified as a positive Boolean combination of expressions of the form <code>Fin(x)</code>, <code>Fin(!x)</code>, <code>Inf(x)</code>, and <code>Inf(!x)</code> where:</p>
 <ul>
-<li><code>x</code> is an integer in <span class="math">\([0,m)\)</span> representing an accepting set,</li>
+<li><code>x</code> is an integer in <span class="math inline">\([0,m)\)</span> representing an accepting set,</li>
 <li><code>!x</code> represents the complement of that set,</li>
 <li><code>Fin(x)</code> and <code>Inf(x)</code> specify whether that set should be visited finitely or infinitely often.</li>
 </ul>
@@ -191,8 +194,8 @@ acceptance-cond ::= IDENTIFIER &quot;(&quot; &quot;!&quot;? INT &quot;)&quot;
 <p>For instance</p>
 <pre><code>Acceptance: 2 Fin(!0) &amp; Inf(1)</code></pre>
 <p>declares two acceptance sets. A run of the automaton is accepting if it visits the complement of the first set finitely often, and if it visits the second set infinitely often. More examples will be given in a later section.</p>
-<p>An acceptance condition declaring <span class="math">\(m\)</span> sets needs not actually use all of these sets. In this case the unused sets can be ignored if they appear in the body of the automaton.</p>
-<h3 id="acc-name"><code>acc-name:</code></h3>
+<p>An acceptance condition declaring <span class="math inline">\(m\)</span> sets needs not actually use all of these sets. In this case the unused sets can be ignored if they appear in the body of the automaton.</p>
+<h3><code>acc-name:</code></h3>
 <pre><code>header-item ::= … | &quot;acc-name:&quot; IDENTIFIER (IDENTIFIER | INT)*</code></pre>
 <p>This optional header item gives a symbolic name to the acceptance conditions specified by the mandatory <code>Acceptance:</code> header item.</p>
 <p>The first <code>IDENTIFIER</code> is a name, and the remaining <code>IDENTIFIER</code>s and <code>INT</code>s are parameters. The following acceptance names are fully specified in a later section:</p>
@@ -209,7 +212,7 @@ acceptance-cond ::= IDENTIFIER &quot;(&quot; &quot;!&quot;? INT &quot;)&quot;
 <li><code>none</code></li>
 </ul>
 <p>Additional (unspecified) acceptance names may be used when needed.</p>
-<h3 id="tool-and-name"><code>tool:</code> and <code>name:</code></h3>
+<h3><code>tool:</code> and <code>name:</code></h3>
 <pre><code>header-item ::= …
              | &quot;tool:&quot; STRING STRING?
              | &quot;name:&quot; STRING</code></pre>
@@ -217,7 +220,7 @@ acceptance-cond ::= IDENTIFIER &quot;(&quot; &quot;!&quot;? INT &quot;)&quot;
 <p>For instance:</p>
 <pre><code>tool: &quot;ltl-translate&quot; &quot;1.2-alpha&quot;
 name: &quot;BA for GFa &amp; GFb&quot;</code></pre>
-<h3 id="properties"><code>properties:</code></h3>
+<h3><code>properties:</code></h3>
 <pre><code>header-item ::= … | &quot;properties:&quot; IDENTIFIER*</code></pre>
 <p>The optional <code>properties:</code> header name can be followed by a list of identifiers that gives additional information about the automaton. Multiple <code>properties:</code> lines can be used, it has the same effect as listing all properties on one line. This information should be redundant in the sense that ignoring them should not impact the behavior of the automaton. For instance stating that an automaton is deterministic with</p>
 <pre><code>properties: deterministic</code></pre>
@@ -240,52 +243,52 @@ name: &quot;BA for GFa &amp; GFb&quot;</code></pre>
 <li><code>very-weak</code> hints that the automaton is weak and every SCC has exactly one state</li>
 <li><code>inherently-weak</code> hints that the automaton does not mix accepting cycles and non-accepting cycles in the same SCC</li>
 <li><code>terminal</code> hints that the automaton is weak, that no non-accepting cycle can be reached from any accepting cycle, and that each SCC containing an accepting cycle is complete, i.e., the transition function is definied for each state of the SCC and each letter</li>
-<li><code>tight</code> hints that the automaton is <a href="http://dx.doi.org/10.1007/978-3-540-31980-1_32">tight</a>, i.e. for every word <span class="math">\(w=a_0a_1\ldots\)</span> accepted by the automaton there exists an accepting run over <span class="math">\(w\)</span> such that whenever two suffixes <span class="math">\(w_i=a_ia_{i+1}\ldots\)</span> and <span class="math">\(w_j=a_ja_{j+1}\ldots\)</span> of <span class="math">\(w\)</span> are identical, the run reaches identical states (or sets of the states in the case of alternating automaton) by reading the corresponding prefixes <span class="math">\(a_0\ldots a_{i-1}\)</span> and <span class="math">\(a_0\ldots a_{j-1}\)</span></li>
+<li><code>tight</code> hints that the automaton is <a href="http://dx.doi.org/10.1007/978-3-540-31980-1_32">tight</a>, i.e. for every word <span class="math inline">\(w=a_0a_1\ldots\)</span> accepted by the automaton there exists an accepting run over <span class="math inline">\(w\)</span> such that whenever two suffixes <span class="math inline">\(w_i=a_ia_{i+1}\ldots\)</span> and <span class="math inline">\(w_j=a_ja_{j+1}\ldots\)</span> of <span class="math inline">\(w\)</span> are identical, the run reaches identical states (or sets of the states in the case of alternating automaton) by reading the corresponding prefixes <span class="math inline">\(a_0\ldots a_{i-1}\)</span> and <span class="math inline">\(a_0\ldots a_{j-1}\)</span></li>
 <li><code>colored</code> hints that each transition (or each state, for state-based acceptance) of the automaton belongs to exactly one acceptance set; this is typically the case in parity automata</li>
 </ul>
 <p>Note that even if some property implies another one (for instance <code>explicit-labels</code> implies <code>trans-labels</code>) it is recommended to specify both.</p>
-<h2 id="canonical-acceptance-specifications-for-classical-conditions">Canonical acceptance specifications for classical conditions</h2>
+<h2>Canonical acceptance specifications for classical conditions</h2>
 <p>The <code>Acceptance:</code> line is what defines the acceptance semantics of the automaton and the <code>acc-name:</code> has only informative value. However, tools that do not want to implement a parser for the <code>Acceptance:</code> line may decide to only support input HOA file that carry an <code>acc-name:</code> they support. To avoid surprises, when the <code>acc-name:</code> line is used, the mandatory <code>Acceptance:</code> line should match exactly the canonical acceptance formulas given in the following examples.</p>
 <p>Note that the order of the terms in the canonical acceptance formulas matters even though the Boolean operators are commutative and associative (e.g., <code>acc-name: Rabin 1</code> corresponds to <code>Fin(0)&amp;Inf(1)</code> but not <code>Inf(1)&amp;Fin(0)</code>). This restriction makes it easier to detect potential mismatches between <code>acc-name:</code> and <code>Acceptance:</code>.</p>
 <p>Some of the examples below use <code>Acceptance:</code> specifications for which there are no <code>acc-name:</code> defined.</p>
-<h3 id="buchi-or-co-buchi">Büchi or co-Büchi</h3>
+<h3>Büchi or co-Büchi</h3>
 <p>Those acceptance conditions are specified with</p>
 <pre><code>acc-name: Buchi
 Acceptance: 1 Inf(0)</code></pre>
 <p>or</p>
 <pre><code>acc-name: co-Buchi
 Acceptance: 1 Fin(0)</code></pre>
-<h3 id="generalized-buchi-or-generalized-co-buchi">Generalized Büchi or generalized co-Büchi</h3>
+<h3>Generalized Büchi or generalized co-Büchi</h3>
 <p>A generalized Büchi automaton with three acceptance sets can be defined with:</p>
 <pre><code>acc-name: generalized-Buchi 3
 Acceptance: 3 Inf(0)&amp;Inf(1)&amp;Inf(2)</code></pre>
 <p>A deterministic automaton with such an acceptance condition could be complemented without changing its transition structure by simply complementing the acceptance, giving a generalized co-Büchi automaton:</p>
 <pre><code>acc-name: generalized-co-Buchi 3
 Acceptance: 3 Fin(0)|Fin(1)|Fin(2)</code></pre>
-<h3 id="streett-acceptance">Streett acceptance</h3>
-<p>Pairs of acceptance sets <span class="math">\(\{(L_1,U_1),\ldots,(L_k,U_k)\}\)</span>. A run is accepting for a pair <span class="math">\((L_i,U_i)\)</span> iff the run visiting <span class="math">\(L_i\)</span> infinitely often implies that the run also visits <span class="math">\(U_i\)</span> infinitely often. A run is accepting iff it is accepting for all pairs. Assuming <span class="math">\(k=3\)</span> and numbering these 6 sets from left (<span class="math">\(L_1\)</span>) to right (<span class="math">\(U_3\)</span>), this corresponds to:</p>
+<h3>Streett acceptance</h3>
+<p>Pairs of acceptance sets <span class="math inline">\(\{(L_1,U_1),\ldots,(L_k,U_k)\}\)</span>. A run is accepting for a pair <span class="math inline">\((L_i,U_i)\)</span> iff the run visiting <span class="math inline">\(L_i\)</span> infinitely often implies that the run also visits <span class="math inline">\(U_i\)</span> infinitely often. A run is accepting iff it is accepting for all pairs. Assuming <span class="math inline">\(k=3\)</span> and numbering these 6 sets from left (<span class="math inline">\(L_1\)</span>) to right (<span class="math inline">\(U_3\)</span>), this corresponds to:</p>
 <pre><code>acc-name: Streett 3
 Acceptance: 6 (Fin(0)|Inf(1))&amp;(Fin(2)|Inf(3))&amp;(Fin(4)|Inf(5))</code></pre>
 <p>The parameter <code>3</code> in <code>acc-name: Streett 3</code> refers to the number of Streett pairs.</p>
-<h3 id="rabin-acceptance">Rabin acceptance</h3>
+<h3>Rabin acceptance</h3>
 <p>There are several equivalent presentations of Rabin acceptance, and working with tools that use different definitions is often a source of confusion. Our notations of the acceptance condition accommodate all styles, while giving clear and unambiguous semantics.</p>
-<p>J. Klein, in <a href="http://www.ltl2dstar.de/docs/ltl2dstar.html#dra_dsa"><code>ltl2dstar</code></a>, uses pairs <span class="math">\(\{(L_1,U_1),\ldots,(L_k,U_k)\}\)</span> where there should be some pair <span class="math">\((L_i,U_i)\)</span> such that states in <span class="math">\(L_i\)</span> are visited infinitely often, but states in <span class="math">\(U_i\)</span> are visited finitely often. This is simply the complement of the Streett acceptance above:</p>
+<p>J. Klein, in <a href="http://www.ltl2dstar.de/docs/ltl2dstar.html#dra_dsa"><code>ltl2dstar</code></a>, uses pairs <span class="math inline">\(\{(L_1,U_1),\ldots,(L_k,U_k)\}\)</span> where there should be some pair <span class="math inline">\((L_i,U_i)\)</span> such that states in <span class="math inline">\(L_i\)</span> are visited infinitely often, but states in <span class="math inline">\(U_i\)</span> are visited finitely often. This is simply the complement of the Streett acceptance above:</p>
 <pre><code>Acceptance: 6 (Inf(0)&amp;Fin(1))|(Inf(2)&amp;Fin(3))|(Inf(4)&amp;Fin(5))</code></pre>
-<p>C. Löding, in <a href="http://automata.rwth-aachen.de/~loeding/diploma_loeding.pdf">his diploma thesis</a>, uses pairs <span class="math">\(\{(E_1,F_1),\ldots,(E_k,F_k)\}\)</span> where <span class="math">\(E_i\)</span> should be visited finitely often, and <span class="math">\(F_i\)</span> should be visited infinitely often. This is just a reordering of the previous pairs:</p>
+<p>C. Löding, in <a href="http://automata.rwth-aachen.de/~loeding/diploma_loeding.pdf">his diploma thesis</a>, uses pairs <span class="math inline">\(\{(E_1,F_1),\ldots,(E_k,F_k)\}\)</span> where <span class="math inline">\(E_i\)</span> should be visited finitely often, and <span class="math inline">\(F_i\)</span> should be visited infinitely often. This is just a reordering of the previous pairs:</p>
 <pre><code>acc-name: Rabin 3
 Acceptance: 6 (Fin(0)&amp;Inf(1))|(Fin(2)&amp;Inf(3))|(Fin(4)&amp;Inf(5))</code></pre>
-<p>The parameter <code>3</code> in <code>acc-name: Rabin 3</code> refers to the number of Rabin pairs.<br />The reason this definition was choosen for <code>acc-name: Rabin</code> is that is seems to be the most commonly used.</p>
-<p>S. Krishnan, in <a href="http://dx.doi.org/10.1007/3-540-58325-4_202">his ISAAC'94 paper</a>, uses pairs <span class="math">\(\{(L_1,U_1),\ldots,(L_k,U_k)\}\)</span> such that the set of recurring states of a an accepting run should intersect <span class="math">\(L_i\)</span> and be included in <span class="math">\(U_i\)</span>, for some pair <span class="math">\((L_i,U_i)\)</span>. A similar definition is used by Manna and Pnueli in their &quot;Hierarchy of Temporal Properties&quot; paper. This corresponds to:</p>
+<p>The parameter <code>3</code> in <code>acc-name: Rabin 3</code> refers to the number of Rabin pairs. The reason this definition was choosen for <code>acc-name: Rabin</code> is that is seems to be the most commonly used.</p>
+<p>S. Krishnan, in <a href="http://dx.doi.org/10.1007/3-540-58325-4_202">his ISAAC'94 paper</a>, uses pairs <span class="math inline">\(\{(L_1,U_1),\ldots,(L_k,U_k)\}\)</span> such that the set of recurring states of a an accepting run should intersect <span class="math inline">\(L_i\)</span> and be included in <span class="math inline">\(U_i\)</span>, for some pair <span class="math inline">\((L_i,U_i)\)</span>. A similar definition is used by Manna and Pnueli in their &quot;Hierarchy of Temporal Properties&quot; paper. This corresponds to:</p>
 <pre><code>Acceptance: 6 (Inf(0)&amp;Fin(!1))|(Inf(2)&amp;Fin(!3))|(Inf(4)&amp;Fin(!5))</code></pre>
-<h3 id="generalized-rabin-acceptance">Generalized Rabin acceptance</h3>
-<p>Rabin acceptance has been generalized in works by <a href="http://arxiv.org/abs/1204.5057">Křetínský &amp; Esparza</a> or <a href="http://dx.doi.org/10.1007/978-3-319-02444-8_4">Babiak et al.</a>. They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like <span class="math">\(\{(E_1,\{F_{11},F_{12},F_{13}\}), (E_2,\{F_{21},F_{22}\})\}\)</span>, and where a run is accepting if there exists some i such that the run visits finitely often the set <span class="math">\(E_i\)</span> and infinitely often all the sets <span class="math">\(F_{ij}\)</span>. Such an acceptance condition can be specified with:</p>
+<h3>Generalized Rabin acceptance</h3>
+<p>Rabin acceptance has been generalized in works by <a href="http://arxiv.org/abs/1204.5057">Křetínský &amp; Esparza</a> or <a href="http://dx.doi.org/10.1007/978-3-319-02444-8_4">Babiak et al.</a>. They both translate LTL formulas into generalized Rabin automata in which the acceptance condition may look like <span class="math inline">\(\{(E_1,\{F_{11},F_{12},F_{13}\}), (E_2,\{F_{21},F_{22}\})\}\)</span>, and where a run is accepting if there exists some i such that the run visits finitely often the set <span class="math inline">\(E_i\)</span> and infinitely often all the sets <span class="math inline">\(F_{ij}\)</span>. Such an acceptance condition can be specified with:</p>
 <pre><code>acc-name: generalized-Rabin 2 3 2
 Acceptance: 7 (Fin(0)&amp;Inf(1)&amp;Inf(2)&amp;Inf(3))|(Fin(4)&amp;Inf(5)&amp;Inf(6))</code></pre>
-<p>The first parameter of <code>generalized-Rabin</code> gives the number of generalized pairs and the following parameters give the number of <span class="math">\(F_{ij}\)</span> sets in the corresponding pairs.</p>
-<h3 id="parity-automata">Parity automata</h3>
+<p>The first parameter of <code>generalized-Rabin</code> gives the number of generalized pairs and the following parameters give the number of <span class="math inline">\(F_{ij}\)</span> sets in the corresponding pairs.</p>
+<h3>Parity automata</h3>
 <p>For parity acceptance, <code>acc-name: parity</code> has three parameters to support combinations of <code>min</code>/<code>max</code> and <code>even</code>/<code>odd</code>, and to specify the range of acceptance sets used. In an automaton with <code>max odd</code> parity acceptance, for instance, a run is accepting if the maximum set number visited infinitely often along the run is odd.</p>
 <p>A typical parity automaton should have <code>property: colored</code>, ensuring that each transition (or state) belongs to exactly one acceptance set. In this context the maximum or minimum set number seen infinitely often along a run always exists.</p>
-<p>The canonical encodings for parity acceptance have been chosen so they behave nicely even in automata where <code>property: colored</code> does not hold, i.e., where some transitions (or states) may belong to multiple acceptance sets or none. In particular if <span class="math">\(F\)</span> is the set of numbers of the acceptance sets visited infinitely often by a run of an automaton with <span class="math">\(n\)</span> acceptance sets, we assume that <span class="math">\(\min(\emptyset)=n\)</span> and <span class="math">\(\max(\emptyset)=-1\)</span> for the purpose of deciding the parity of <span class="math">\(\min(F)\)</span> or <span class="math">\(\max(F)\)</span>.</p>
+<p>The canonical encodings for parity acceptance have been chosen so they behave nicely even in automata where <code>property: colored</code> does not hold, i.e., where some transitions (or states) may belong to multiple acceptance sets or none. In particular if <span class="math inline">\(F\)</span> is the set of numbers of the acceptance sets visited infinitely often by a run of an automaton with <span class="math inline">\(n\)</span> acceptance sets, we assume that <span class="math inline">\(\min(\emptyset)=n\)</span> and <span class="math inline">\(\max(\emptyset)=-1\)</span> for the purpose of deciding the parity of <span class="math inline">\(\min(F)\)</span> or <span class="math inline">\(\max(F)\)</span>.</p>
 <p>Here are the first instances of the <code>min odd</code> condition for different numbers of sets:</p>
 <pre><code>acc-name: parity min odd 0
 Acceptance: 0 f
@@ -359,7 +362,7 @@ Acceptance: 4 Fin(3) &amp; (Inf(2) | (Fin(1) &amp; Inf(0)))
 acc-name: parity max even 5
 Acceptance: 5 Inf(4) | (Fin(3) &amp; (Inf(2) | (Fin(1) &amp; Inf(0))))</code></pre>
 <p>Note that in all those acceptance specifications, <code>Inf</code> is always followed by <code>|</code>, <code>Fin</code> is always followed by <code>&amp;</code>, and both are alternating.</p>
-<h3 id="trivial-acceptance-conditions-all-and-none">Trivial acceptance conditions: <code>all</code> and <code>none</code></h3>
+<h3>Trivial acceptance conditions: <code>all</code> and <code>none</code></h3>
 <p>When <code>generalized-Büchi</code> or <code>Streett</code> are used with <code>0</code> acceptance sets, they degenerate to conditions that accept all recognized words:</p>
 <pre><code>acc-name: generalized-Buchi 0
 Acceptance: 0 t</code></pre>
@@ -393,7 +396,7 @@ Acceptance: 0 f
 
 acc-name: none
 Acceptance: 0 f</code></pre>
-<h2 id="other-acceptance-conditions">Other acceptance conditions</h2>
+<h2>Other acceptance conditions</h2>
 <p>The HOA format is not restricted to the above classical acceptance conditions. Below are some examples of acceptance conditions for which we define no name for use in <code>acc-name:</code>. Tools should however feel free to introduce new names, should they need them.</p>
 <p>A promise automaton generated by the tableau construction of <a href="http://spot.lip6.fr/userdoc/ltl2tgba.html"><code>ltl2tgba</code></a> could be output with:</p>
 <pre><code>Acceptance: 3 Inf(!0) &amp; Inf(!1) &amp; Inf(!2)</code></pre>
@@ -406,7 +409,7 @@ Acceptance: 0 f</code></pre>
 <p>Similarly, translating the LTL formulas <code>GF(a) xor GF(b)</code> could easily be done using an automaton with the following acceptance:</p>
 <pre><code>Acceptance: 2 (Fin(0)&amp;Inf(1))|(Inf(0)&amp;Fin(1))</code></pre>
 <p>Tool authors implementing support for generic acceptance conditions are encouraged to verify that they correctly deal with such cases, in which the same acceptance sets are used both in <code>Fin</code> and <code>Inf</code> primitives.</p>
-<h2 id="body-of-the-automaton">Body of the Automaton</h2>
+<h2>Body of the Automaton</h2>
 <p>The header is separated from the rest of the structure with <code>--BODY--</code>.</p>
 <p>States are specified with the following grammar:</p>
 <pre><code>body             ::= (state-name edge*)*
@@ -416,15 +419,15 @@ state-name       ::= &quot;State:&quot; label? INT STRING? acc-sig?
 acc-sig          ::= &quot;{&quot; INT* &quot;}&quot;
 edge             ::= label? state-conj acc-sig?
 label            ::= &quot;[&quot; label-expr &quot;]&quot;</code></pre>
-<p>The <code>INT</code> occurring in the <code>state-name</code> rule is the number of this state. States should be numbered from <span class="math">\(0\)</span> to <span class="math">\(n-1\)</span>, where <span class="math">\(n\)</span> is the value given by the <code>States:</code> header item if it is present. If the <code>States:</code> header item is missing, <span class="math">\(n-1\)</span> should be assumed to be the highest state number listed either in the automaton body (either when defining a state, or when used as a destination of a transition) or as some initial state.</p>
+<p>The <code>INT</code> occurring in the <code>state-name</code> rule is the number of this state. States should be numbered from <span class="math inline">\(0\)</span> to <span class="math inline">\(n-1\)</span>, where <span class="math inline">\(n\)</span> is the value given by the <code>States:</code> header item if it is present. If the <code>States:</code> header item is missing, <span class="math inline">\(n-1\)</span> should be assumed to be the highest state number listed either in the automaton body (either when defining a state, or when used as a destination of a transition) or as some initial state.</p>
 <p>States may be listed in any order, but should all be listed (i.e., if the header has <code>States: 10</code> then the body should have ten <code>State: INT</code> statements, with all numbers from 0 to 9). In addition to a number, a state may optionally be given a name (the <code>STRING</code> token) for cosmetic or practical purposes.</p>
 <p>The <code>INT*</code> used in <code>acc-sig</code> represent the acceptance sets the state or edge belongs to. Since we use transition-based acceptance, when <code>acc-sig</code> is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to this set. For instance <code>State: 0 {1 3}</code> would states that all transitions leaving state 0 are in acceptance sets 1 and 3.</p>
 <p>The <code>state-conj</code> encodes the destination of an edge as a conjunction of state numbers. Non-alternating automata always use a single state number as destination. These conjunctions makes it possible to encode the universal branching of alternating automata, while disjunction is simply encoded as multiple transitions.</p>
 <p>If a state has a <code>label</code>, no outgoing edge of this state should have a <code>label</code>: this should be used to represent state-labeled automata. In our semantics, we have to view this as syntactic sugar for all outgoing transitions being labeled by this very same <code>label</code>.</p>
 <p>If an edge has a <code>label</code>, all edges of this state should have a <code>label</code>.</p>
-<p>If one state has no <code>label</code>, and no labeled edges, then there should be exactly <span class="math">\(2^a\)</span> edges listed, where <span class="math">\(a\)</span> is the number of atomic propositions. In this case, each edge corresponds to a transition, with the same order as in <code>ltl2dstar</code>. If a transition <span class="math">\(t\)</span> is the <span class="math">\(i\)</span>-th transition of a state (starting with 0), then the label of <span class="math">\(t\)</span> can be deduced by interpreting <span class="math">\(i\)</span> as a bitset. The label is a set of atomic propositions such that the atomic proposition <span class="math">\(j\)</span> is in the set if the <span class="math">\(j\)</span>-th least significant bit of <span class="math">\(i\)</span> is set to 1.</p>
-<h2 id="examples">Examples</h2>
-<h3 id="transition-based-rabin-acceptance-and-explicit-labels">Transition-based Rabin acceptance and explicit labels</h3>
+<p>If one state has no <code>label</code>, and no labeled edges, then there should be exactly <span class="math inline">\(2^a\)</span> edges listed, where <span class="math inline">\(a\)</span> is the number of atomic propositions. In this case, each edge corresponds to a transition, with the same order as in <code>ltl2dstar</code>. If a transition <span class="math inline">\(t\)</span> is the <span class="math inline">\(i\)</span>-th transition of a state (starting with 0), then the label of <span class="math inline">\(t\)</span> can be deduced by interpreting <span class="math inline">\(i\)</span> as a bitset. The label is a set of atomic propositions such that the atomic proposition <span class="math inline">\(j\)</span> is in the set if the <span class="math inline">\(j\)</span>-th least significant bit of <span class="math inline">\(i\)</span> is set to 1.</p>
+<h2>Examples</h2>
+<h3>Transition-based Rabin acceptance and explicit labels</h3>
 <p><img src="figures/aut1.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
 States: 2
@@ -439,7 +442,7 @@ State: 0 &quot;a U b&quot;   /* An example of named state */
 State: 1
   [t] 1 {1}
 --END--</code></pre>
-<h3 id="state-based-rabin-acceptance-and-implicit-labels">State-based Rabin acceptance and implicit labels</h3>
+<h3>State-based Rabin acceptance and implicit labels</h3>
 <p>Because of implicit labels, the automaton necessarily has to be deterministic and complete.</p>
 <p><img src="figures/aut2.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
@@ -459,7 +462,7 @@ State: 1 { 1 }
 State: 2 &quot;sink state&quot; { 0 }
   2 2 2 2
 --END--</code></pre>
-<h3 id="tgba-with-implicit-labels">TGBA with implicit labels</h3>
+<h3>TGBA with implicit labels</h3>
 <p><img src="figures/aut3.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
 name: &quot;GFa &amp; GFb&quot;
@@ -475,7 +478,7 @@ State: 0
   0 {1}   /* !a  &amp;  b */
   0 {0 1} /*  a  &amp;  b */
 --END--</code></pre>
-<h3 id="tgba-with-explicit-labels">TGBA with explicit labels</h3>
+<h3>TGBA with explicit labels</h3>
 <p><img src="figures/aut3.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
 name: &quot;GFa &amp; GFb&quot;
@@ -491,7 +494,7 @@ State: 0
 [!0 &amp; 1]  0 {1}
 [0 &amp; 1]   0 {0 1}
 --END--</code></pre>
-<h3 id="tgba-with-explicit-labels-using-aliases">TGBA with explicit labels using aliases</h3>
+<h3>TGBA with explicit labels using aliases</h3>
 <p>The following demonstrates the use of aliases to make the output slightly more readable (using <code>@a</code> instead of <code>0</code>), and to abbreviate commonly used subformulas (<code>@bc</code> instead of <code>1 &amp; 2</code>).</p>
 <p><img src="figures/aut4.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
@@ -510,7 +513,7 @@ State: 0
 [!@a &amp; @bc]  0 {1}
 [@a &amp; @bc]   0 {0 1}
 --END--</code></pre>
-<h3 id="non-deterministic-state-based-buchi-automaton-a-la-wring">Non-deterministic State-based Büchi automaton (à la Wring)</h3>
+<h3>Non-deterministic State-based Büchi automaton (à la Wring)</h3>
 <p>Encoding <code>GFa</code> using state labels requires multiple initial states.</p>
 <p><img src="figures/aut5.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
@@ -547,7 +550,7 @@ State: 2  /* former state 1 */
  [0] 1
  [!0] 2
 --END--</code></pre>
-<h3 id="mixing-state-based-and-transition-based-acceptance">Mixing state-based and transition-based acceptance</h3>
+<h3>Mixing state-based and transition-based acceptance</h3>
 <p>Here is a Büchi automaton for <code>GFa | G(b &lt;-&gt; Xa)</code>.</p>
 <p><img src="figures/aut7.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
@@ -572,7 +575,7 @@ State: 3 &quot;!a &amp; G(b &lt;-&gt; Xa)&quot; {0}
  [!0&amp;1] 2
  [!0&amp;!1] 3
 --END--</code></pre>
-<p>In this automaton, marking states 2 and 3 as belonging to set 0<br />is equivalent to marking all their outgoing transitions as such:</p>
+<p>In this automaton, marking states 2 and 3 as belonging to set 0 is equivalent to marking all their outgoing transitions as such:</p>
 <p><img src="figures/aut8.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
 name: &quot;GFa | G(b &lt;-&gt; Xa)&quot;
@@ -606,7 +609,7 @@ State: 3 &quot;!a &amp; G(b &lt;-&gt; Xa)&quot;
 <pre><code>State: 1
  [0] 2 {1}
  [!0] 3 {0 1}</code></pre>
-<h3 id="alternating-automata">Alternating automata</h3>
+<h3>Alternating automata</h3>
 <p>Here is an example of alternating transition-based co-Büchi automaton encoding <code>(Fa &amp; G(b&amp;Xc)) | c</code>, it shows an example of multiple initial states (including a conjunct), and an example of conjunct destination.</p>
 <p><img src="figures/aut11.svg" alt="automaton" /></p>
 <pre><code>HOA: v1
@@ -628,50 +631,50 @@ State: 2 &quot;G(b&amp;Xc)&quot;
 State: 3 &quot;c&quot;
 [2] 1
 --END--</code></pre>
-<h2 id="formal-semantics-of-omega-automata">Formal Semantics of Omega-Automata</h2>
-<p>The following definition specifies alternating automata with transition-based acceptance. Because of universal branching, the initial states and destination states of transitions are non-empty sets of states (i.e., elements of <span class="math">\(2^Q\setminus\{\emptyset\}\)</span>) interpreted as conjunctions. Automata without universal branching use just elements of Q as initial or destination states.</p>
-<p>Each omega-automaton described in this format can be seen as an automaton <span class="math">\(\langle\AP,Q,m,R,I,\mathit{Acc}\rangle\)</span> with labels on transitions and transition-based acceptance, where:</p>
+<h2>Formal Semantics of Omega-Automata</h2>
+<p>The following definition specifies alternating automata with transition-based acceptance. Because of universal branching, the initial states and destination states of transitions are non-empty sets of states (i.e., elements of <span class="math inline">\(2^Q\setminus\{\emptyset\}\)</span>) interpreted as conjunctions. Automata without universal branching use just elements of Q as initial or destination states.</p>
+<p>Each omega-automaton described in this format can be seen as an automaton <span class="math inline">\(\langle\AP,Q,m,R,I,\mathit{Acc}\rangle\)</span> with labels on transitions and transition-based acceptance, where:</p>
 <ul>
-<li><span class="math">\(\AP\)</span> is a finite set of atomic propositions. We use <span class="math">\(\B(\AP)\)</span> to denote the set of Boolean formulas over <span class="math">\(\AP\)</span>.</li>
-<li><span class="math">\(Q\)</span> is a finite set of states.</li>
-<li><span class="math">\(m\)</span> is the number of acceptance sets.</li>
-<li><span class="math">\(R\subseteq Q\times\B(\AP)\times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation. A quadruplet <span class="math">\((s,\ell,M,D)\in R\)</span> represents a transition from <span class="math">\(s\)</span> to the conjunction of states in <span class="math">\(D\)</span>, labeled by a Boolean formula <span class="math">\(\ell\in\B(\AP)\)</span>, and belonging to the acceptance sets listed in <span class="math">\(M\subseteq \{0,1,\ldots,m-1\}\)</span>, where <span class="math">\(m\)</span> is the declared number of acceptance sets. Let <span class="math">\(s(t)\)</span>, <span class="math">\(\ell(t)\)</span>, <span class="math">\(M(t)\)</span>, and <span class="math">\(D(t)\)</span> denote the corresponding components of a transition <span class="math">\(t\)</span>.</li>
-<li><span class="math">\(I\subseteq(2^Q\setminus\{\emptyset\})\)</span> is a set of initial conjunctions of states.</li>
-<li><span class="math">\(\mathit{Acc}\)</span> is a Boolean formula over <span class="math">\(\{\Fin(i),\Fin(\lnot i),\Inf(i),\Inf(\lnot i)\mid i\in \{0,1,\ldots,m-1\}\}\)</span>.</li>
+<li><span class="math inline">\(\AP\)</span> is a finite set of atomic propositions. We use <span class="math inline">\(\B(\AP)\)</span> to denote the set of Boolean formulas over <span class="math inline">\(\AP\)</span>.</li>
+<li><span class="math inline">\(Q\)</span> is a finite set of states.</li>
+<li><span class="math inline">\(m\)</span> is the number of acceptance sets.</li>
+<li><span class="math inline">\(R\subseteq Q\times\B(\AP)\times 2^{\{0,1,\ldots,m-1\}}\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation. A quadruplet <span class="math inline">\((s,\ell,M,D)\in R\)</span> represents a transition from <span class="math inline">\(s\)</span> to the conjunction of states in <span class="math inline">\(D\)</span>, labeled by a Boolean formula <span class="math inline">\(\ell\in\B(\AP)\)</span>, and belonging to the acceptance sets listed in <span class="math inline">\(M\subseteq \{0,1,\ldots,m-1\}\)</span>, where <span class="math inline">\(m\)</span> is the declared number of acceptance sets. Let <span class="math inline">\(s(t)\)</span>, <span class="math inline">\(\ell(t)\)</span>, <span class="math inline">\(M(t)\)</span>, and <span class="math inline">\(D(t)\)</span> denote the corresponding components of a transition <span class="math inline">\(t\)</span>.</li>
+<li><span class="math inline">\(I\subseteq(2^Q\setminus\{\emptyset\})\)</span> is a set of initial conjunctions of states.</li>
+<li><span class="math inline">\(\mathit{Acc}\)</span> is a Boolean formula over <span class="math inline">\(\{\Fin(i),\Fin(\lnot i),\Inf(i),\Inf(\lnot i)\mid i\in \{0,1,\ldots,m-1\}\}\)</span>.</li>
 </ul>
-<p>The indices of the acceptance sets appearing in the transitions induce a list of acceptance sets <span class="math">\(F=(S_0, ..., S_{m-1})\)</span> where <span class="math">\(S_i \subseteq R\)</span> contains those <strong>transitions</strong> <span class="math">\(t\)</span> with <span class="math">\(i \in M(t)\)</span>, i.e., <span class="math">\(S_i = \{ t\in R \mid i\in M(t) \}\)</span>.</p>
-<p>The automaton is interpreted over infinite words, where letters are subsets of <span class="math">\(\AP\)</span>. A <strong>run</strong> over a word <span class="math">\(w=a_0 a_1\ldots\)</span> is an infinite labeled directed acyclic graph <span class="math">\((V,E,\lambda)\)</span> such that:</p>
+<p>The indices of the acceptance sets appearing in the transitions induce a list of acceptance sets <span class="math inline">\(F=(S_0, ..., S_{m-1})\)</span> where <span class="math inline">\(S_i \subseteq R\)</span> contains those <strong>transitions</strong> <span class="math inline">\(t\)</span> with <span class="math inline">\(i \in M(t)\)</span>, i.e., <span class="math inline">\(S_i = \{ t\in R \mid i\in M(t) \}\)</span>.</p>
+<p>The automaton is interpreted over infinite words, where letters are subsets of <span class="math inline">\(\AP\)</span>. A <strong>run</strong> over a word <span class="math inline">\(w=a_0 a_1\ldots\)</span> is an infinite labeled directed acyclic graph <span class="math inline">\((V,E,\lambda)\)</span> such that:</p>
 <ul>
-<li><span class="math">\(V\)</span> is partitioned into <span class="math">\(V_0\cup V_₁\cup V_2\ldots\)</span> where the sets <span class="math">\(V_i\)</span> are disjoint,</li>
-<li>for each edge <span class="math">\(e\in E\)</span> there exists <span class="math">\(i\ge 0\)</span> such that <span class="math">\(e\in V_i\times V_{i+1}\)</span>,</li>
-<li><span class="math">\(\lambda:V\to R\)</span> is a labeling function such that <span class="math">\(\{s(\lambda(x))\mid x\in V_0\}\in I\)</span> and, for each <span class="math">\(x\in V_i\)</span>, <span class="math">\(\ell_i(\lambda(x))\)</span> evaluates to True in the valuation assigning True to atomic propositions in <span class="math">\(a_i\)</span> and False to all other atomic propositions, and successors of <span class="math">\(x\)</span> correspond to the target conjunction of states of the transition <span class="math">\(\lambda(x)\)</span>, i.e., <span class="math">\(D(\lambda(x))=\{s(\lambda(y))\mid (x,y)\in E\}\)</span>. We say that the transition <span class="math">\(\lambda(x)\)</span> is <strong>applied to</strong> <span class="math">\(x\)</span>.</li>
+<li><span class="math inline">\(V\)</span> is partitioned into <span class="math inline">\(V_0\cup V_1\cup V_2\ldots\)</span> where the sets <span class="math inline">\(V_i\)</span> are disjoint,</li>
+<li>for each edge <span class="math inline">\(e\in E\)</span> there exists <span class="math inline">\(i\ge 0\)</span> such that <span class="math inline">\(e\in V_i\times V_{i+1}\)</span>,</li>
+<li><span class="math inline">\(\lambda:V\to R\)</span> is a labeling function such that <span class="math inline">\(\{s(\lambda(x))\mid x\in V_0\}\in I\)</span> and, for each <span class="math inline">\(x\in V_i\)</span>, <span class="math inline">\(\ell_i(\lambda(x))\)</span> evaluates to True in the valuation assigning True to atomic propositions in <span class="math inline">\(a_i\)</span> and False to all other atomic propositions, and successors of <span class="math inline">\(x\)</span> correspond to the target conjunction of states of the transition <span class="math inline">\(\lambda(x)\)</span>, i.e., <span class="math inline">\(D(\lambda(x))=\{s(\lambda(y))\mid (x,y)\in E\}\)</span>. We say that the transition <span class="math inline">\(\lambda(x)\)</span> is <strong>applied to</strong> <span class="math inline">\(x\)</span>.</li>
 </ul>
 <p>Runs of automata without universal branching are simply infinite linear sequences of nodes.</p>
-<p>A run is <strong>accepting</strong> if each branch of the run (i.e., each infinite oriented path starting in <span class="math">\(V_0\)</span>) satisfies the acceptance condition <span class="math">\(\mathit{Acc}\)</span>, where a branch satisfies</p>
+<p>A run is <strong>accepting</strong> if each branch of the run (i.e., each infinite oriented path starting in <span class="math inline">\(V_0\)</span>) satisfies the acceptance condition <span class="math inline">\(\mathit{Acc}\)</span>, where a branch satisfies</p>
 <ul>
-<li><span class="math">\(\Fin(i)\)</span> if all transitions in <span class="math">\(S_i\)</span> are applied only to finitely many nodes on the branch.</li>
-<li><span class="math">\(\Fin(\lnot i)\)</span> if all transitions outside <span class="math">\(S_i\)</span> are applied only to finitely many nodes on the branch.</li>
-<li><span class="math">\(\Inf(i)\)</span> if some transition in <span class="math">\(S_i\)</span> is applied to infinitely many nodes on the branch.</li>
-<li><span class="math">\(\Inf(\lnot i)\)</span> if some transition outside <span class="math">\(S_i\)</span> is applied to infinitely many nodes on the branch.</li>
+<li><span class="math inline">\(\Fin(i)\)</span> if all transitions in <span class="math inline">\(S_i\)</span> are applied only to finitely many nodes on the branch.</li>
+<li><span class="math inline">\(\Fin(\lnot i)\)</span> if all transitions outside <span class="math inline">\(S_i\)</span> are applied only to finitely many nodes on the branch.</li>
+<li><span class="math inline">\(\Inf(i)\)</span> if some transition in <span class="math inline">\(S_i\)</span> is applied to infinitely many nodes on the branch.</li>
+<li><span class="math inline">\(\Inf(\lnot i)\)</span> if some transition outside <span class="math inline">\(S_i\)</span> is applied to infinitely many nodes on the branch.</li>
 </ul>
 <p>The automaton recognizes the language of all words for which there exists an accepting run of the automaton.</p>
 <p>As mentioned above, the format also supports labels on states. This is formally seen as an abbreviation for the situation where all transitions leaving the state have this label. The format even admits automata combining states with labels, unlabeled states with labels on all outgoing transitions, and unlabeled states with implicitly labeled transitions.</p>
 <p>The format supports both state-based and transition-based acceptance sets. In our transition-based semantics, as illustrated by our previous examples, marking a state as belonging to some acceptance set with (for instance) <code>State: 0 {1 3}</code> is syntactic sugar for marking all the outgoing transitions of state 0 as belonging to acceptance sets 1 and 3. This is especially important if one combines states and transitions in an acceptance set and use negation of this acceptance sets in the acceptance condition.</p>
-<h2 id="semantics-for-pure-state-based-acceptance">Semantics for Pure State-Based Acceptance</h2>
+<h2>Semantics for Pure State-Based Acceptance</h2>
 <p>In tools that manipulate only state-based acceptance, acceptance will only be used for states, and therefore the transition-based semantics are inconvenient. For these tools, one can consider the following semantics.</p>
-<p>The omega-automata are represented by a tuple <span class="math">\(\langle\AP,Q,R,I,F,\mathit{Acc}\rangle\)</span>, where:</p>
+<p>The omega-automata are represented by a tuple <span class="math inline">\(\langle\AP,Q,R,I,F,\mathit{Acc}\rangle\)</span>, where:</p>
 <ul>
-<li><span class="math">\(\AP\)</span> is a finite set of atomic propositions.</li>
-<li><span class="math">\(Q\)</span> is a finite set of states.</li>
-<li><span class="math">\(R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation,</li>
-<li><span class="math">\(I\subseteq(2^Q\setminus\{\emptyset\})\)</span> is a set of initial conjunctions of states,</li>
-<li><span class="math">\(F=\{S_0,S_1,\ldots,S_{m-1}\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math">\(S_i\subseteq Q\)</span> is a subset of <strong>states</strong>.</li>
-<li><span class="math">\(\mathit{Acc}\)</span> is an acceptance condition.</li>
+<li><span class="math inline">\(\AP\)</span> is a finite set of atomic propositions.</li>
+<li><span class="math inline">\(Q\)</span> is a finite set of states.</li>
+<li><span class="math inline">\(R\subseteq Q\times\B(\AP)\times(2^Q\setminus\{\emptyset\})\)</span> is a transition relation,</li>
+<li><span class="math inline">\(I\subseteq(2^Q\setminus\{\emptyset\})\)</span> is a set of initial conjunctions of states,</li>
+<li><span class="math inline">\(F=\{S_0,S_1,\ldots,S_{m-1}\}\)</span> is a finite set of acceptance sets. Each acceptance set <span class="math inline">\(S_i\subseteq Q\)</span> is a subset of <strong>states</strong>.</li>
+<li><span class="math inline">\(\mathit{Acc}\)</span> is an acceptance condition.</li>
 </ul>
-<p>In contrast to the automaton with transition-based acceptance, the acceptance sets <span class="math">\(S_0, ..., S_{m-1}\)</span> appear directly in the definition, with each <span class="math">\(S_i\)</span> being a subset of states. The acceptance condition is still a formula defined over <span class="math">\(\Fin(i)\)</span>, <span class="math">\(\Fin(\lnot i)\)</span>, <span class="math">\(\Inf(i)\)</span>, or <span class="math">\(\Inf(\lnot i)\)</span>, but this time each <span class="math">\(i\)</span> refers to the set <span class="math">\(S_i\)</span> of <strong>states</strong> that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation <span class="math">\(\lnot\)</span> should be done with respect to <span class="math">\(Q\)</span> instead of <span class="math">\(R\)</span>.</p>
+<p>In contrast to the automaton with transition-based acceptance, the acceptance sets <span class="math inline">\(S_0, ..., S_{m-1}\)</span> appear directly in the definition, with each <span class="math inline">\(S_i\)</span> being a subset of states. The acceptance condition is still a formula defined over <span class="math inline">\(\Fin(i)\)</span>, <span class="math inline">\(\Fin(\lnot i)\)</span>, <span class="math inline">\(\Inf(i)\)</span>, or <span class="math inline">\(\Inf(\lnot i)\)</span>, but this time each <span class="math inline">\(i\)</span> refers to the set <span class="math inline">\(S_i\)</span> of <strong>states</strong> that must occur infinitely or finitely often on each branch of an accepting run, and the complement operation <span class="math inline">\(\lnot\)</span> should be done with respect to <span class="math inline">\(Q\)</span> instead of <span class="math inline">\(R\)</span>.</p>
 <p>An automaton with state-based acceptance can be trivially converted to transition-based acceptance by shifting the acceptance set membership from each state to its outgoing transitions, and the two semantics are compatible in the sense that the two automata would recognize the same language. If the automaton has no dead states (i.e., states without successor), the result of such transformation can easily be reversed.</p>
 <p>The two semantics disagree slightly on the handling of dead states. The state-based semantics allow dead states to appear in acceptance sets, while there is no way to do that with transition-based acceptance. This difference is inconsequential: a dead state is never going to contribute anything useful the recognized language.</p>
-<h2 id="authors">Authors</h2>
+<h2>Authors</h2>
 <p>This document has been put together by the following people:</p>
 <ul>
 <li>Alexandre Duret-Lutz</li>

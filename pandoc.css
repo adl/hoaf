@@ -36,6 +36,10 @@ td code {
     background-color: inherit;
 }
 
+h1.title {
+    display: none;
+}
+
 h1 a, h2 a, h3 a, h4 a, h5 a {
     text-decoration: none;
     color: inherit;

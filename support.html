@@ -6,44 +6,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="pandoc" />
   <link rel="icon" type="image/png" href="http://adl.github.com/hoaf/hoa-icon-small.png">
-  <title>HOA Format Tool Support - </title>
-  <link rel="stylesheet" href="pandoc.css" type="text/css" />
+  <title>HOA Format Tool Support</title>
+  <link rel="stylesheet" href="pandoc.css" />
 </head>
 <body>
+<div id="header">
+<h1 class="title">HOA Format Tool Support</h1>
+</div>
 <div id="TOC">
 <div id="TOCTXT">Table of Contents</div>
 <ul>
-<li><a href="#hoa-format-tool-support">HOA Format Tool Support</a><ul>
-<li><a href="#jhoafparser-and-cpphoafparser-libraries"><code>jhoafparser</code> and <code>cpphoafparser</code> libraries</a></li>
-<li><a href="#ltl2dstar"><code>ltl2dstar</code></a></li>
-<li><a href="#ltl3ba"><code>ltl3ba</code></a></li>
-<li><a href="#ltl3dra"><code>ltl3dra</code></a></li>
-<li><a href="#prism"><code>PRISM</code></a></li>
-<li><a href="#rabinizer"><code>Rabinizer</code></a></li>
-<li><a href="#spot"><code>Spot</code></a></li>
-<li><a href="#live-cd"><a name="live-cd">Live CD</a></a><ul>
-<li><a href="#running-in-a-virtual-machine">Running in a virtual machine</a></li>
-<li><a href="#using-the-live-cd">Using the Live CD</a></li>
+<li><a>HOA Format Tool Support</a><ul>
+<li><a><code>jhoafparser</code> and <code>cpphoafparser</code> libraries</a></li>
+<li><a><code>GOAL</code></a></li>
+<li><a><code>ltl2dstar</code></a></li>
+<li><a><code>ltl3ba</code></a></li>
+<li><a><code>ltl3dra</code></a></li>
+<li><a><code>ltl3tela</code></a></li>
+<li><a><code>Owl</code></a></li>
+<li><a><code>PRISM</code></a></li>
+<li><a><code>Rabinizer</code></a></li>
+<li><a><code>Seminator</code></a></li>
+<li><a><code>Spot</code></a></li>
+<li><a><a name="live-cd">Live CD</a> (from 2015)</a><ul>
+<li><a>Running in a virtual machine</a></li>
+<li><a>Using the Live CD</a></li>
 </ul></li>
 </ul></li>
 </ul>
 </div>
-<h1 id="hoa-format-tool-support">HOA Format Tool Support</h1>
+<h1>HOA Format Tool Support</h1>
 <p>The following tools implement support for the <a href="index.html">HOA format</a>, either as output or as input.</p>
-<p>For your convenience, we provide a <a href="#live-cd">live CD</a> to play around with the tools.</p>
-<h2 id="jhoafparser-and-cpphoafparser-libraries"><code>jhoafparser</code> and <code>cpphoafparser</code> libraries</h2>
+<p>In 2015, when the format was introduced, we built a <a href="#live-cd">live CD</a> to play around with the tools. It's probably better to install newer versions of the tools today. Several of those tools can also be used online using a terminal on <a href="http://spot-sandbox.lrde.epita.fr/">Spot's sandbox</a>.</p>
+<h2><code>jhoafparser</code> and <code>cpphoafparser</code> libraries</h2>
 <p><a href="http://automata.tools/hoa/jhoafparser/"><code>jhoafparser</code></a> and <a href="http://automata.tools/hoa/cpphoafparser/"><code>cpphoafparser</code></a> are Java/C++-based parser libraries for the HOA format. The parsers include an abstraction layer (<code>HOAConsumer</code>) allowing applications to react to the different parts of the format, as well as command-line tools that can be used for validation of HOA automata.</p>
 <p><code>jhoafparser</code> and <code>cpphoafparser</code> is distributed under the <a href="https://www.gnu.org/licenses/lgpl-2.1.html">GNU Lesser General Public License, version 2.1</a></p>
-<h2 id="ltl2dstar"><code>ltl2dstar</code></h2>
+<h2><code>GOAL</code></h2>
+<p>Since version 2015-10-18, <a href="http://goal.im.ntu.edu.tw/wiki/"><code>GOAL</code></a> offers a limited support for the HOA format for both reading and output automata. <code>GOAL</code> is a graphical interactive tool for defining and manipulating Büchi automata and temporal logic formulae. It also partially supports other variants of omega-automata and is sitable for educational purposes.</p>
+<p><code>GOAL</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>.</p>
+<h2><code>ltl2dstar</code></h2>
 <p>Since version 0.5.2, <a href="http://ltl2dstar.de/"><code>ltl2dstar</code></a> can convert LTL formulas into three kinds of automata that can be output in the HOA format:</p>
 <ul>
 <li>deterministic Rabin automata,</li>
 <li>deterministic Street automata,</li>
 <li>non-deterministic Büchi automata (after conversion from DRA or DSA).</li>
 </ul>
-<p>Since version 0.5.3, <a href="http://ltl2dstar.de/"><code>ltl2dstar</code></a> can also read non-deterministic Büchi<br />automata in HOA format, either from external LTL-to-Büchi translators or as the input automaton<br />for determinization.</p>
+<p>Since version 0.5.3, <a href="http://ltl2dstar.de/"><code>ltl2dstar</code></a> can also read non-deterministic Büchi automata in HOA format, either from external LTL-to-Büchi translators or as the input automaton for determinization.</p>
 <p><code>ltl2dstar</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
-<h2 id="ltl3ba"><code>ltl3ba</code></h2>
+<h2><code>ltl3ba</code></h2>
 <p>Since version 1.1.0, <a href="http://sourceforge.net/projects/ltl3ba/"><code>ltl3ba</code></a> can translate LTL formulas into three kinds of automata that can be output in the HOA format:</p>
 <ul>
 <li>Büchi automata,</li>
@@ -51,7 +61,7 @@
 <li>very weak co-Büchi alternating automata.</li>
 </ul>
 <p><code>ltl3ba</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
-<h2 id="ltl3dra"><code>ltl3dra</code></h2>
+<h2><code>ltl3dra</code></h2>
 <p>Since version 0.2, <a href="http://sourceforge.net/projects/ltl3dra/"><code>ltl3dra</code></a> can translate LTL formulas into three kinds of automata that can be output in the HOA format:</p>
 <ul>
 <li>deterministic Rabin automata,</li>
@@ -59,10 +69,16 @@
 <li>very weak co-Büchi alternating automata.</li>
 </ul>
 <p><code>ltl3dra</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
-<h2 id="prism"><code>PRISM</code></h2>
+<h2><code>ltl3tela</code></h2>
+<p><a href="https://github.com/jurajmajor/ltl3tela"><code>ltl3tela</code></a> translates LTL formulae into self-loop alternating and nondeterministic Emerson-Lei automata (automata with generic acceptance) and outputs them in HOA format.</p>
+<p><code>ltl3tela</code>'s source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>.</p>
+<h2><code>Owl</code></h2>
+<p><a href="https://owl.model.in.tum.de/">Owl</a> is a Java 10+ tool collection and library for ω-words, ω-automata and linear temporal logic. It can input HOA format relying on <code>jhoafparser</code> and output nondeterministic and deterministic automata with various acceptance conditions.</p>
+<p>Owl's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>.</p>
+<h2><code>PRISM</code></h2>
 <p><a href="http://www.prismmodelchecker.org/">PRISM</a> uses omega automata for probabilistic verification of LTL (and similar logics) against probabilistic models such as Markov chains and Markov processes. Since version 4.3, it includes support for plugging in external LTL-to-automaton generation tools using the HOA format. PRISM incorporates <code>jhoafparser</code> for the purposes of importing the generated automata and now supports verification of a variety of acceptance conditions: arbitrary generic acceptance conditions for Markov chains and Rabin or generalized Rabin conditions for Markov decision processes.</p>
 <p>PRISM's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License, version 2</a>.</p>
-<h2 id="rabinizer"><code>Rabinizer</code></h2>
+<h2><code>Rabinizer</code></h2>
 <p><a href="https://www7.in.tum.de/~kretinsk/rabinizer3.html">Rabinizer 3</a> can translate can translate LTL formulas into four kinds of automata that can be output in the HOA format:</p>
 <ul>
 <li>deterministic Rabin automata,</li>
@@ -71,19 +87,28 @@
 <li>deterministic transition-based generalized Rabin automata.</li>
 </ul>
 <p><em>The web page and source code of Rabinizer does not state any license.</em></p>
-<h2 id="spot"><code>Spot</code></h2>
-<p><a href="https://spot.lrde.epita.fr">Spot 1.99.1</a> has several tools that can output or input these automata, and that support the generic acceptance condition. In addition to <code>ltl2tgba</code> and <code>dstar2tgba</code> (that can output generalized Büchi automata in HOA), there are the following tools:</p>
+<p><a href="https://rabinizer.model.in.tum.de/">Rabinizer 4</a> is a part of the Owl library and on top of <code>Rabinizer 3</code> can output:</p>
+<ul>
+<li>deterministic parity automata,</li>
+<li>limit-deterministic generalized Büchi automata.</li>
+</ul>
+<h2><code>Seminator</code></h2>
+<p><a href="https://github.com/mklokocka/seminator">Seminator</a> converts nondeterministic transition-based generalized Büchi automata into semi-deterministic (limit-deterministic) Büchi automata. It relies on the Spot library to input and output automata in HOA format.</p>
+<p>Seminator's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>.</p>
+<h2><code>Spot</code></h2>
+<p><a href="https://spot.lrde.epita.fr">Spot 1.99.1</a> has several tools that can output or input these automata, and that support the generic acceptance condition for non-alternating. Since version 2.3 Spot supports also alternating automata. In addition to <code>ltl2tgba</code> and <code>dstar2tgba</code> (that can output generalized Büchi automata in HOA), there are the following tools:</p>
 <ul>
 <li><code>randaut</code>: generates random automata with any acceptance condition,</li>
 <li><code>autfilt</code>: reads automata (in the HOA format, the LBT's format or never claims), transform them, filter them, and output them (in the HOA format, the LBT's format, as never claims, or dot output for graphical display)</li>
 <li><code>ltlcross</code>: compares and checks LTL/PSL translators (can read HOA, LBT, never claims, or ltl2dstar's output)</li>
+<li><code>autcross</code>: compares and checks tools that process automata (can read HOA, LBT, never claims, or ltl2dstar's output)</li>
 <li><code>ltldo</code>: Wrap existing LTL to Büchi translator tools, providing them all the range of input and output Spot supports. For instance running <code>ltldo spin -f GFa -H</code> will use <a href="http://spinroot.com/">spin</a> to translate <code>[]&lt;&gt;a</code> and convert the result to the HOA format.</li>
 </ul>
-<p>In these tools, HOA support is currently <a href="https://spot.lrde.epita.fr/hoa.html">limited to non-alternating automata</a>. The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.</p>
+<p>See the <a href="https://spot.lrde.epita.fr/hoa.html">HOA format support</a> page to consult details of HOA support. The implemented C++ parser supports streaming of automata, where the input can mix the HOA format, the LBT format and never claims.</p>
 <p>Spot's source code is distributed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>.</p>
-<h2 id="live-cd"><a name="live-cd">Live CD</a></h2>
-<p>You can obtain an <a href="http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso">ISO image</a> (740MB, SHASUM: a23c47374b5a2ae7e31f9c9cb2d6908384c7cf29), containing a Debian Live CD with various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it.</p>
-<h3 id="running-in-a-virtual-machine">Running in a virtual machine</h3>
+<h2><a name="live-cd">Live CD</a> (from 2015)</h2>
+<p>You can obtain an <a href="http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/hoaf-live.iso">ISO image</a> (740MB, SHASUM: a23c47374b5a2ae7e31f9c9cb2d6908384c7cf29), containing a Debian Live CD with various tools preinstalled for your convenience. You can run it in a virtual machine or burn it on a DVD and boot from it. This is the artifact that accompanied our CAV'15 paper.</p>
+<h3>Running in a virtual machine</h3>
 <p>As virtual machine, we have tried <a href="http://wiki.qemu.org/Main_Page">QEMU</a> and <a href="http://www.virtualbox.org/">VirtualBox</a>.</p>
 <p>For VirtualBox, create a new virtual machine, attach the ISO image as a CD-drive and boot. For RAM, use at least 512MB, preferably 1GB.</p>
 <p>With KVM/QEMU on a Linux system, you can start the Live CD with</p>
@@ -91,7 +116,7 @@
 <p>or</p>
 <pre><code>qemu-system-i386 -cdrom hoaf-live.iso -boot d -m 1024 -net nic -net user</code></pre>
 <p>depending on your installation, providing the virtual machine with 1GB of RAM. If you omit the <code>-net</code> parameters, the VM will not have a network connection, but everything else should work fine. For the latter command, if your kernel supports KVM and you have enabled hardware virtualization support in the BIOS, you can use <code>--enable-kvm</code> to get much better performance.</p>
-<h3 id="using-the-live-cd">Using the Live CD</h3>
+<h3>Using the Live CD</h3>
 <p>After the initial boot, press Enter to boot the live system. When the boot process is completed, you can login to the graphical desktop, with username <code>hoaf</code> and password <code>hoaf</code>.</p>
 <p>On the desktop, you will find links to the HOA format specification, a terminal and a <a href="http://wwwtcs.inf.tu-dresden.de/ALGI/TR/hoaf-livecd/README">README file</a>, suggesting example command-lines to try.</p>
 <p>Note, that the keyboard layout is initially set to US. To change the keyboard layout to match the one on your computer, start the terminal and run</p>
