@@ -22,6 +22,7 @@ If you see any problem, please [report it on the issue tracker](https://github.c
 
 Change log:
 - 2019-03-27: Clarify that states may have no outgoing edges ([#70](https://github.com/adl/hoaf/issues/70))
+- 2019-03-27: Clarify that `acc-sig` can be specified for both states and edges ([#69](https://github.com/adl/hoaf/issues/69))
 - 2015-06-21: Improve definition of accepting sets in the semantics ([#48](https://github.com/adl/hoaf/issues/48))
 - 2015-05-26: Clarify notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases ([#46](https://github.com/adl/hoaf/issues/46))
 - 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
@@ -547,7 +548,7 @@ The `INT` occurring in the `state-name` rule is the number of this state.  State
 
 States may be listed in any order, but should all be listed (i.e., if the header has `States: 10` then the body should have ten `State: INT` statements, with all numbers from 0 to 9).   In addition to a number, a state may optionally be given a name (the `STRING` token) for cosmetic or practical purposes.
 
-The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.  Since we use transition-based acceptance, when `acc-sig` is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to this set.  For instance `State: 0 {1 3}` would states that all transitions leaving state 0 are in acceptance sets 1 and 3.
+The `INT*` used in `acc-sig` represent the acceptance sets the state or edge belongs to.  Since we use transition-based acceptance, when `acc-sig` is used on a state to declare membership to some acceptance sets, it is syntactic sugar for the membership of all the outgoing transitions to this set.  For instance `State: 0 {1 3}` would states that all transitions leaving state 0 are in acceptance sets 1 and 3 (this is in addition to any `acc-sig` that could be specified at edge level).
 
 The `state-conj` encodes the destination of an edge as a conjunction of state numbers.  Non-alternating automata always use a single state number as destination.  These conjunctions makes it possible to encode the universal branching of alternating automata, while disjunction is simply encoded as multiple transitions.
 
