@@ -21,6 +21,7 @@ This is version 1 of the format.  The document may evolve slightly to clarify so
 If you see any problem, please [report it on the issue tracker](https://github.com/adl/hoaf/issues?state=open).
 
 Change log:
+- 2019-03-27: Clarify that states may have no outgoing edges ([#70](https://github.com/adl/hoaf/issues/70))
 - 2015-06-21: Improve definition of accepting sets in the semantics ([#48](https://github.com/adl/hoaf/issues/48))
 - 2015-05-26: Clarify notion of canonical encoding, better support for parity automata with `property: colored`, and cleaner definition of parity acceptance in corner cases ([#46](https://github.com/adl/hoaf/issues/46))
 - 2015-05-20: More compact canonical encoding for parity acceptance, and canonical encoding for `min odd` and `max even`. ([#42](https://github.com/adl/hoaf/issues/42) and [#43](https://github.com/adl/hoaf/issues/43))
@@ -554,7 +555,9 @@ If a state has a `label`, no outgoing edge of this state should have a `label`: 
 
 If an edge has a `label`, all edges of this state should have a `label`.
 
-If one state has no `label`, all its edges should have labels, unless there is exactly $2^a$ edges listed, where $a$ is the number of atomic propositions.  In this case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition $t$ is the $i$-th transition of a state (starting with 0), then the label of $t$ can be deduced by interpreting $i$ as a bitset. The label is a set of atomic propositions such that the atomic proposition $j$ is in the set if the $j$-th least significant bit of $i$ is set to 1.
+If one state has no `label`, all its edges should have labels, unless there is exactly $2^a$ edges listed, where $a$ is the number of atomic propositions.  In the latter case, each edge corresponds to a transition, with the same order as in `ltl2dstar`. If a transition $t$ is the $i$-th transition of a state (starting with 0), then the label of $t$ can be deduced by interpreting $i$ as a bitset. The label is a set of atomic propositions such that the atomic proposition $j$ is in the set if the $j$-th least significant bit of $i$ is set to 1.
+
+Note that a state may have no outgoing edge if it represents some dead-end.
 
 
 Examples
