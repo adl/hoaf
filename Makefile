@@ -6,7 +6,7 @@ pdf: autfmt.pdf
 PANDOC = pandoc -f markdown_github+tex_math_dollars -s
 
 index.html: README.md pandoc.css template.html
-	 $(PANDOC) --metadata title='The Hanoi Omega-Automata Format' README.md  --mathjax -c pandoc.css --toc --template template.html -o $@
+	 $(PANDOC) --metadata title='The Hanoi Omega-Automata Format' README.md  --mathjax='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full' -c pandoc.css --toc --template template.html -o $@
 support.html: support.md pandoc.css template.html
 	 $(PANDOC) --metadata title='HOA Format Tool Support' support.md -c pandoc.css --toc --template template.html -o $@
 
