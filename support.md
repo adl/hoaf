@@ -1,16 +1,17 @@
 HOA Format Tool Support
 =======================
+(as of 2. 4. 2019)
 
 The following tools implement support for the [HOA format](index.html), either as output or as input.
 
 In 2015, when the format was introduced, we built a [live CD](#live-cd) to play around with the tools.  It's probably better to install newer versions of the tools today.  Several of those tools can also be used online using a terminal on [Spot's sandbox](http://spot-sandbox.lrde.epita.fr/).
 
-`jhoafparser` and `cpphoafparser` libraries
+`cpphoafparser` and `jhoafparser` libraries
 -------------------------------------------
 
-[`jhoafparser`](http://automata.tools/hoa/jhoafparser/) and [`cpphoafparser`](http://automata.tools/hoa/cpphoafparser/) are Java/C++-based parser libraries for the HOA format. The parsers include an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format, as well as command-line tools that can be used for validation of HOA automata.
+[`cpphoafparser`](http://automata.tools/hoa/cpphoafparser/) and [`jhoafparser`](http://automata.tools/hoa/jhoafparser/) are C++/Java-based parser libraries for the HOA format. The parsers include an abstraction layer (`HOAConsumer`) allowing applications to react to the different parts of the format, as well as command-line tools that can be used for validation of HOA automata.
 
-`jhoafparser` and `cpphoafparser` is distributed under the [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
+`cpphoafparser` and `jhoafparser` are distributed under the [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
 
 `GOAL`
 ------
@@ -93,6 +94,11 @@ PRISM's source code is distributed under the [GNU General Public License, versio
 
 - deterministic parity automata,
 - limit-deterministic generalized Büchi automata.
+
+`ROLL`
+------
+
+[Roll](https://iscasmc.ios.ac.cn/roll/) is an ω-regular language learning library with command line tools to learn and complement Büchi automata. This open source Java library implements all existing learning algorithms for the complete class of ω-regular languages, including a learning-based Büchi automata complementation. It also offers an interactive Jupyter notebook environment. The HOA format support is limited to state-based automata with single initial state both on input and output and parsing is done by `jhoafparser`.
 
 `Seminator`
 -----------
