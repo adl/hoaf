@@ -42,7 +42,7 @@ Design a format, inspired from [`ltl2dstar`'s format](http://www.ltl2dstar.de/do
 - supports state-labeled omega-automata.
 - supports different types of acceptance conditions, preferably in a way that is easy to extend.
 - supports transition-based acceptance.
-- consider new lines as any other white-space characters, i.e., as token separators.  All the examples below should work even after newlines have been removed or moved around (this typically happens if you copy/paste an automaton into a mailer that reformats paragraphs).  A use case for not using any newline is when compiling results from experiments into a file, with one automaton per line (and maybe other measurments if that is a CSV file), for easier filtering with line-oriented tools such as grep/cut/sed.
+- consider new lines as any other white-space characters, i.e., as token separators.  All the examples below should work even after newlines have been removed or moved around (this typically happens if you copy/paste an automaton into a mailer that reformats paragraphs).  A use case for not using any newline is when compiling results from experiments into a file, with one automaton per line (and maybe other measurements if that is a CSV file), for easier filtering with line-oriented tools such as grep/cut/sed.
 - supports streams of omega-automata (i.e., multiple automata can be concatenated together and processed in batch).
 
 
@@ -80,7 +80,7 @@ Common Tokens
   The true and false Boolean constants.
 
 - `IDENTIFIER`: `[a-zA-Z_][0-9a-zA-Z_-]*`
-  An identifier made of letters, digits, `-` and `_`.  Digits and `-` may not by used as first character, and `t` or `f` are not valid identifiers.
+  An identifier made of letters, digits, `-` and `_`.  Digits and `-` may not be used as first character, and `t` or `f` are not valid identifiers.
 
 - `ANAME`: `@[0-9a-zA-Z_-]+`
   An alias name, i.e., "@" followed by some alphanumeric characters, `-` or `_`.  These are used to identify atomic propositions or subformulas.
@@ -130,7 +130,7 @@ Headers items `HOA:`, and `Acceptance:` must always be present.
 
 ### `States:`
 
-This optionnal header item specifies the number of states in the automaton.
+This optional header item specifies the number of states in the automaton.
 
 The states are assumed to be numbered consecutively from 0.   For instance:
 
@@ -172,7 +172,7 @@ The number of double-quoted strings must match exactly the number given, and sho
 
 ### `Alias:`
 
-Aliases are used to name atomic propositions or common subformulas that will be used later as labels in the automaton.  This format can be used without any aliases, refering to atomic propositions by their numbers.  Naming atomic propositions using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.
+Aliases are used to name atomic propositions or common subformulas that will be used later as labels in the automaton.  This format can be used without any aliases, referring to atomic propositions by their numbers.  Naming atomic propositions using aliases can make the automaton more readable to the human, and naming subformulas that are used repeatedly can help making the output more concise.
 
     headeritem ::= … | "Alias:" ANAME label-expr
     label-expr ::= BOOLEAN | INT | ANAME | "!" label-expr
